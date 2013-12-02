@@ -1,0 +1,3 @@
+[submodule "jni/kryptan_core/kryptan_core"]
+	path = jni/kryptan_core/kryptan_core
+	url = https://git@github.com/alex-caelus/kryptan_core.git
