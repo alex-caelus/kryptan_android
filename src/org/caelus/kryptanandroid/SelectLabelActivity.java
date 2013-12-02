@@ -1,5 +1,7 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.core.*;
+
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -19,37 +21,29 @@ public class SelectLabelActivity extends Activity implements OnCheckedChangeList
 {
 	
 	private ArrayList<CharSequence> mSelectedLabels = new ArrayList<CharSequence>();
+	private CorePwdFile mCorePwdFile = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_label);
-
-		GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
-		LabelAdapter adapter = new LabelAdapter(this);
-		adapter.setOnCheckedChangeListener(this);
 		
-		if(labelLayout != null){
-			labelLayout.setAdapter(adapter);
-		}
-
-		// set number of matching passwords
-		setMatchingPasswordsText();
-		
-		//if needed we ask the user to decrypt the password file first
-		if(!isDecrypted() )
+		//if needed, we ask the user to decrypt the password file first
+		if( mCorePwdFile == null || !mCorePwdFile.IsOpen() )
 		{
-			Intent intent = new Intent(this, DecryptActivity.class);
-			startActivityForResult(intent, 0);
+			Intent intent = getIntent();
+			if(intent.hasExtra(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE))
+			{
+				onActivityResult(0, RESULT_OK, intent);
+			}
+			else
+			{
+				intent = new Intent(this, OpenPasswordFileActivity.class);
+				startActivityForResult(intent, 0);
+			}
 		}
 	}
-	
-	private boolean isDecrypted()
-    {
-	    // TODO Add real check for decrypted password file or-not
-	    return false;
-    }
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -59,14 +53,25 @@ public class SelectLabelActivity extends Activity implements OnCheckedChangeList
 			if(resultCode == RESULT_OK)
 			{
 				//Decryption successfull!
+				mCorePwdFile = (CorePwdFile) data.getExtras().getParcelable(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE);
+
+				GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
+				LabelAdapter adapter = new LabelAdapter(this, mCorePwdFile.getPasswordList());
+				adapter.setOnCheckedChangeListener(this);
 				
+				if(labelLayout != null){
+					labelLayout.setAdapter(adapter);
+				}
+
+				// set number of matching passwords
+				setMatchingPasswordsText();
 			}
 			else
 			{
 				//This should never happen, but if we end up here and 
 				//the decryption was aborted for some reason
 				//We simply exit the app
-				//finish();
+				finish();
 			}
 		}
 	}

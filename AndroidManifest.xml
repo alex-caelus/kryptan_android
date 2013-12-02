@@ -39,7 +39,7 @@
                 android:value=".SecretListActivity" />
         </activity>
         <activity
-            android:name="org.caelus.kryptanandroid.DecryptActivity"
+            android:name="org.caelus.kryptanandroid.OpenPasswordFileActivity"
             android:label="@string/title_activity_decrypt"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>

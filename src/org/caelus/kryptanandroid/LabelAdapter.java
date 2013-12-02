@@ -5,6 +5,8 @@ package org.caelus.kryptanandroid;
 
 import java.util.Vector;
 
+import org.caelus.kryptanandroid.core.*;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,36 +25,21 @@ public class LabelAdapter extends BaseAdapter implements
         OnCheckedChangeListener
 {
 	private Context mContext;
-	private Vector<cLabel> mLabels = new Vector<cLabel>();
+	private Vector<CoreSecureStringHandler> mLabels = new Vector<CoreSecureStringHandler>();
+	private Vector<Boolean> mChecked = new Vector<Boolean>();
 	private OnCheckedChangeListener mListener;
+	private CorePwdList mSource;
 
-	private class cLabel
-	{
-		public cLabel(CharSequence n)
-		{
-			name = n;
-		}
 
-		public CharSequence name;
-		public boolean isChecked;
-	}
 
 	/**
 	 * 
 	 */
-	public LabelAdapter(Context c)
+	public LabelAdapter(Context c, CorePwdList src)
 	{
 		mContext = c;
-		addTestData();
-	}
-
-	private void addTestData()
-	{
-		for (int i = 0; i < 40; i++)
-		{
-			mLabels.add(new cLabel("Label " + i));
-		}
-		mLabels.add(new cLabel("One last really long label"));
+		mSource = src;
+		mLabels = mSource.allLabels();
 	}
 
 	/*
@@ -131,12 +118,11 @@ public class LabelAdapter extends BaseAdapter implements
 		// make text
 		String textFormat = mContext.getResources().getString(
 		        R.string.label_nr_of_passwords_format);
-		int nrOfPasswords = 1; // TODO: get real number
-		cLabel label = mLabels.elementAt(arg0);
-
-		checkBox.setTag(label);
-		checkBox.setText(label.name);
-		checkBox.setChecked(label.isChecked);
+		int nrOfPasswords = mSource.CountPwds(mLabels.get(arg0)); // TODO: get real number
+		
+		checkBox.setTag(Integer.valueOf(arg0));
+		checkBox.setText(mLabels.get(arg0).GetChar(0));
+		checkBox.setChecked(mChecked.get(arg0).booleanValue());
 		text.setText(String.format(textFormat, nrOfPasswords));
 
 		return group;
@@ -150,10 +136,10 @@ public class LabelAdapter extends BaseAdapter implements
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
 	{
-		cLabel label = (cLabel) buttonView.getTag();
-		if (label.isChecked != isChecked)
+		int label = (Integer) buttonView.getTag();
+		if (mChecked.get(label).booleanValue() != isChecked)
 		{
-			label.isChecked = isChecked;
+			mChecked.set(label, Boolean.valueOf(isChecked));
 			if (mListener != null)
 			{
 				mListener.onCheckedChanged(buttonView, isChecked);
