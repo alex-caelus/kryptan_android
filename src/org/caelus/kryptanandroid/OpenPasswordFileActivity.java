@@ -260,7 +260,6 @@ public class OpenPasswordFileActivity extends Activity
 				Intent data = new Intent();
 				data.putExtra(EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 				setResult(RESULT_OK, data);
-				finish();
 				return true;
 			}
 			

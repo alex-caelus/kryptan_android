@@ -23,12 +23,21 @@ long Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_NewSecureString
 
 void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Dispose(JNIEnv* env, jobject o) {
 	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
+	LOG_VERBOSE("Deleting SecureString with contents: %s", theString->getUnsecureString());
+	theString->UnsecuredStringFinished();
 	delete theString;
+	theString = 0;
+	setHandle(env, o, theString, HANDLE_SECURESTRING);
 }
 
 void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Clear(JNIEnv* env, jobject o) {
 	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
 	theString->assign("", 0, false);
+}
+
+jint Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetLength(JNIEnv* env, jobject o) {
+	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
+	return theString->length();
 }
 
 void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddChar(JNIEnv* env, jobject o, jchar c) {
@@ -38,7 +47,7 @@ void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddChar(JNIEnv*
 
 jchar Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetChar(JNIEnv* env, jobject o, jint i) {
 	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	return theString->at(i);
+	return i >= theString->length() || i < 0 ? 0 : theString->at(i);
 }
 
 }

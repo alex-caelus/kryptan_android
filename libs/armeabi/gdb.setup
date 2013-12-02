@@ -1,0 +1,2 @@
+set solib-search-path ./obj/local/armeabi
+directory D:/AndroidSDK/android-ndk-r9b/platforms/android-9/arch-arm/usr/include jni/cryptopp D:/AndroidSDK/android-ndk-r9b/sources/cxx-stl/gnu-libstdc++ jni/cryptopp/include D:/AndroidSDK/android-ndk-r9b/sources/cxx-stl/gnu-libstdc++/4.6/include D:/AndroidSDK/android-ndk-r9b/sources/cxx-stl/gnu-libstdc++/4.6/libs/armeabi/include D:/AndroidSDK/android-ndk-r9b/sources/cxx-stl/gnu-libstdc++/4.6/include/backward jni/kryptan_core

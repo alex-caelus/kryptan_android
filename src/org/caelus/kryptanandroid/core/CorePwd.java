@@ -8,5 +8,14 @@ public class CorePwd {
 	{
 		this.nativeHandle = nativeHandle;
 	}
+
+	public native CoreSecureStringHandler GetDescriptionHandler();
+	public native CoreSecureStringHandler GetUsernameHandler();
+	public native CoreSecureStringHandler GetPasswordHandler();
+
+	public long getNativeHandle()
+	{
+		return nativeHandle;
+	}
 	
 }

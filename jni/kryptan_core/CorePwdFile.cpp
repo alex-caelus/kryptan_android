@@ -14,11 +14,12 @@ jlong Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateInstance(
 	try {
 		std::string fname;
 		GetJStringContent(env, filename, fname);
-		jlong ptr = (jlong) (new PwdFile(fname));
-		return ptr;
+		PwdFile* ptr = new PwdFile(fname);
+		return (jlong) ptr;
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
+	return 0;
 }
 
 void Java_org_caelus_kryptanandroid_core_CorePwdFile_Dispose(JNIEnv* env,
@@ -44,9 +45,24 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateNew(JNIEnv* env,
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
 
 		file->CreateNew();
-	} catch(const KryptanDecryptWrongKeyException& e)
-	{
-		//just ignore this exception and let java figure it out by calling isOpen
+
+		//TODO: remove dummy data
+		PwdList* list = file->GetPasswordList();
+		Pwd* pwd1 = list->CreatePwd(
+				SecureString("This is my first dummy password!"),
+				SecureString("Username 1"), SecureString("Password 1"));
+		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+		pwd1 = list->CreatePwd(
+				SecureString("This is my second dummy password!"),
+				SecureString("Username 2"), SecureString("Password 2"));
+		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
+		pwd1 = list->CreatePwd(SecureString("This is my third dummy password!"),
+				SecureString("Username 3"), SecureString("Password 3"));
+		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
+		list->AddPwdToLabel(pwd1, SecureString("Third dummy label"));
+
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -56,7 +72,11 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_TryOpenAndParse(
 		JNIEnv* env, jobject o) {
 	try {
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
-		file->OpenAndParse(SecureString(), false);
+		SecureString* masterkey = getHandle<SecureString>(env, o,
+				HANDLE_MASTERKEY);
+		file->OpenAndParse(*masterkey, false);
+	} catch (const KryptanDecryptWrongKeyException& e) {
+		//just ignore this exception and let java figure it out by calling isOpen
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -82,6 +102,7 @@ jlong Java_org_caelus_kryptanandroid_core_CorePwdFile_GetPasswordListHandle(
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
+	return 0;
 }
 
 jstring Java_org_caelus_kryptanandroid_core_CorePwdFile_GetFilename(JNIEnv* env,
@@ -95,6 +116,8 @@ jstring Java_org_caelus_kryptanandroid_core_CorePwdFile_GetFilename(JNIEnv* env,
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
+
+	return 0;
 }
 
 jboolean Java_org_caelus_kryptanandroid_core_CorePwdFile_IsOpen(JNIEnv* env,
@@ -105,6 +128,7 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdFile_IsOpen(JNIEnv* env,
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
+	return false;
 }
 
 jboolean Java_org_caelus_kryptanandroid_core_CorePwdFile_Exists(JNIEnv* env,
@@ -115,6 +139,7 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdFile_Exists(JNIEnv* env,
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
+	return false;
 }
 
 }

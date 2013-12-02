@@ -12,6 +12,19 @@ public class CorePwdList
 		this.nativeHandle = nativeHandle;
 	}
 
+	public Vector<CorePwd> all()
+	{
+		long[] handles = All();
+		Vector<CorePwd> pwds = new Vector<CorePwd>();
+
+		for (long handle : handles)
+		{
+			pwds.add(new CorePwd(handle));
+		}
+
+		return pwds;
+	}
+
 	public Vector<CorePwd> filter(CoreSecureStringHandler pattern)
 	{
 		long[] handles = Filter(pattern.getNativeHandle());
@@ -71,47 +84,64 @@ public class CorePwdList
 	public CorePwd createPwd(CoreSecureStringHandler description,
 			CoreSecureStringHandler password)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		long handle = CreatePwd(description.getNativeHandle(), password.getNativeHandle());
+		return new CorePwd(handle);
 	}
 
 	public CorePwd createPwd(CoreSecureStringHandler description,
 			CoreSecureStringHandler username, CoreSecureStringHandler password)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		long handle = CreatePwd(description.getNativeHandle(), username.getNativeHandle(), password.getNativeHandle());
+		return new CorePwd(handle);
 	}
 
 	public void deletePwd(CorePwd pwd)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		DeletePwd(pwd.getNativeHandle());
 	}
 	
-	public Vector<CoreSecureStringHandler> allLabels()
-	{
-		Vector<CoreSecureStringHandler> allLabels = new Vector<CoreSecureStringHandler>();
-		
-	}
-	
-	public Vector<CoreSecureStringHandler> filterLabels()
-	{
-		throw new UnsupportedOperationException("Not implemented yet!");
-	}
+//	public Vector<CoreSecureStringHandler> allLabels()
+//	{
+//		Vector<CoreSecureStringHandler> allLabels = new Vector<CoreSecureStringHandler>();
+//		long[] ptrs = this.AllLabels();
+//		for(long ptr : ptrs)
+//		{
+//			allLabels.add(new CoreSecureStringHandler(ptr));
+//		}
+//		return allLabels;
+//	}
+//	
+//	public Vector<CoreSecureStringHandler> filterLabels(CoreSecureStringHandler pattern)
+//	{
+//		Vector<CoreSecureStringHandler> allLabels = new Vector<CoreSecureStringHandler>();
+//		long[] ptrs = this.FilterLabels(pattern.getNativeHandle());
+//		for(long ptr : ptrs)
+//		{
+//			allLabels.add(new CoreSecureStringHandler(ptr));
+//		}
+//		return allLabels;
+//	}
 
 	public native int CountPwds();
 	
 	public int CountPwds(CoreSecureStringHandler label)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return CountPwds(label.getNativeHandle());
 	}
 	
 	public boolean addPwdToLabel(CorePwd pwd, CoreSecureStringHandler label)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return AddPwdToLabel(pwd.getNativeHandle(), label.getNativeHandle());
 	}
 	
 	public boolean removePwdFromLabel(CorePwd pwd, CoreSecureStringHandler label)
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return RemovePwdFromLabel(pwd.getNativeHandle(), label.getNativeHandle());
 	}
+
+	public native CoreSecureStringHandler[] AllLabels();
+
+	public native CoreSecureStringHandler[] FilterLabels(long pattern);
 	
 	private native long[] All();
 
@@ -126,10 +156,6 @@ public class CorePwdList
 	private native long CreatePwd(long description, long username, long password);
 
 	private native void DeletePwd(long pwd);
-
-	private native long[] AllLabels();
-
-	private native long[] FilterLabels(long pattern);
 
 	private native int CountPwds(long label);
 

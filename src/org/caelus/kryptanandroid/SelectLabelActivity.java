@@ -3,6 +3,7 @@ package org.caelus.kryptanandroid;
 import org.caelus.kryptanandroid.core.*;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,10 +18,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class SelectLabelActivity extends Activity implements OnCheckedChangeListener
+public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabelSelectionChangedListener
 {
 	
-	private ArrayList<CharSequence> mSelectedLabels = new ArrayList<CharSequence>();
+	private Vector<CoreSecureStringHandler> mSelectedLabels = new Vector<CoreSecureStringHandler>();
 	private CorePwdFile mCorePwdFile = null;
 	
 	@Override
@@ -57,7 +58,7 @@ public class SelectLabelActivity extends Activity implements OnCheckedChangeList
 
 				GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
 				LabelAdapter adapter = new LabelAdapter(this, mCorePwdFile.getPasswordList());
-				adapter.setOnCheckedChangeListener(this);
+				adapter.setOnLabelSelectionChangedListener(this);
 				
 				if(labelLayout != null){
 					labelLayout.setAdapter(adapter);
@@ -103,7 +104,7 @@ public class SelectLabelActivity extends Activity implements OnCheckedChangeList
 		String textFormat = getResources().getString(textFormatIdentifier);
 		
 		//TODO: Get real number of matches
-		int nrOfMatches = 143;
+		int nrOfMatches = mCorePwdFile.getPasswordList().filter(mSelectedLabels).size();
 		
 		button.setText(String.format(buttonFormat, nrOfMatches));
 		text.setText(String.format(textFormat, mSelectedLabels.size()));
@@ -168,15 +169,16 @@ public class SelectLabelActivity extends Activity implements OnCheckedChangeList
 	 * @param isChecked
 	 */
 	@Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+	public void OnLabelSelectionChanged(CoreSecureStringHandler label,
+			boolean isSelected)
     {
-		if(isChecked)
+		if(isSelected)
 		{
-			mSelectedLabels.add(buttonView.getText());
+			mSelectedLabels.add(label);
 		}
 		else
 		{
-			mSelectedLabels.remove(buttonView.getText());
+			mSelectedLabels.remove(label);
 		}
 		setMatchingPasswordsText();
     }

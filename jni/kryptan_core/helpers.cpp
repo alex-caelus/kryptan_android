@@ -7,6 +7,8 @@
 
 #include "helpers.h"
 
+//-------------Get obejct pointers-------------------------
+
 jfieldID getHandleField(JNIEnv *env, jobject obj, const char* name) {
 	jclass c = env->GetObjectClass(obj);
 	// J is the type signature for long:
@@ -22,6 +24,19 @@ void GetJStringContent(JNIEnv *AEnv, jstring AStr, std::string &ARes) {
 	const char *s = AEnv->GetStringUTFChars(AStr, 0);
 	ARes = s;
 	AEnv->ReleaseStringUTFChars(AStr, s);
+}
+
+//----------------SecureString helpers--------------------
+
+jobject createJavaSecureStringHandler(JNIEnv* env, const Kryptan::Core::SecureString &str)
+{
+	jclass cls = env->FindClass("org/caelus/kryptanandroid/core/CoreSecureStringHandler");
+	jmethodID constructor = env->GetMethodID(cls, "<init>", "(J)V");
+	Kryptan::Core::SecureString* copy = new Kryptan::Core::SecureString(str);
+	jobject obj = env->NewObject(cls, constructor, (jlong)copy);
+	LOG_VERBOSE("Created new SecureString with contents: %s",  copy->getUnsecureString());
+	copy->UnsecuredStringFinished();
+	return obj;
 }
 
 //----------------JAVA EXCEPTION HANDLING-----------------

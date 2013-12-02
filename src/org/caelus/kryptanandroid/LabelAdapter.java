@@ -25,12 +25,15 @@ public class LabelAdapter extends BaseAdapter implements
         OnCheckedChangeListener
 {
 	private Context mContext;
-	private Vector<CoreSecureStringHandler> mLabels = new Vector<CoreSecureStringHandler>();
+	private CoreSecureStringHandler[] mLabels;
 	private Vector<Boolean> mChecked = new Vector<Boolean>();
-	private OnCheckedChangeListener mListener;
+	private OnLabelSelectionChangedListener mListener;
 	private CorePwdList mSource;
 
-
+	interface OnLabelSelectionChangedListener
+	{
+		void OnLabelSelectionChanged(CoreSecureStringHandler label, boolean isSelected);
+	}
 
 	/**
 	 * 
@@ -39,7 +42,11 @@ public class LabelAdapter extends BaseAdapter implements
 	{
 		mContext = c;
 		mSource = src;
-		mLabels = mSource.allLabels();
+		mLabels = mSource.AllLabels();
+		for(CoreSecureStringHandler label : mLabels)
+		{
+			mChecked.add(Boolean.valueOf(false));
+		}
 	}
 
 	/*
@@ -50,7 +57,7 @@ public class LabelAdapter extends BaseAdapter implements
 	@Override
 	public int getCount()
 	{
-		return mLabels.size();
+		return mLabels.length;
 	}
 
 	/*
@@ -61,7 +68,7 @@ public class LabelAdapter extends BaseAdapter implements
 	@Override
 	public Object getItem(int arg0)
 	{
-		return mLabels.elementAt(arg0);
+		return mLabels[arg0];
 	}
 
 	/*
@@ -118,17 +125,25 @@ public class LabelAdapter extends BaseAdapter implements
 		// make text
 		String textFormat = mContext.getResources().getString(
 		        R.string.label_nr_of_passwords_format);
-		int nrOfPasswords = mSource.CountPwds(mLabels.get(arg0)); // TODO: get real number
+		CoreSecureStringHandler label = mLabels[arg0];
+		//TODO: fix secure viewing of labels
+		String labelname = "";
+		int length = label.GetLength();
+		for(int i=0; i<length; i++)
+		{
+			labelname += label.GetChar(i);
+		}
+		int nrOfPasswords = mSource.CountPwds(label); // TODO: get real number
 		
 		checkBox.setTag(Integer.valueOf(arg0));
-		checkBox.setText(mLabels.get(arg0).GetChar(0));
+		checkBox.setText(labelname);
 		checkBox.setChecked(mChecked.get(arg0).booleanValue());
 		text.setText(String.format(textFormat, nrOfPasswords));
 
 		return group;
 	}
 
-	public void setOnCheckedChangeListener(OnCheckedChangeListener listener)
+	public void setOnLabelSelectionChangedListener(OnLabelSelectionChangedListener listener)
 	{
 		mListener = listener;
 	}
@@ -142,7 +157,7 @@ public class LabelAdapter extends BaseAdapter implements
 			mChecked.set(label, Boolean.valueOf(isChecked));
 			if (mListener != null)
 			{
-				mListener.onCheckedChanged(buttonView, isChecked);
+				mListener.OnLabelSelectionChanged(mLabels[label], isChecked);
 			}
 		}
 		// else nothing has changed
