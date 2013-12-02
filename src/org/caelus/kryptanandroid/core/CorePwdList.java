@@ -87,7 +87,7 @@ public class CorePwdList
 	
 	public Vector<CoreSecureStringHandler> allLabels()
 	{
-		throw new UnsupportedOperationException("Not implemented yet!");
+		Vector<CoreSecureStringHandler> allLabels = new Vector<CoreSecureStringHandler>();
 	}
 	
 	public Vector<CoreSecureStringHandler> filterLabels()
