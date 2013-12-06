@@ -15,19 +15,31 @@
 #include "kryptan_core/SecureString.h"
 #include <android/log.h>
 
+//TODO: Remove debug print before release, it is a SERIOUS(!) security hole
+#define DEBUG_PRINT
+
 //-------------Logging ------------------------------------
 
+#ifdef DEBUG_PRINT
 #define __PRIO_LOG(prio, fmt, ...) \
 	do{ \
 		__android_log_print(prio, "kryptan_core", fmt, __VA_ARGS__); \
 	} while (0)
-
+#else
+#define __PRIO_LOG(prio, fmt, ...) do{ } while (0)
+#endif
 #define LOG_VERBOSE(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_VERBOSE, fmt, __VA_ARGS__)
 #define LOG_DEBUG(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_DEBUG, fmt, __VA_ARGS__)
 #define LOG_INFO(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_INFO, fmt, __VA_ARGS__)
 #define LOG_WARN(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_WARN, fmt, __VA_ARGS__)
 #define LOG_ERROR(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_ERROR, fmt, __VA_ARGS__)
 #define LOG_FATAL(fmt, ...) __PRIO_LOG(android_LogPriority::ANDROID_LOG_FATAL, fmt, __VA_ARGS__)
+
+//--------------SPointer (SecureString counted reference struct)-----------
+struct SPointer {
+	Kryptan::Core::SecureString* sString;
+	int nReferences;
+};
 
 
 //-------------Get obejct pointers-------------------------
@@ -50,7 +62,8 @@ void GetJStringContent(JNIEnv *AEnv, jstring AStr, std::string &ARes);
 
 //----------------SecureString helpers--------------------
 
-jobject createJavaSecureStringHandler(JNIEnv* env, const Kryptan::Core::SecureString &str);
+//TODO: Remove this line
+jobject createJavaSecureStringHandler(JNIEnv* env, SPointer** out);
 
 //----------------JAVA EXCEPTION HANDLING-----------------
 
@@ -99,24 +112,6 @@ jlongArray convertToJavaArray_fromReferences(JNIEnv* env, std::vector<T*> vector
 	}
 
 	return toReturn;
-}
-
-template<class T>
-std::vector<T> convertToVectorFromJavaArray_value(JNIEnv* env, jlongArray array)
-{
-	int size = env->GetArrayLength(array);
-	jlong* handles = new jlong[size];
-	env->GetLongArrayRegion(array, 0, size, handles );
-
-	std::vector<T> v;
-
-	for(int i=0; i < size; i++)
-	{
-		T* ptr = (T*)handles[i];
-		v.push_back(T(*ptr));
-	}
-
-	return v;
 }
 
 template<class T>

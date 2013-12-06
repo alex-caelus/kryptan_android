@@ -1,6 +1,6 @@
 package org.caelus.kryptanandroid.core;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class CorePwdList
 {
@@ -12,10 +12,10 @@ public class CorePwdList
 		this.nativeHandle = nativeHandle;
 	}
 
-	public Vector<CorePwd> all()
+	public ArrayList<CorePwd> all()
 	{
 		long[] handles = All();
-		Vector<CorePwd> pwds = new Vector<CorePwd>();
+		ArrayList<CorePwd> pwds = new ArrayList<CorePwd>();
 
 		for (long handle : handles)
 		{
@@ -25,10 +25,10 @@ public class CorePwdList
 		return pwds;
 	}
 
-	public Vector<CorePwd> filter(CoreSecureStringHandler pattern)
+	public ArrayList<CorePwd> filter(CoreSecureStringHandler pattern)
 	{
 		long[] handles = Filter(pattern.getNativeHandle());
-		Vector<CorePwd> pwds = new Vector<CorePwd>();
+		ArrayList<CorePwd> pwds = new ArrayList<CorePwd>();
 
 		for (long handle : handles)
 		{
@@ -38,18 +38,19 @@ public class CorePwdList
 		return pwds;
 	}
 
-	public Vector<CorePwd> filter(Vector<CoreSecureStringHandler> labels)
+	public ArrayList<CorePwd> filter(CoreSecureStringHandlerCollection labels)
 	{
-		long[] lHandles = new long[labels.size()];
+		long[] lHandles = new long[labels.getContainer().size()];
 		int i = 0;
-		for (CoreSecureStringHandler label : labels)
+		for (CoreSecureStringHandler label : labels.getContainer())
 		{
 			lHandles[i] = label.getNativeHandle();
+			i++;
 		}
 
 		long[] handles = Filter(lHandles);
 
-		Vector<CorePwd> pwds = new Vector<CorePwd>();
+		ArrayList<CorePwd> pwds = new ArrayList<CorePwd>();
 
 		for (long handle : handles)
 		{
@@ -59,19 +60,19 @@ public class CorePwdList
 		return pwds;
 	}
 
-	public Vector<CorePwd> filter(CoreSecureStringHandler pattern,
-			Vector<CoreSecureStringHandler> labels)
+	public ArrayList<CorePwd> filter(CoreSecureStringHandler pattern,
+			CoreSecureStringHandlerCollection labels)
 	{
-		long[] lHandles = new long[labels.size()];
+		long[] lHandles = new long[labels.getContainer().size()];
 		int i = 0;
-		for (CoreSecureStringHandler label : labels)
+		for (CoreSecureStringHandler label : labels.getContainer())
 		{
 			lHandles[i] = label.getNativeHandle();
 		}
 
 		long[] handles = Filter(pattern.getNativeHandle(), lHandles);
 
-		Vector<CorePwd> pwds = new Vector<CorePwd>();
+		ArrayList<CorePwd> pwds = new ArrayList<CorePwd>();
 
 		for (long handle : handles)
 		{

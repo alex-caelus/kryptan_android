@@ -1,9 +1,8 @@
 package org.caelus.kryptanandroid;
 
-import org.caelus.kryptanandroid.core.*;
-
-import java.util.ArrayList;
-import java.util.Vector;
+import org.caelus.kryptanandroid.core.CorePwdFile;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,15 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
 public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabelSelectionChangedListener
 {
 	
-	private Vector<CoreSecureStringHandler> mSelectedLabels = new Vector<CoreSecureStringHandler>();
+	private CoreSecureStringHandlerCollection mSelectedLabels = new CoreSecureStringHandlerCollection();
 	private CorePwdFile mCorePwdFile = null;
 	
 	@Override
@@ -90,7 +87,7 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 		int buttonFormatIdentifier = 0;
 		int textFormatIdentifier = 0;
 
-		if (mSelectedLabels.size() == 0)
+		if (mSelectedLabels.getContainer().size() == 0)
 		{
 			buttonFormatIdentifier = R.string.button_browse_all_passwords;
 			textFormatIdentifier = R.string.text_filter_none;
@@ -106,8 +103,10 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 		//TODO: Get real number of matches
 		int nrOfMatches = mCorePwdFile.getPasswordList().filter(mSelectedLabels).size();
 		
+		//TODO: if number of matches is zero, disable the button and change the text.
+		
 		button.setText(String.format(buttonFormat, nrOfMatches));
-		text.setText(String.format(textFormat, mSelectedLabels.size()));
+		text.setText(String.format(textFormat, mSelectedLabels.getContainer().size()));
 		
 	}
 
@@ -174,11 +173,11 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
     {
 		if(isSelected)
 		{
-			mSelectedLabels.add(label);
+			mSelectedLabels.getContainer().add(label);
 		}
 		else
 		{
-			mSelectedLabels.remove(label);
+			mSelectedLabels.getContainer().remove(label);
 		}
 		setMatchingPasswordsText();
     }
@@ -186,8 +185,8 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 	public void onButtonClick(View view)
 	{
 		Intent intent = new Intent(this, SecretListActivity.class);
-		CharSequence[] filter =  mSelectedLabels.toArray(new CharSequence[0]);
-		intent.putExtra("org.caelus.SecretListActivity.filter", filter);
+		intent.putExtra(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+		intent.putExtra(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION, mSelectedLabels);
 		startActivity(intent);
 	}
 

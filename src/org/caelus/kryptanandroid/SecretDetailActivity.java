@@ -41,8 +41,8 @@ public class SecretDetailActivity extends FragmentActivity
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(SecretDetailFragment.ARG_ITEM_ID, getIntent()
-			        .getStringExtra(SecretDetailFragment.ARG_ITEM_ID));
+			arguments.putParcelable(SecretDetailFragment.ARG_ITEM, getIntent()
+			        .getParcelableExtra(SecretDetailFragment.ARG_ITEM));
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

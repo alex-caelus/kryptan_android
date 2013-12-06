@@ -26,7 +26,9 @@ import android.widget.TextView;
  */
 public class OpenPasswordFileActivity extends Activity
 {
-	static public final String EXTRA_CORE_PWD_FILE_INSTANCE = "org.caelus.kryptanandroid.PWD_FILE_INSTANCE";
+	public static final String EXTRA_CORE_PWD_FILE_INSTANCE = "org.caelus.kryptanandroid.PWD_FILE_INSTANCE";
+
+	public static final String EXTRA_CORE_FILTER_COLLECTION = "org.caelus.kryptanandroid.PWD_FILTER_INSTANCE";
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.

@@ -1,5 +1,9 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.core.CorePwd;
+import org.caelus.kryptanandroid.core.CorePwdFile;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +35,8 @@ public class SecretListActivity extends FragmentActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
+	private CorePwdFile mCorePwdFile;
+	private CoreSecureStringHandlerCollection mLabelsFilter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -69,9 +75,22 @@ public class SecretListActivity extends FragmentActivity implements
 				{
 					listFragment.showSearch();
 				}
-				if(extras.containsKey("org.caelus.SecretListActivity.filter"))
+				if(extras.containsKey(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE))
 				{
-					//TODO: handle the provided labelfilter
+					mCorePwdFile = (CorePwdFile) extras.getParcelable(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE);
+				}
+				if(extras.containsKey(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION))
+				{
+					mLabelsFilter = (CoreSecureStringHandlerCollection) extras.getParcelable(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION);
+				}
+				if(mCorePwdFile == null || mLabelsFilter == null)
+				{
+					throw new IllegalArgumentException("instances of password file and filter collection must be provided in the intent.");
+				}
+				else
+				{
+					SecretAdapter adapter = new SecretAdapter(this, mCorePwdFile, mLabelsFilter);
+					listFragment.setListAdapter(adapter);
 				}
 			}
 		}
@@ -125,7 +144,7 @@ public class SecretListActivity extends FragmentActivity implements
 	 * the item with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(String id)
+	public void onItemSelected(CorePwd pwd)
 	{
 		if (mTwoPane)
 		{
@@ -133,7 +152,7 @@ public class SecretListActivity extends FragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(SecretDetailFragment.ARG_ITEM_ID, id);
+			arguments.putParcelable(SecretDetailFragment.ARG_ITEM, pwd);
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -144,7 +163,7 @@ public class SecretListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, SecretDetailActivity.class);
-			detailIntent.putExtra(SecretDetailFragment.ARG_ITEM_ID, id);
+			detailIntent.putExtra(SecretDetailFragment.ARG_ITEM, pwd);
 			startActivity(detailIntent);
 		}
 	}

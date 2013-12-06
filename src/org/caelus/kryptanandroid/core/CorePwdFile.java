@@ -20,12 +20,14 @@ public class CorePwdFile implements Parcelable{
 	
 	public CorePwdFile(String filename) {
 		nativeHandle = CreateInstance(filename);
-		nativeMasterKeyHandle = CoreSecureStringHandler.NewSecureString();
+		mMasterkey = CoreSecureStringHandler.NewSecureString();
+		nativeMasterKeyHandle  = mMasterkey.getNativeHandle();
 	}
 	
 	public CorePwdFile(Parcel in) {
 		nativeHandle = in.readLong();
 		nativeMasterKeyHandle = in.readLong();
+		mMasterkey = new CoreSecureStringHandler(nativeMasterKeyHandle);
 	}
 
 	public CorePwdList getPasswordList()
@@ -47,7 +49,7 @@ public class CorePwdFile implements Parcelable{
 	}
 	
 	private native long CreateInstance(String filename);
-	private native void Dispose();
+	public native void Dispose();
 	
 	public native void CreateNew();
 	public native void TryOpenAndParse();

@@ -43,7 +43,7 @@ public class LabelAdapter extends BaseAdapter implements
 		mContext = c;
 		mSource = src;
 		mLabels = mSource.AllLabels();
-		for(CoreSecureStringHandler label : mLabels)
+		for(int i=0; i<mLabels.length; i++)
 		{
 			mChecked.add(Boolean.valueOf(false));
 		}

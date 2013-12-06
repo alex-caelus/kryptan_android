@@ -29,15 +29,43 @@ jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_All(JNIEnv* env,
 	return 0;
 }
 
+jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J_3J(
+		JNIEnv* env, jobject o, jlong p, jlongArray array) {
+	try {
+		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
+		PwdLabelVector labels;
+
+		int size = env->GetArrayLength(array);
+		LOG_DEBUG("Filtering with %d labels%s", size, p == 0 ? "" : " and with a pattern.");
+		jlong* handles = new jlong[size];
+		env->GetLongArrayRegion(array, 0, size, handles);
+		for (int i = 0; i < size; i++) {
+			SPointer* ptr = (SPointer*) handles[i];
+			labels.push_back(*ptr->sString);
+		}
+
+		PwdList::PwdVector filtered;
+
+		if (p != 0) {
+			SecureString* pattern = ((SPointer*) p)->sString;
+			filtered = list->Filter(*pattern, labels);
+		} else {
+			filtered = list->Filter(labels);
+		}
+
+		return convertToJavaArray_fromReferences(env, filtered);
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
 jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J(
 		JNIEnv* env, jobject o, jlong p) {
 	try {
-		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		SecureString* pattern = (SecureString*) p;
-
-		PwdList::PwdVector filtered = list->Filter(*pattern);
-
-		return convertToJavaArray_fromReferences(env, filtered);
+		jlongArray l = env->NewLongArray(0);
+		return Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J_3J(env,
+				o, p, l);
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -46,43 +74,16 @@ jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J(
 
 jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_Filter___3J(
 		JNIEnv* env, jobject o, jlongArray l) {
-	try {
-		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		PwdLabelVector labels = convertToVectorFromJavaArray_value<
-				SecureString>(env, l);
-
-		PwdList::PwdVector filtered = list->Filter(labels);
-
-		return convertToJavaArray_fromReferences(env, filtered);
-	} catch (...) {
-		swallow_cpp_exception_and_throw_java(env);
-	}
-	return 0;
-}
-
-jlongArray Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J_3J(
-		JNIEnv* env, jobject o, jlong p, jlongArray l) {
-	try {
-		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		PwdLabelVector labels = convertToVectorFromJavaArray_value<
-				SecureString>(env, l);
-		SecureString* pattern = (SecureString*) p;
-
-		PwdList::PwdVector filtered = list->Filter(*pattern, labels);
-
-		return convertToJavaArray_fromReferences(env, filtered);
-	} catch (...) {
-		swallow_cpp_exception_and_throw_java(env);
-	}
-	return 0;
+	return Java_org_caelus_kryptanandroid_core_CorePwdList_Filter__J_3J(env, o,
+			0, l);
 }
 
 jlong Java_org_caelus_kryptanandroid_core_CorePwdList_CreatePwd__JJ(JNIEnv* env,
 		jobject o, jlong description, jlong password) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		Pwd* pwd = list->CreatePwd(*((SecureString*) description),
-				*((SecureString*) password));
+		Pwd* pwd = list->CreatePwd(*((SPointer*) description)->sString,
+				*((SPointer*) password)->sString);
 		return (jlong) pwd;
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
@@ -95,8 +96,9 @@ jlong Java_org_caelus_kryptanandroid_core_CorePwdList_CreatePwd__JJJ(
 		jlong password) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		Pwd* pwd = list->CreatePwd(*((SecureString*) description),
-				*((SecureString*) username), *((SecureString*) password));
+		Pwd* pwd = list->CreatePwd(*((SPointer*) description)->sString,
+				*((SPointer*) username)->sString,
+				*((SPointer*) password)->sString);
 		return (jlong) pwd;
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
@@ -124,12 +126,17 @@ jobjectArray Java_org_caelus_kryptanandroid_core_CorePwdList_AllLabels(
 				(jobjectArray) env->NewObjectArray(all.size(),
 						env->FindClass(
 								"org/caelus/kryptanandroid/core/CoreSecureStringHandler"),
-						createJavaSecureStringHandler(env,
-								SecureString("initial array element")));
+						createJavaSecureStringHandler(env, 0));
 
 		for (int i = 0; i < all.size(); i++) {
-			env->SetObjectArrayElement(labels, i,
-					createJavaSecureStringHandler(env, all[i]));
+			SPointer* ptr;
+			jobject obj = createJavaSecureStringHandler(env, &ptr);
+
+			//Copy value the resulting object to the new java reference counted SecureString object.
+			ptr->sString->assign(all[i]);
+
+			//Store java object in the array.
+			env->SetObjectArrayElement(labels, i, obj);
 		}
 
 		return labels;
@@ -144,19 +151,24 @@ jobjectArray Java_org_caelus_kryptanandroid_core_CorePwdList_FilterLabels(
 		JNIEnv* env, jobject o, jlong p) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		SecureString* pattern = (SecureString*) p;
+		SecureString* pattern = ((SPointer*) p)->sString;
 		PwdLabelVector filtered = list->FilterLabels(*pattern);
 
 		jobjectArray labels =
 				(jobjectArray) env->NewObjectArray(filtered.size(),
 						env->FindClass(
 								"org/caelus/kryptanandroid/core/CoreSecureStringHandler"),
-						createJavaSecureStringHandler(env,
-								SecureString("initial array element")));
+						createJavaSecureStringHandler(env, 0));
 
 		for (int i = 0; i < filtered.size(); i++) {
-			env->SetObjectArrayElement(labels, i,
-					createJavaSecureStringHandler(env, filtered[i]));
+			SPointer* ptr;
+			jobject obj = createJavaSecureStringHandler(env, &ptr);
+
+			//Copy value the resulting object to the new java reference counted SecureString object.
+			ptr->sString->assign(filtered[i]);
+
+			//Store java object in the array.
+			env->SetObjectArrayElement(labels, i, obj);
 		}
 
 		return labels;
@@ -182,8 +194,8 @@ jint Java_org_caelus_kryptanandroid_core_CorePwdList_CountPwds__J(JNIEnv* env,
 		jobject o, jlong l) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		SecureString label = *(SecureString*)l;
-		return (jint) list->CountPwds(label);
+		SPointer* ptr = (SPointer*) l;
+		return (jint) list->CountPwds(*ptr->sString);
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -194,7 +206,7 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdList_AddPwdToLabel(
 		JNIEnv* env, jobject o, jlong pwd, jlong label) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		return list->AddPwdToLabel((Pwd*) pwd, *(SecureString*) label);
+		return list->AddPwdToLabel((Pwd*) pwd, *((SPointer*) label)->sString);
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -205,7 +217,8 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdList_RemovePwdFromLabel(
 		JNIEnv* env, jobject o, jlong pwd, jlong label) {
 	try {
 		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
-		return list->RemovePwdFromLabel((Pwd*) pwd, *(SecureString*) label);
+		return list->RemovePwdFromLabel((Pwd*) pwd,
+				*((SPointer*) label)->sString);
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}

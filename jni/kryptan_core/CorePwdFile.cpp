@@ -15,7 +15,8 @@ jlong Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateInstance(
 		std::string fname;
 		GetJStringContent(env, filename, fname);
 		PwdFile* ptr = new PwdFile(fname);
-		return (jlong) ptr;
+		LOG_DEBUG("%s", "Creating new instance of PwdFile");
+		return (jlong)ptr;
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -25,15 +26,12 @@ jlong Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateInstance(
 void Java_org_caelus_kryptanandroid_core_CorePwdFile_Dispose(JNIEnv* env,
 		jobject o) {
 	try {
+		LOG_DEBUG("%s", "Deleting instance of PwdFile");
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
-		SecureString* masterkey = getHandle<SecureString>(env, o,
-				HANDLE_MASTERKEY);
 
-		delete masterkey;
 		delete file;
 
 		setHandle<PwdFile>(env, o, 0, HANDLE_FILE);
-		setHandle<SecureString>(env, o, 0, HANDLE_MASTERKEY);
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
@@ -43,10 +41,11 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateNew(JNIEnv* env,
 		jobject o) {
 	try {
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
-
+		LOG_DEBUG("%s", "Creating new file on disk");
 		file->CreateNew();
 
 		//TODO: remove dummy data
+		LOG_DEBUG("%s", "Filling it with dummy data");
 		PwdList* list = file->GetPasswordList();
 		Pwd* pwd1 = list->CreatePwd(
 				SecureString("This is my first dummy password!"),
@@ -72,10 +71,11 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_TryOpenAndParse(
 		JNIEnv* env, jobject o) {
 	try {
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
-		SecureString* masterkey = getHandle<SecureString>(env, o,
-				HANDLE_MASTERKEY);
-		file->OpenAndParse(*masterkey, false);
+		SPointer* masterkey = getHandle<SPointer>(env, o, HANDLE_MASTERKEY);
+		LOG_DEBUG("%s", "Trying to open encrypted password file");
+		file->OpenAndParse(*(masterkey->sString), false);
 	} catch (const KryptanDecryptWrongKeyException& e) {
+		LOG_WARN("%s", "Wrong decryption key used.");
 		//just ignore this exception and let java figure it out by calling isOpen
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
@@ -86,9 +86,9 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_Save(JNIEnv* env,
 		jobject o) {
 	try {
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
-		SecureString* masterkey = getHandle<SecureString>(env, o,
-				HANDLE_MASTERKEY);
-		file->Save(*masterkey);
+		SPointer* masterkey = getHandle<SPointer>(env, o, HANDLE_MASTERKEY);
+		LOG_DEBUG("&%s", "Trying to save encrypted password file.");
+		file->Save(*(masterkey->sString));
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}

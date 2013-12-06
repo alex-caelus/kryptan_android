@@ -16,38 +16,83 @@ using namespace Kryptan::Core;
 
 extern "C" {
 
-long Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_NewSecureString(JNIEnv* env) {
-	SecureString* theString = new SecureString();
-	return (jlong)theString;
+jobject Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_NewSecureString(
+		JNIEnv* env) {
+	try {
+		return createJavaSecureStringHandler(env, 0);
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
 }
 
-void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Dispose(JNIEnv* env, jobject o) {
-	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	LOG_VERBOSE("Deleting SecureString with contents: %s", theString->getUnsecureString());
-	theString->UnsecuredStringFinished();
-	delete theString;
-	theString = 0;
-	setHandle(env, o, theString, HANDLE_SECURESTRING);
+void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_IncrementReference(
+		JNIEnv* env, jobject o) {
+	try {
+		SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+
+		LOG_VERBOSE(
+				"Incrementing reference for SecureString with SPointer address: %lld ...and with contents: %s",
+				(jlong)ptr, ptr->sString->getUnsecureString());
+
+		ptr->sString->UnsecuredStringFinished();
+		if (ptr->nReferences == -1) {
+			throw std::runtime_error(
+					"Incrementing a CoreSecureStringHandler which has already been deleted!");
+		}
+		ptr->nReferences++;
+
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
 }
 
-void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Clear(JNIEnv* env, jobject o) {
-	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	theString->assign("", 0, false);
+void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_DecrementReference(
+		JNIEnv* env, jobject o) {
+	try {
+		SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+		LOG_VERBOSE("Decrementing SecureString with contents: %s",
+				ptr->sString->getUnsecureString());
+		ptr->sString->UnsecuredStringFinished();
+		ptr->nReferences--;
+		if (ptr->nReferences == 0) {
+			LOG_VERBOSE("%s", "Deleting SecureString");
+			ptr->sString->UnsecuredStringFinished();
+			delete ptr->sString;
+			ptr->sString = 0;
+			ptr->nReferences = -1;
+		} else if (ptr->nReferences == -1) {
+			throw std::runtime_error(
+					"Decrementing a CoreSecureStringHandler which has already been deleted!");
+		}
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+
 }
 
-jint Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetLength(JNIEnv* env, jobject o) {
-	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	return theString->length();
+void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Clear(
+		JNIEnv* env, jobject o) {
+	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+	ptr->sString->assign((char*) "", 0, false);
 }
 
-void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddChar(JNIEnv* env, jobject o, jchar c) {
-	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	theString->append((char *)(&c), 1, false);
+jint Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetLength(
+		JNIEnv* env, jobject o) {
+	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+	return ptr->sString->length();
 }
 
-jchar Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetChar(JNIEnv* env, jobject o, jint i) {
-	SecureString* theString = getHandle<SecureString>(env, o, HANDLE_SECURESTRING);
-	return i >= theString->length() || i < 0 ? 0 : theString->at(i);
+void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddChar(
+		JNIEnv* env, jobject o, jchar c) {
+	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+	ptr->sString->append((char *) (&c), 1, false);
+}
+
+jchar Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetChar(
+		JNIEnv* env, jobject o, jint i) {
+	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+	return i >= ptr->sString->length() || i < 0 ? 0 : ptr->sString->at(i);
 }
 
 }

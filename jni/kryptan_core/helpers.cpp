@@ -7,6 +7,8 @@
 
 #include "helpers.h"
 
+using namespace Kryptan::Core;
+
 //-------------Get obejct pointers-------------------------
 
 jfieldID getHandleField(JNIEnv *env, jobject obj, const char* name) {
@@ -28,15 +30,27 @@ void GetJStringContent(JNIEnv *AEnv, jstring AStr, std::string &ARes) {
 
 //----------------SecureString helpers--------------------
 
-jobject createJavaSecureStringHandler(JNIEnv* env, const Kryptan::Core::SecureString &str)
-{
-	jclass cls = env->FindClass("org/caelus/kryptanandroid/core/CoreSecureStringHandler");
+jobject createJavaSecureStringHandler(JNIEnv* env, SPointer** out) {
+	SPointer* ref = new SPointer();
+	ref->sString = new SecureString();
+	ref->nReferences = 0;
+
+	LOG_DEBUG(
+			"Created new SecureString with address %lld, SPointer address %lld",
+			(jlong)ref->sString, (jlong) ref);
+
+	jclass cls = env->FindClass(
+			"org/caelus/kryptanandroid/core/CoreSecureStringHandler");
 	jmethodID constructor = env->GetMethodID(cls, "<init>", "(J)V");
-	Kryptan::Core::SecureString* copy = new Kryptan::Core::SecureString(str);
-	jobject obj = env->NewObject(cls, constructor, (jlong)copy);
-	LOG_VERBOSE("Created new SecureString with contents: %s",  copy->getUnsecureString());
-	copy->UnsecuredStringFinished();
-	return obj;
+	jobject handler = env->NewObject(cls, constructor, (jlong) ref);
+
+	if(out != 0)
+	{
+		*out = ref;
+	}
+
+	LOG_DEBUG("%s", "Created new SecureString and handler java object.");
+	return handler;
 }
 
 //----------------JAVA EXCEPTION HANDLING-----------------
@@ -77,22 +91,30 @@ void swallow_cpp_exception_and_throw_java(JNIEnv *env) {
 		//already reported to Java, ignore
 	} catch (const std::bad_alloc& rhs) {
 		//translate OOM C++ exception to a Java exception
+		LOG_ERROR("Error: Out of memory error occurred, message is: %s",
+				rhs.what());
 		NewJavaException(env, "java/lang/OutOfMemoryError", rhs.what());
 	} catch (const std::ios_base::failure& rhs) { //sample translation
 		//translate IO C++ exception to a Java exception
+		LOG_ERROR("Error: IO Exception occured, message: %s", rhs.what());
 		NewJavaException(env, "java/io/IOException", rhs.what());
-
 		//TRANSLATE ANY OTHER C++ EXCEPTIONS TO JAVA EXCEPTIONS HERE
 	} catch (const Kryptan::Core::KryptanBaseException& e) {
 		//Translate to Java version of same
+		LOG_ERROR("Error: A Kryptan::Core exception occurred, message: %s",
+				e.what());
 		NewJavaException(env,
 				"org/caelus/kryptanandroid/core/CoreKryptanBaseException",
 				e.what());
 	} catch (const std::exception& e) {
 		//translate unknown C++ exception to a Java exception
+		LOG_ERROR("Error: unexpected c++ exception occurred, message: %s",
+				e.what());
 		NewJavaException(env, "java/lang/Error", e.what());
 	} catch (...) {
 		//translate unknown C++ exception to a Java exception
+		LOG_ERROR("%s",
+				"Error: unexpected c++ exception occurred, unknown type and message.");
 		NewJavaException(env, "java/lang/Error", "Unknown exception type");
 	}
 }

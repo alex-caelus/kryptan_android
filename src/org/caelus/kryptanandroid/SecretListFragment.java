@@ -1,5 +1,7 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.core.CorePwd;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -55,7 +57,7 @@ public class SecretListFragment extends ListFragment
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(CorePwd selectedPwd);
 	}
 
 	/**
@@ -65,7 +67,7 @@ public class SecretListFragment extends ListFragment
 	private static Callbacks sDummyCallbacks = new Callbacks()
 	{
 		@Override
-		public void onItemSelected(String id)
+		public void onItemSelected(CorePwd id)
 		{
 		}
 	};
@@ -82,8 +84,6 @@ public class SecretListFragment extends ListFragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		setListAdapter(new SecretAdapter(getActivity()));
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class SecretListFragment extends ListFragment
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected((String) view.getTag());
+		mCallbacks.onItemSelected((CorePwd) view.getTag());
 	}
 
 	@Override

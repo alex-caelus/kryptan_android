@@ -1,6 +1,10 @@
 package org.caelus.kryptanandroid;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+
+import org.caelus.kryptanandroid.core.CorePwd;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -30,11 +34,13 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
 	 */
-	public static final String ARG_ITEM_ID = "item_id";
-	private CharSequence mDescription;
-	private String mUsername;
-	private String mPassword;
+	public static final String ARG_ITEM = "org.caelus.kryptanandroid.detail_pwd_arg";
 	private ArrayList<CharSequence> mLabels = new ArrayList<CharSequence>();
+	private CorePwd mPwd;
+	private CoreSecureStringHandler mDescription;
+	private CoreSecureStringHandler mUsername;
+	private CoreSecureStringHandler mPassword;
+	private View mRootView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,37 +55,66 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 
-		if (getArguments().containsKey(ARG_ITEM_ID))
+		if (getArguments().containsKey(ARG_ITEM))
 		{
-			// TODO: Get real password from id
-			// getArguments().getString(ARG_ITEM_ID);
+			mPwd = (CorePwd) getArguments().getParcelable(ARG_ITEM);
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	        Bundle savedInstanceState)
+			Bundle savedInstanceState)
 	{
-		View rootView = inflater.inflate(R.layout.fragment_secret_detail,
-		        container, false);
+		mRootView = inflater.inflate(R.layout.fragment_secret_detail,
+				container, false);
 
+		refreshContentView();
+
+		addOnClickListeners();
+
+		return mRootView;
+	}
+
+	private void refreshContentView()
+	{
 		// Show the dummy content as text in a TextView.
-		TextView description = (TextView) rootView
-		        .findViewById(R.id.descriptionText);
-		TextView username = (TextView) rootView.findViewById(R.id.usernameText);
-		TextView password = (TextView) rootView.findViewById(R.id.passwordText);
-		TextView labels = (TextView) rootView.findViewById(R.id.labelsText);
+		TextView description = (TextView) mRootView
+				.findViewById(R.id.descriptionText);
+		TextView username = (TextView) mRootView.findViewById(R.id.usernameText);
+		TextView password = (TextView) mRootView.findViewById(R.id.passwordText);
+		TextView labels = (TextView) mRootView.findViewById(R.id.labelsText);
 
-		if (getArguments().containsKey(ARG_ITEM_ID))
+		if (mPwd != null)
 		{
-			mDescription = getArguments().getString(ARG_ITEM_ID);
-			mUsername = "Username for " + getArguments().getString(ARG_ITEM_ID);
-			mPassword = getArguments().getString(ARG_ITEM_ID);
+			mDescription = mPwd.GetDescriptionCopy();
+			mUsername = mPwd.GetUsernameCopy();
+			mPassword = mPwd.GetPasswordCopy();
 
-			description.setText(mDescription);
-			username.setText(mUsername);
-			password.setText(mPassword);
+			// TODO: Change to more secure text output
+			String desc = "";
+			String user = "";
+			String pass = "";
+			int size = mDescription.GetLength();
+			for (int i = 0; i < size; i++)
+			{
+				desc += mDescription.GetChar(i);
+			}
+			size = mUsername.GetLength();
+			for (int i = 0; i < size; i++)
+			{
+				user += mUsername.GetChar(i);
+			}
+			size = mPassword.GetLength();
+			for (int i = 0; i < size; i++)
+			{
+				pass += mPassword.GetChar(i);
+			}
 
+			description.setText(desc);
+			username.setText(user);
+			password.setText(pass);
+
+			mLabels.clear();
 			mLabels.add("Dymmy label 1");
 			mLabels.add("Dymmy label 2");
 			mLabels.add("Dymmy label 3");
@@ -91,145 +126,201 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 			}
 			labels.setText(tmp);
 		}
+	}
 
+	private void addOnClickListeners()
+	{
 		// listen to clicks
 		Button button;
-		button = ((Button) rootView.findViewById(R.id.copyDescription));
+		button = ((Button) mRootView.findViewById(R.id.copyDescription));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.copyUsername));
+		button = ((Button) mRootView.findViewById(R.id.copyUsername));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.copyPassword));
+		button = ((Button) mRootView.findViewById(R.id.copyPassword));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.editDescription));
+		button = ((Button) mRootView.findViewById(R.id.editDescription));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.editUsername));
+		button = ((Button) mRootView.findViewById(R.id.editUsername));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.editPassword));
+		button = ((Button) mRootView.findViewById(R.id.editPassword));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.editLabels));
+		button = ((Button) mRootView.findViewById(R.id.editLabels));
 		if (button != null)
 			button.setOnClickListener(this);
 
-		button = ((Button) rootView.findViewById(R.id.deletePassword));
+		button = ((Button) mRootView.findViewById(R.id.deletePassword));
 		if (button != null)
 			button.setOnClickListener(this);
+	}
 
-		return rootView;
+	private void overwriteStringInternalArr(String toOverwrite)
+	{
+		try
+		{
+			Field fVal = String.class.getDeclaredField("value");
+			fVal.setAccessible(true);
+			char[] value = (char[]) fVal.get(toOverwrite);
+			for(int i=0; i<value.length; i++)
+			{
+				value[i] = '\0';
+			}
+			//All done, there should now, hopefully be no traces of this string left in memory now.
+		} catch (NoSuchFieldException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void copyToClipboard(String name, String message,
+			CoreSecureStringHandler src)
+	{
+		// Copy to clipboard
+		ClipboardManager clipboard = (ClipboardManager) getActivity()
+				.getSystemService(Context.CLIPBOARD_SERVICE);
+
+		int size = src.GetLength();
+		char[] arr = new char[size];
+		for (int i = 0; i < size; i++)
+		{
+			arr[i] = src.GetChar(i);
+		}
+
+		String string = new String(arr);
+
+		ClipData clip = ClipData.newPlainText("Password username", string);
+		clipboard.setPrimaryClip(clip);
+
+		// lets destroy this evil unsecure string with voodo reflection
+		overwriteStringInternalArr(string);
+
+		// Lets also destroy our temporary array
+		for (int i = 0; i < size; i++)
+		{
+			arr[i] = 0;
+		}
+
+		Toast toast = Toast
+				.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 
 	public void copyDescription()
 	{
-		// Copy to clipboard
-		ClipboardManager clipboard = (ClipboardManager) getActivity()
-		        .getSystemService(Context.CLIPBOARD_SERVICE);
-		ClipData clip = ClipData.newPlainText("Password Description",
-		        mDescription);
-		clipboard.setPrimaryClip(clip);
-
-		Toast toast = Toast.makeText(getActivity(), "Description copied!",
-		        Toast.LENGTH_SHORT);
-		toast.show();
+		copyToClipboard("kryptan password description", "Description copied!",
+				mDescription);
 	}
 
 	public void copyUsername()
 	{
-		// Copy to clipboard
-		ClipboardManager clipboard = (ClipboardManager) getActivity()
-		        .getSystemService(Context.CLIPBOARD_SERVICE);
-		ClipData clip = ClipData.newPlainText("Password username", mUsername);
-		clipboard.setPrimaryClip(clip);
-
-		Toast toast = Toast.makeText(getActivity(), "Username copied!",
-		        Toast.LENGTH_SHORT);
-		toast.show();
+		copyToClipboard("kryptan password username", "Password copied!",
+				mDescription);
 	}
 
 	public void copyPassword()
 	{
-		// Copy to clipboard
-		ClipboardManager clipboard = (ClipboardManager) getActivity()
-		        .getSystemService(Context.CLIPBOARD_SERVICE);
-		ClipData clip = ClipData.newPlainText("Password value", mPassword);
-		clipboard.setPrimaryClip(clip);
+		copyToClipboard("kryptan password description", "Description copied!",
+				mDescription);
+	}
 
-		Toast toast = Toast.makeText(getActivity(), "Password copied!",
-		        Toast.LENGTH_SHORT);
-		toast.show();
+	private enum EditDestinations
+	{
+		Description, Username
+	}
+
+	public void promtNewStringFromUserDialog(int titleStringId,
+			int messageStringId, final int toastStringId,
+			final EditDestinations destination)
+	{
+		final EditText input = new EditText(getActivity());
+		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+		alert.setTitle(getResources().getString(titleStringId));
+		alert.setMessage(getResources().getString(messageStringId));
+		alert.setView(input);
+		alert.setPositiveButton(getResources().getString(R.string.save),
+				new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int whichButton)
+					{
+						// TODO: switch to safer input
+						String unsafe = input.getText().toString();
+						int size = unsafe.length();
+
+						switch (destination)
+						{
+						case Description:
+							mDescription.Clear();
+							for (int i = 0; i < size; i++)
+							{
+								mDescription.AddChar(unsafe.charAt(i));
+							}
+							mPwd.SetNewDescription(mDescription);
+							break;
+						case Username:
+							mUsername.Clear();
+							for (int i = 0; i < size; i++)
+							{
+								mUsername.AddChar(unsafe.charAt(i));
+							}
+							mPwd.SetNewUsername(mUsername);
+							break;
+						default:
+							break;
+
+						}
+						
+						refreshContentView();
+
+						Toast toast = Toast.makeText(getActivity(),
+								getResources().getString(toastStringId),
+								Toast.LENGTH_SHORT);
+						toast.show();
+					}
+				});
+		alert.setNegativeButton(getResources().getString(R.string.cancel), null);
+		alert.show();
 	}
 
 	public void editDescription()
 	{
-		final EditText input = new EditText(getActivity());
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-		alert.setTitle(getResources().getString(
-		        R.string.details_description_edit_title));
-		alert.setMessage(getResources().getString(
-		        R.string.details_description_edit_message));
-		alert.setView(input);
-		alert.setPositiveButton(getResources().getString(R.string.save),
-		        new DialogInterface.OnClickListener()
-		        {
-			        public void onClick(DialogInterface dialog, int whichButton)
-			        {
-				        mDescription = input.getText().toString();
-				        Toast toast = Toast
-				                .makeText(
-				                        getActivity(),
-				                        getResources()
-				                                .getString(
-				                                        R.string.details_toast_description_edited),
-				                        Toast.LENGTH_SHORT);
-				        toast.show();
-			        }
-		        });
-		alert.setNegativeButton(getResources().getString(R.string.cancel), null);
-		alert.show();
+		promtNewStringFromUserDialog(R.string.details_description_edit_title,
+				R.string.details_description_edit_message,
+				R.string.details_toast_description_edited,
+				EditDestinations.Description);
 	}
 
 	public void editUsername()
 	{
-		final EditText input = new EditText(getActivity());
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-		alert.setTitle(getResources().getString(
-		        R.string.details_username_edit_title));
-		alert.setMessage(getResources().getString(
-		        R.string.details_username_edit_message));
-		alert.setView(input);
-		alert.setPositiveButton(getResources().getString(R.string.save),
-		        new DialogInterface.OnClickListener()
-		        {
-			        public void onClick(DialogInterface dialog, int whichButton)
-			        {
-				        mUsername = input.getText().toString();
-				        Toast toast = Toast
-				                .makeText(
-				                        getActivity(),
-				                        getResources()
-				                                .getString(
-				                                        R.string.details_toast_username_edited),
-				                        Toast.LENGTH_SHORT);
-				        toast.show();
-			        }
-		        });
-		alert.setNegativeButton(getResources().getString(R.string.cancel), null);
-		alert.show();
+		promtNewStringFromUserDialog(R.string.details_username_edit_title,
+				R.string.details_username_edit_message,
+				R.string.details_toast_username_edited,
+				EditDestinations.Username);
 	}
 
 	public void editPassword()
 	{
-		Intent intent = new Intent(getActivity(), GeneratePasswordActivity.class);
+		Intent intent = new Intent(getActivity(),
+				GeneratePasswordActivity.class);
 		startActivityForResult(intent, 0);
 	}
 
@@ -243,7 +334,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	{
 		// TODO: implement this
 		Toast toast = Toast.makeText(getActivity(),
-		        "Action not implemented yet!", Toast.LENGTH_SHORT);
+				"Action not implemented yet!", Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
