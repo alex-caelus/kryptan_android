@@ -26,10 +26,6 @@ import android.widget.TextView;
  */
 public class OpenPasswordFileActivity extends Activity
 {
-	public static final String EXTRA_CORE_PWD_FILE_INSTANCE = "org.caelus.kryptanandroid.PWD_FILE_INSTANCE";
-
-	public static final String EXTRA_CORE_FILTER_COLLECTION = "org.caelus.kryptanandroid.PWD_FILTER_INSTANCE";
-
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
@@ -116,7 +112,7 @@ public class OpenPasswordFileActivity extends Activity
 		if(mCorePwdFile.IsOpen())
 		{
 			Intent data = new Intent();
-			data.putExtra(EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+			data.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 			setResult(RESULT_OK, data);
 			finish();
 		}
@@ -260,7 +256,7 @@ public class OpenPasswordFileActivity extends Activity
 			if (mCorePwdFile.IsOpen())
 			{
 				Intent data = new Intent();
-				data.putExtra(EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+				data.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 				setResult(RESULT_OK, data);
 				return true;
 			}

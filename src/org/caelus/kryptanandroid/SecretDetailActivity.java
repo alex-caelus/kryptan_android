@@ -41,12 +41,16 @@ public class SecretDetailActivity extends FragmentActivity
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putParcelable(SecretDetailFragment.ARG_ITEM, getIntent()
-			        .getParcelableExtra(SecretDetailFragment.ARG_ITEM));
+			arguments.putParcelable(Global.EXTRA_CORE_PWD, getIntent()
+					.getParcelableExtra(Global.EXTRA_CORE_PWD));
+			arguments.putParcelable(
+					Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					getIntent().getParcelableExtra(
+							Global.EXTRA_CORE_PWD_FILE_INSTANCE));
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-			        .add(R.id.secret_detail_container, fragment).commit();
+					.add(R.id.secret_detail_container, fragment).commit();
 		}
 	}
 
@@ -63,42 +67,42 @@ public class SecretDetailActivity extends FragmentActivity
 	{
 		switch (item.getItemId())
 		{
-			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
-				NavUtils.navigateUpTo(this, new Intent(this,
-				        SecretListActivity.class));
-				return true;
-			case R.id.action_search:
-			{
-				Intent intent = new Intent(this, SecretListActivity.class);
-				intent.putExtra("org.caelus.SecretListActivity.showSearch", true);
-				startActivity(intent);
-				break;
-			}
-			case R.id.action_settings:
-			{
-				Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				break;
-			}
-			case R.id.action_change_master:
-			{
-				Intent intent = new Intent(this, ChangeMasterKeyActivity.class);
-				startActivity(intent);
-				break;
-			}
-			case R.id.action_sync:
-			{
-				Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
-				startActivity(intent);
-				break;
-			}
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			NavUtils.navigateUpTo(this, new Intent(this,
+					SecretListActivity.class));
+			return true;
+		case R.id.action_search:
+		{
+			Intent intent = new Intent(this, SecretListActivity.class);
+			intent.putExtra("org.caelus.SecretListActivity.showSearch", true);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_settings:
+		{
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_change_master:
+		{
+			Intent intent = new Intent(this, ChangeMasterKeyActivity.class);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_sync:
+		{
+			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
+			startActivity(intent);
+			break;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}

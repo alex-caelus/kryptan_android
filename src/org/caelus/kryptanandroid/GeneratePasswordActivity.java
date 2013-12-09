@@ -22,4 +22,5 @@ public class GeneratePasswordActivity extends Activity
 		return true;
 	}
 
+	//TODO: implement this
 }

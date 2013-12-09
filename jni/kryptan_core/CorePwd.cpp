@@ -73,6 +73,37 @@ jobject Java_org_caelus_kryptanandroid_core_CorePwd_GetPasswordCopy(JNIEnv* env,
 	return 0;
 }
 
+jobject Java_org_caelus_kryptanandroid_core_CorePwd_GetLabels(JNIEnv* env, jobject o)
+{
+	try {
+		Pwd* pwd = getHandle<Pwd>(env, o, HANDLE_LIST);
+
+		PwdLabelVector all = pwd->GetLabels();
+
+		jobjectArray labels =
+				(jobjectArray) env->NewObjectArray(all.size(),
+						env->FindClass(
+								"org/caelus/kryptanandroid/core/CoreSecureStringHandler"),
+						createJavaSecureStringHandler(env, 0));
+
+		for (int i = 0; i < all.size(); i++) {
+			SPointer* ptr;
+			jobject obj = createJavaSecureStringHandler(env, &ptr);
+
+			//Copy value the resulting object to the new java reference counted SecureString object.
+			ptr->sString->assign(all[i]);
+
+			//Store java object in the array.
+			env->SetObjectArrayElement(labels, i, obj);
+		}
+
+		return labels;
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
 void Java_org_caelus_kryptanandroid_core_CorePwd_SetNewDescription(JNIEnv* env, jobject o, jlong toSet)
 {
 	try {

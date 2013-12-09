@@ -31,7 +31,7 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 		if( mCorePwdFile == null || !mCorePwdFile.IsOpen() )
 		{
 			Intent intent = getIntent();
-			if(intent.hasExtra(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE))
+			if(intent.hasExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 			{
 				onActivityResult(0, RESULT_OK, intent);
 			}
@@ -51,7 +51,7 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 			if(resultCode == RESULT_OK)
 			{
 				//Decryption successfull!
-				mCorePwdFile = (CorePwdFile) data.getExtras().getParcelable(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE);
+				mCorePwdFile = (CorePwdFile) data.getExtras().getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
 
 				GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
 				LabelAdapter adapter = new LabelAdapter(this, mCorePwdFile.getPasswordList());
@@ -185,8 +185,8 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 	public void onButtonClick(View view)
 	{
 		Intent intent = new Intent(this, SecretListActivity.class);
-		intent.putExtra(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
-		intent.putExtra(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION, mSelectedLabels);
+		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+		intent.putExtra(Global.EXTRA_CORE_FILTER_COLLECTION, mSelectedLabels);
 		startActivity(intent);
 	}
 

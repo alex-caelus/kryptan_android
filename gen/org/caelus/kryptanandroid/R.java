@@ -28,6 +28,10 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
+        public static final int listPreferredItemHeightSmall=0x7f050004;
+        public static final int listPreferredItemPaddingEnd=0x7f050003;
+        public static final int listPreferredItemPaddingStart=0x7f050002;
+        public static final int listPreferredItemPaddingTop=0x7f050005;
     }
     public static final class drawable {
         public static final int ic_action_new=0x7f020000;
@@ -37,12 +41,12 @@ public final class R {
     }
     public static final class id {
         public static final int LabelLayout=0x7f0b000a;
-        public static final int action_change_master=0x7f0b0022;
-        public static final int action_forgot_password=0x7f0b001d;
-        public static final int action_new_password=0x7f0b0020;
-        public static final int action_search=0x7f0b001f;
-        public static final int action_settings=0x7f0b001e;
-        public static final int action_sync=0x7f0b0021;
+        public static final int action_change_master=0x7f0b0023;
+        public static final int action_forgot_password=0x7f0b001e;
+        public static final int action_new_password=0x7f0b0021;
+        public static final int action_search=0x7f0b0020;
+        public static final int action_settings=0x7f0b001f;
+        public static final int action_sync=0x7f0b0022;
         public static final int browseButton=0x7f0b0008;
         public static final int copyDescription=0x7f0b000e;
         public static final int copyPassword=0x7f0b0016;
@@ -57,6 +61,7 @@ public final class R {
         public static final int editUsername=0x7f0b0013;
         public static final int filterText=0x7f0b0009;
         public static final int labelsText=0x7f0b0019;
+        public static final int list_item_activated_secure=0x7f0b001d;
         public static final int login=0x7f0b0004;
         public static final int login_form=0x7f0b0002;
         public static final int login_status=0x7f0b0000;
@@ -98,6 +103,7 @@ public final class R {
         public static final int activity_select_label=0x7f030007;
         public static final int activity_syncronize_desktop=0x7f030008;
         public static final int fragment_secret_detail=0x7f030009;
+        public static final int simple_list_item_activated_secure=0x7f03000a;
     }
     public static final class menu {
         public static final int change_master_key=0x7f0a0000;

@@ -62,7 +62,6 @@ void GetJStringContent(JNIEnv *AEnv, jstring AStr, std::string &ARes);
 
 //----------------SecureString helpers--------------------
 
-//TODO: Remove this line
 jobject createJavaSecureStringHandler(JNIEnv* env, SPointer** out);
 
 //----------------JAVA EXCEPTION HANDLING-----------------

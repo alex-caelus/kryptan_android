@@ -75,13 +75,13 @@ public class SecretListActivity extends FragmentActivity implements
 				{
 					listFragment.showSearch();
 				}
-				if(extras.containsKey(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE))
+				if(extras.containsKey(Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 				{
-					mCorePwdFile = (CorePwdFile) extras.getParcelable(OpenPasswordFileActivity.EXTRA_CORE_PWD_FILE_INSTANCE);
+					mCorePwdFile = (CorePwdFile) extras.getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
 				}
-				if(extras.containsKey(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION))
+				if(extras.containsKey(Global.EXTRA_CORE_FILTER_COLLECTION))
 				{
-					mLabelsFilter = (CoreSecureStringHandlerCollection) extras.getParcelable(OpenPasswordFileActivity.EXTRA_CORE_FILTER_COLLECTION);
+					mLabelsFilter = (CoreSecureStringHandlerCollection) extras.getParcelable(Global.EXTRA_CORE_FILTER_COLLECTION);
 				}
 				if(mCorePwdFile == null || mLabelsFilter == null)
 				{
@@ -152,7 +152,8 @@ public class SecretListActivity extends FragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putParcelable(SecretDetailFragment.ARG_ITEM, pwd);
+			arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
+			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -163,7 +164,8 @@ public class SecretListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, SecretDetailActivity.class);
-			detailIntent.putExtra(SecretDetailFragment.ARG_ITEM, pwd);
+			detailIntent.putExtra(Global.EXTRA_CORE_PWD, pwd);
+			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 			startActivity(detailIntent);
 		}
 	}

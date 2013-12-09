@@ -80,7 +80,6 @@ public class CorePwdFile implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
 		dest.writeLong(nativeHandle);
 		dest.writeLong(nativeMasterKeyHandle);
 	}

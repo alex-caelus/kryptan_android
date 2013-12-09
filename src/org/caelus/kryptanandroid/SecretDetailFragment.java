@@ -1,10 +1,9 @@
 package org.caelus.kryptanandroid;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
 import org.caelus.kryptanandroid.core.CorePwd;
+import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
+import org.caelus.kryptanandroid.views.SecureTextView;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -20,7 +19,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -30,17 +28,12 @@ import android.widget.Toast;
  */
 public class SecretDetailFragment extends Fragment implements OnClickListener
 {
-	/**
-	 * The fragment argument representing the item ID that this fragment
-	 * represents.
-	 */
-	public static final String ARG_ITEM = "org.caelus.kryptanandroid.detail_pwd_arg";
-	private ArrayList<CharSequence> mLabels = new ArrayList<CharSequence>();
 	private CorePwd mPwd;
 	private CoreSecureStringHandler mDescription;
 	private CoreSecureStringHandler mUsername;
 	private CoreSecureStringHandler mPassword;
 	private View mRootView;
+	private CorePwdFile mPwdFile;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,9 +48,16 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 
-		if (getArguments().containsKey(ARG_ITEM))
+		if (getArguments().containsKey(Global.EXTRA_CORE_PWD)
+				&& getArguments().containsKey(
+						Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 		{
-			mPwd = (CorePwd) getArguments().getParcelable(ARG_ITEM);
+			mPwd = (CorePwd) getArguments().getParcelable(Global.EXTRA_CORE_PWD);
+			mPwdFile = (CorePwdFile) getArguments().getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
+		}
+		else
+		{
+			throw new IllegalArgumentException("Arguments must include both EXTRA_CORE_PWD and EXTRA_CORE_PWD_FILE_INSTANCE instances.");
 		}
 	}
 
@@ -78,11 +78,14 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	private void refreshContentView()
 	{
 		// Show the dummy content as text in a TextView.
-		TextView description = (TextView) mRootView
+		SecureTextView description = (SecureTextView) mRootView
 				.findViewById(R.id.descriptionText);
-		TextView username = (TextView) mRootView.findViewById(R.id.usernameText);
-		TextView password = (TextView) mRootView.findViewById(R.id.passwordText);
-		TextView labels = (TextView) mRootView.findViewById(R.id.labelsText);
+		SecureTextView username = (SecureTextView) mRootView
+				.findViewById(R.id.usernameText);
+		SecureTextView password = (SecureTextView) mRootView
+				.findViewById(R.id.passwordText);
+		SecureTextView labels = (SecureTextView) mRootView
+				.findViewById(R.id.labelsText);
 
 		if (mPwd != null)
 		{
@@ -90,41 +93,28 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 			mUsername = mPwd.GetUsernameCopy();
 			mPassword = mPwd.GetPasswordCopy();
 
-			// TODO: Change to more secure text output
-			String desc = "";
-			String user = "";
-			String pass = "";
-			int size = mDescription.GetLength();
-			for (int i = 0; i < size; i++)
-			{
-				desc += mDescription.GetChar(i);
-			}
-			size = mUsername.GetLength();
-			for (int i = 0; i < size; i++)
-			{
-				user += mUsername.GetChar(i);
-			}
-			size = mPassword.GetLength();
-			for (int i = 0; i < size; i++)
-			{
-				pass += mPassword.GetChar(i);
-			}
+			description.setSecureText(mDescription);
+			username.setSecureText(mUsername);
+			password.setSecureText(mPassword);
 
-			description.setText(desc);
-			username.setText(user);
-			password.setText(pass);
-
-			mLabels.clear();
-			mLabels.add("Dymmy label 1");
-			mLabels.add("Dymmy label 2");
-			mLabels.add("Dymmy label 3");
-
-			String tmp = mLabels.get(0).toString();
-			for (int i = 1; i < mLabels.size(); i++)
+			CoreSecureStringHandler[] labelHandlers = mPwd.GetLabels();
+			
+			CoreSecureStringHandler labelText = CoreSecureStringHandler.NewSecureString();
+			for(int j=0; j<labelHandlers.length; j++)
 			{
-				tmp += ", " + mLabels.get(i).toString();
+				int length = labelHandlers[j].GetLength();
+				for(int i=0; i<length; i++)
+				{
+					labelText.AddChar(labelHandlers[j].GetChar(i));
+				}
+				if(j<labelHandlers.length-1)
+				{
+					labelText.AddChar(',');
+					labelText.AddChar(' ');
+				}
 			}
-			labels.setText(tmp);
+			
+			labels.setSecureText(labelText);
 		}
 	}
 
@@ -165,33 +155,6 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 			button.setOnClickListener(this);
 	}
 
-	private void overwriteStringInternalArr(String toOverwrite)
-	{
-		try
-		{
-			Field fVal = String.class.getDeclaredField("value");
-			fVal.setAccessible(true);
-			char[] value = (char[]) fVal.get(toOverwrite);
-			for(int i=0; i<value.length; i++)
-			{
-				value[i] = '\0';
-			}
-			//All done, there should now, hopefully be no traces of this string left in memory now.
-		} catch (NoSuchFieldException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	private void copyToClipboard(String name, String message,
 			CoreSecureStringHandler src)
 	{
@@ -212,7 +175,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 		clipboard.setPrimaryClip(clip);
 
 		// lets destroy this evil unsecure string with voodo reflection
-		overwriteStringInternalArr(string);
+		CoreSecureStringHandler.overwriteStringInternalArr(string);
 
 		// Lets also destroy our temporary array
 		for (int i = 0; i < size; i++)
@@ -234,13 +197,13 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	public void copyUsername()
 	{
 		copyToClipboard("kryptan password username", "Password copied!",
-				mDescription);
+				mUsername);
 	}
 
 	public void copyPassword()
 	{
 		copyToClipboard("kryptan password description", "Description copied!",
-				mDescription);
+				mPassword);
 	}
 
 	private enum EditDestinations
@@ -288,7 +251,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 							break;
 
 						}
-						
+						mPwdFile.Save();
 						refreshContentView();
 
 						Toast toast = Toast.makeText(getActivity(),
@@ -321,12 +284,16 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 	{
 		Intent intent = new Intent(getActivity(),
 				GeneratePasswordActivity.class);
+		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
+		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
 		startActivityForResult(intent, 0);
 	}
 
 	public void editLabels()
 	{
 		Intent intent = new Intent(getActivity(), EditLabelsActivity.class);
+		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
+		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
 		startActivityForResult(intent, 0);
 	}
 

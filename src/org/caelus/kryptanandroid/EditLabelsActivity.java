@@ -6,7 +6,6 @@ import android.view.Menu;
 
 public class EditLabelsActivity extends Activity
 {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -21,5 +20,6 @@ public class EditLabelsActivity extends Activity
 		getMenuInflater().inflate(R.menu.edit_labels, menu);
 		return true;
 	}
-
+	
+	//TODO: implement this
 }

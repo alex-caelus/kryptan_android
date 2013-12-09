@@ -10,6 +10,7 @@ import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
+import org.caelus.kryptanandroid.views.SecureTextView;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.TextView;
 
 /**
  * @author Alexander
@@ -50,7 +50,6 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	@Override
 	public int getCount()
 	{
-		// TODO Auto-generated method stub
 		return mFilteredSecrets.size();
 	}
 
@@ -62,7 +61,6 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	@Override
 	public Object getItem(int arg0)
 	{
-		// TODO Auto-generated method stub
 		return mFilteredSecrets.get(arg0).GetDescriptionCopy().GetChar(0);
 	}
 
@@ -74,7 +72,6 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	@Override
 	public long getItemId(int arg0)
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -87,29 +84,21 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2)
 	{
-		TextView text;
+		SecureTextView text;
 
 		if (convertView == null)
 		{
 			LayoutInflater inflater = LayoutInflater.from(mContext);
-			text = (TextView) inflater.inflate(
-			        android.R.layout.simple_list_item_activated_1, null);
+			text = (SecureTextView) inflater.inflate(
+			        R.layout.simple_list_item_activated_secure, null);
 		} else
 		{
-			text = (TextView) convertView;
+			text = (SecureTextView) convertView;
 		}
 
 		CorePwd secret = mFilteredSecrets.get(arg0);
-
-		//TODO: Change to using secure string output
-		String desc = "";
 		CoreSecureStringHandler descHandler = secret.GetDescriptionCopy(); 
-		for(int i=0; i < descHandler.GetLength(); i++)
-		{
-			desc += descHandler.GetChar(i);
-		}
-		
-		text.setText(desc);
+		text.setSecureText(descHandler);
 		text.setTag(secret);
 		return text;
 	}

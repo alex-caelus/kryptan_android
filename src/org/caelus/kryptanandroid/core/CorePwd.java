@@ -43,6 +43,7 @@ public class CorePwd implements Parcelable{
 	public native CoreSecureStringHandler GetDescriptionCopy();
 	public native CoreSecureStringHandler GetUsernameCopy();
 	public native CoreSecureStringHandler GetPasswordCopy();
+	public native CoreSecureStringHandler[] GetLabels();
 	private native void SetNewDescription(long nativeHandle);
 	private native void SetNewUsername(long nativeHandle);
 	private native void SetNewPassword(long nativeHandle);
@@ -61,14 +62,12 @@ public class CorePwd implements Parcelable{
 	@Override
 	public int describeContents()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags)
 	{
-		// TODO Auto-generated method stub
 		dest.writeLong(nativeHandle);
 	}
 
