@@ -7,7 +7,6 @@ import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -37,6 +36,7 @@ public class SecretListActivity extends FragmentActivity implements
 	private boolean mTwoPane;
 	private CorePwdFile mCorePwdFile;
 	private CoreSecureStringHandlerCollection mLabelsFilter;
+	private SecretListFragment mListFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +47,7 @@ public class SecretListActivity extends FragmentActivity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// get list fragment
-		SecretListFragment listFragment = (SecretListFragment) getSupportFragmentManager()
+		mListFragment = (SecretListFragment) getSupportFragmentManager()
 		        .findFragmentById(R.id.secret_list);
 
 		//
@@ -62,7 +62,7 @@ public class SecretListActivity extends FragmentActivity implements
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			listFragment.setActivateOnItemClick(true);
+			mListFragment.setActivateOnItemClick(true);
 		}
 
 		Intent intent = getIntent();
@@ -71,10 +71,6 @@ public class SecretListActivity extends FragmentActivity implements
 			Bundle extras = intent.getExtras();
 			if(extras != null)
 			{
-				if(extras.containsKey("org.caelus.SecretListActivity.showSearch"))
-				{
-					listFragment.showSearch();
-				}
 				if(extras.containsKey(Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 				{
 					mCorePwdFile = (CorePwdFile) extras.getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
@@ -90,7 +86,11 @@ public class SecretListActivity extends FragmentActivity implements
 				else
 				{
 					SecretAdapter adapter = new SecretAdapter(this, mCorePwdFile, mLabelsFilter);
-					listFragment.setListAdapter(adapter);
+					mListFragment.setListAdapter(adapter);
+				}
+				if(extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
+				{
+					mListFragment.showSearch(mLabelsFilter.size());
 				}
 			}
 		}
@@ -117,7 +117,7 @@ public class SecretListActivity extends FragmentActivity implements
 				//
 				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 				//
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.action_search:
 			{
@@ -125,7 +125,7 @@ public class SecretListActivity extends FragmentActivity implements
 				        .findFragmentById(R.id.secret_list);
 				if (listFragment != null)
 				{
-					listFragment.showSearch();
+					listFragment.showSearch(mLabelsFilter.size());
 				}
 				break;
 			}
@@ -166,7 +166,25 @@ public class SecretListActivity extends FragmentActivity implements
 			Intent detailIntent = new Intent(this, SecretDetailActivity.class);
 			detailIntent.putExtra(Global.EXTRA_CORE_PWD, pwd);
 			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
-			startActivity(detailIntent);
+			startActivityForResult(detailIntent, Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL);
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestcode, int resultcode, Intent data)
+	{
+		switch(requestcode){
+		case Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL:
+			onDetailDone(resultcode, data);
+		}
+	}
+
+	private void onDetailDone(int resultcode, Intent data)
+	{
+		//if this happens, then the search button was pressed while showing the detail activity
+		if(data != null && data.hasExtra(Global.EXTRA_CORE_SHOW_SEARCH))
+		{
+			mListFragment.showSearch(mLabelsFilter.size());
 		}
 	}
 }

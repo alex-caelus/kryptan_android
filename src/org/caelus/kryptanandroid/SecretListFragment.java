@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -41,7 +42,7 @@ public class SecretListFragment extends ListFragment
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
-	
+
 	/**
 	 * The current filter of the listView
 	 */
@@ -93,10 +94,10 @@ public class SecretListFragment extends ListFragment
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
-		        && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION))
+				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION))
 		{
 			setActivatedPosition(savedInstanceState
-			        .getInt(STATE_ACTIVATED_POSITION));
+					.getInt(STATE_ACTIVATED_POSITION));
 		}
 
 		// add searchbar
@@ -112,7 +113,7 @@ public class SecretListFragment extends ListFragment
 		if (!(activity instanceof Callbacks))
 		{
 			throw new IllegalStateException(
-			        "Activity must implement fragment's callbacks.");
+					"Activity must implement fragment's callbacks.");
 		}
 
 		mCallbacks = (Callbacks) activity;
@@ -129,7 +130,7 @@ public class SecretListFragment extends ListFragment
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position,
-	        long id)
+			long id)
 	{
 		super.onListItemClick(listView, view, position, id);
 
@@ -158,8 +159,8 @@ public class SecretListFragment extends ListFragment
 		// When setting CHOICE_MODE_SINGLE, ListView will automatically
 		// give items the 'activated' state when touched.
 		getListView().setChoiceMode(
-		        activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
-		                : ListView.CHOICE_MODE_NONE);
+				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
+						: ListView.CHOICE_MODE_NONE);
 	}
 
 	private void setActivatedPosition(int position)
@@ -175,49 +176,68 @@ public class SecretListFragment extends ListFragment
 		mActivatedPosition = position;
 	}
 
-	public void showSearch()
+	public void showSearch(int numberOfLabels)
 	{
 		final EditText input = new EditText(getActivity());
 		input.setText(mCurrentFilter);
 		input.setSelectAllOnFocus(true);
 		input.setHint(getResources().getString(R.string.search_filter_hint));
-		
+
 		input.addTextChangedListener(new TextWatcher()
 		{
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count)
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count)
 			{
 				ListView listView = getListView();
-				if(listView != null)
+				if (listView != null)
 				{
-					SecretAdapter adapter = (SecretAdapter) listView.getAdapter();
-					if(adapter != null)
+					SecretAdapter adapter = (SecretAdapter) listView
+							.getAdapter();
+					if (adapter != null)
 					{
 						adapter.getFilter().filter(s);
 					}
 				}
 				mCurrentFilter = s;
 			}
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){ }
-			
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after)
+			{
+			}
+
 			@Override
-			public void afterTextChanged(Editable s){}
+			public void afterTextChanged(Editable s)
+			{
+			}
 		});
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 		alert.setTitle(getResources().getString(R.string.search_filter_title));
-		alert.setMessage(getResources().getString(
-		        R.string.search_filter_message));
+
+		if (numberOfLabels > 0)
+			alert.setMessage(String.format(
+					getResources().getString(
+							R.string.search_filter_message_labels),
+					numberOfLabels));
+		else
+			alert.setMessage(getResources().getString(
+					R.string.search_filter_message_nolabels));
+
 		alert.setView(input);
 		alert.setPositiveButton(getResources().getString(R.string.show), null);
-		alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int whichButton)
-			{
-				input.setText("");
-			}
-		});
-		alert.show();
+		alert.setNegativeButton(getResources().getString(R.string.clear),
+				new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int whichButton)
+					{
+						input.setText("");
+					}
+				});
+		AlertDialog a = alert.create();
+		a.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		a.show();
 	}
 }

@@ -55,4 +55,10 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 		}
 	}
 
+	public int size()
+	{
+		// TODO Auto-generated method stub
+		return mStrings.size();
+	}
+
 }

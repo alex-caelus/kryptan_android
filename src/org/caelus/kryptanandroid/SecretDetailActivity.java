@@ -3,7 +3,6 @@ package org.caelus.kryptanandroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -75,20 +74,21 @@ public class SecretDetailActivity extends FragmentActivity
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpTo(this, new Intent(this,
-					SecretListActivity.class));
+			finish();
 			return true;
 		case R.id.action_search:
 		{
 			Intent intent = new Intent(this, SecretListActivity.class);
-			intent.putExtra("org.caelus.SecretListActivity.showSearch", true);
-			startActivity(intent);
+			intent.putExtra(Global.EXTRA_CORE_SHOW_SEARCH, true);
+			setResult(RESULT_OK, intent);
+			finish();
 			break;
 		}
 		case R.id.action_settings:
 		{
 			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent,
+					Global.ACTIVITY_REQUEST_CODE_SETTINGS);
 			break;
 		}
 		case R.id.action_change_master:
@@ -105,5 +105,21 @@ public class SecretDetailActivity extends FragmentActivity
 		}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		switch (requestCode)
+		{
+		case Global.ACTIVITY_REQUEST_CODE_SETTINGS:
+			onSettingsDone(resultCode, data);
+			break;
+		}
+	}
+
+	private void onSettingsDone(int resultCode, Intent data)
+	{
+		// we do nothing.
 	}
 }
