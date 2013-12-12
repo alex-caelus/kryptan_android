@@ -133,7 +133,7 @@ public class LabelAdapter extends BaseAdapter implements
 		{
 			labelname += label.GetChar(i);
 		}
-		int nrOfPasswords = mSource.CountPwds(label); // TODO: get real number
+		int nrOfPasswords = mSource.CountPwds(label);
 		
 		checkBox.setTag(Integer.valueOf(arg0));
 		checkBox.setText(labelname);

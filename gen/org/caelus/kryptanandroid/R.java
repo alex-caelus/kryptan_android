@@ -115,12 +115,12 @@ public final class R {
     }
     public static final class string {
         public static final int action_change_master=0x7f060008;
-        public static final int action_forgot_password=0x7f060035;
+        public static final int action_forgot_password=0x7f060038;
         public static final int action_new_password=0x7f060009;
         public static final int action_search=0x7f060006;
         public static final int action_settings=0x7f060005;
-        public static final int action_sign_in_register=0x7f060033;
-        public static final int action_sign_in_short=0x7f060034;
+        public static final int action_sign_in_register=0x7f060032;
+        public static final int action_sign_in_short=0x7f060033;
         public static final int action_sync=0x7f060007;
         public static final int app_name=0x7f060000;
         public static final int button_browse_all_passwords=0x7f06000a;
@@ -149,39 +149,38 @@ public final class R {
         public static final int details_username_edit_message=0x7f060020;
         public static final int details_username_edit_title=0x7f060023;
         public static final int details_username_text=0x7f060017;
-        public static final int error_field_required=0x7f06003a;
-        public static final int error_incorrect_password=0x7f060039;
-        public static final int error_invalid_email=0x7f060037;
-        public static final int error_invalid_password=0x7f060038;
+        public static final int error_field_required=0x7f060037;
+        public static final int error_incorrect_password=0x7f060036;
+        public static final int error_invalid_email=0x7f060039;
+        public static final int error_invalid_password=0x7f060035;
         public static final int hello_world=0x7f06002b;
         public static final int label_nr_of_passwords_format=0x7f060010;
         public static final int loading=0x7f060001;
-        public static final int login_progress_signing_in=0x7f060036;
-        public static final int pref_default_display_name=0x7f060040;
-        public static final int pref_description_social_recommendations=0x7f06003e;
+        public static final int login_progress_signing_in=0x7f060034;
+        public static final int pref_default_display_name=0x7f06003f;
+        public static final int pref_description_social_recommendations=0x7f06003d;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f060042;
+        public static final int pref_header_data_sync=0x7f060041;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f06003c;
+        public static final int pref_header_general=0x7f06003b;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f060045;
-        public static final int pref_ringtone_silent=0x7f060048;
-        public static final int pref_title_add_friends_to_messages=0x7f060041;
-        public static final int pref_title_display_name=0x7f06003f;
-        public static final int pref_title_new_message_notifications=0x7f060046;
-        public static final int pref_title_ringtone=0x7f060047;
-        public static final int pref_title_social_recommendations=0x7f06003d;
-        public static final int pref_title_sync_frequency=0x7f060043;
-        public static final int pref_title_system_sync_settings=0x7f060044;
-        public static final int pref_title_vibrate=0x7f060049;
+        public static final int pref_header_notifications=0x7f060044;
+        public static final int pref_ringtone_silent=0x7f060047;
+        public static final int pref_title_add_friends_to_messages=0x7f060040;
+        public static final int pref_title_display_name=0x7f06003e;
+        public static final int pref_title_new_message_notifications=0x7f060045;
+        public static final int pref_title_ringtone=0x7f060046;
+        public static final int pref_title_social_recommendations=0x7f06003c;
+        public static final int pref_title_sync_frequency=0x7f060042;
+        public static final int pref_title_system_sync_settings=0x7f060043;
+        public static final int pref_title_vibrate=0x7f060048;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f060031;
-        public static final int prompt_password=0x7f060032;
+        public static final int prompt_password=0x7f060031;
         public static final int save=0x7f060002;
         public static final int search_filter_hint=0x7f060029;
         public static final int search_filter_message=0x7f060028;
@@ -193,7 +192,7 @@ public final class R {
         public static final int title_activity_decrypt=0x7f060030;
         public static final int title_activity_edit_labels=0x7f06002f;
         public static final int title_activity_generate_password=0x7f06002e;
-        public static final int title_activity_settings=0x7f06003b;
+        public static final int title_activity_settings=0x7f06003a;
         public static final int title_activity_syncronize_desktop=0x7f06002c;
         public static final int title_secret_detail=0x7f06000f;
         public static final int title_secret_list=0x7f06000e;

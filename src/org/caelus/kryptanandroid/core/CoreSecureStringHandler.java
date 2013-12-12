@@ -2,8 +2,6 @@ package org.caelus.kryptanandroid.core;
 
 import java.lang.reflect.Field;
 
-import android.graphics.Bitmap;
-
 public class CoreSecureStringHandler {
 
 	private long nativeHandle;
@@ -40,17 +38,17 @@ public class CoreSecureStringHandler {
 	 * This uses reflection voodo to overwrite the string instance
 	 * @param toOverwrite
 	 */
-	public static void overwriteStringInternalArr(String toOverwrite, char[] arr)
+	public static void overwriteStringInternalArr(String toOverwrite, char[] arr, int start, int charCount)
 	{
 		try
 		{
 			Field fVal = String.class.getDeclaredField("value");
 			fVal.setAccessible(true);
 			char[] value = (char[]) fVal.get(toOverwrite);
-			int length = Math.min(value.length, arr.length);
+			int length = Math.min(Math.min(value.length, arr.length), charCount);
 			for(int i=0; i < length; i++)
 			{
-				value[i] = arr[i];
+				value[i] = arr[start+i];
 			}
 			//All done, there should now, hopefully be no traces of this string left in memory now.
 		} catch (NoSuchFieldException e)
@@ -63,6 +61,15 @@ public class CoreSecureStringHandler {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * This uses reflection voodo to overwrite the string instance
+	 * @param toOverwrite
+	 */
+	public static void overwriteStringInternalArr(String toOverwrite, char[] arr)
+	{
+		overwriteStringInternalArr(toOverwrite, arr, 0, arr.length);
 	}
 	
 	/**
@@ -93,13 +100,6 @@ public class CoreSecureStringHandler {
 	public long getNativeHandle()
 	{
 		return nativeHandle;
-	}
-	
-	@Deprecated
-	public Bitmap getBitmapOfValue()
-	{
-		//TODO: generate bitmap of value
-		return null;
 	}
 	
 	protected void finalize() throws Throwable

@@ -270,7 +270,6 @@ public class OpenPasswordFileActivity extends Activity
 				return false;
 			}
 
-			// TODO: register the new account here.
 			return false;
 		}
 

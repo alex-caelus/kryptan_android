@@ -52,12 +52,14 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 				&& getArguments().containsKey(
 						Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 		{
-			mPwd = (CorePwd) getArguments().getParcelable(Global.EXTRA_CORE_PWD);
-			mPwdFile = (CorePwdFile) getArguments().getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
-		}
-		else
+			mPwd = (CorePwd) getArguments()
+					.getParcelable(Global.EXTRA_CORE_PWD);
+			mPwdFile = (CorePwdFile) getArguments().getParcelable(
+					Global.EXTRA_CORE_PWD_FILE_INSTANCE);
+		} else
 		{
-			throw new IllegalArgumentException("Arguments must include both EXTRA_CORE_PWD and EXTRA_CORE_PWD_FILE_INSTANCE instances.");
+			throw new IllegalArgumentException(
+					"Arguments must include both EXTRA_CORE_PWD and EXTRA_CORE_PWD_FILE_INSTANCE instances.");
 		}
 	}
 
@@ -98,22 +100,23 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 			password.setSecureText(mPassword);
 
 			CoreSecureStringHandler[] labelHandlers = mPwd.GetLabels();
-			
-			CoreSecureStringHandler labelText = CoreSecureStringHandler.NewSecureString();
-			for(int j=0; j<labelHandlers.length; j++)
+
+			CoreSecureStringHandler labelText = CoreSecureStringHandler
+					.NewSecureString();
+			for (int j = 0; j < labelHandlers.length; j++)
 			{
 				int length = labelHandlers[j].GetLength();
-				for(int i=0; i<length; i++)
+				for (int i = 0; i < length; i++)
 				{
 					labelText.AddChar(labelHandlers[j].GetChar(i));
 				}
-				if(j<labelHandlers.length-1)
+				if (j < labelHandlers.length - 1)
 				{
 					labelText.AddChar(',');
 					labelText.AddChar(' ');
 				}
 			}
-			
+
 			labels.setSecureText(labelText);
 		}
 	}
@@ -190,20 +193,21 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 
 	public void copyDescription()
 	{
-		copyToClipboard("kryptan password description", "Description copied!",
+		copyToClipboard("kryptan password description",
+				getString(R.string.details_toast_description_copied),
 				mDescription);
 	}
 
 	public void copyUsername()
 	{
-		copyToClipboard("kryptan password username", "Password copied!",
-				mUsername);
+		copyToClipboard("kryptan password username",
+				getString(R.string.details_toast_username_copied), mUsername);
 	}
 
 	public void copyPassword()
 	{
-		copyToClipboard("kryptan password description", "Description copied!",
-				mPassword);
+		copyToClipboard("kryptan password description",
+				getString(R.string.details_toast_password_copied), mPassword);
 	}
 
 	private enum EditDestinations

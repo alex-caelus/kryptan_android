@@ -100,7 +100,6 @@ public class SelectLabelActivity extends Activity implements LabelAdapter.OnLabe
 		String buttonFormat = getResources().getString(buttonFormatIdentifier);
 		String textFormat = getResources().getString(textFormatIdentifier);
 		
-		//TODO: Get real number of matches
 		int nrOfMatches = mCorePwdFile.getPasswordList().filter(mSelectedLabels).size();
 		
 		//TODO: if number of matches is zero, disable the button and change the text.
