@@ -13,4 +13,6 @@ public class Global
 	public static final String EXTRA_CORE_PWD_FILE_INSTANCE = "org.caelus.kryptanandroid.PWD_FILE_INSTANCE";
 	public static final String EXTRA_CORE_FILTER_COLLECTION = "org.caelus.kryptanandroid.PWD_FILTER_INSTANCE";
 	
+	public static final int MINIMUM_MASTERKEY_LENGTH = 8;
+	
 }

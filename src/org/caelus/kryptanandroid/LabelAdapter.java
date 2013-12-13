@@ -5,11 +5,15 @@ package org.caelus.kryptanandroid;
 
 import java.util.Vector;
 
-import org.caelus.kryptanandroid.core.*;
+import org.caelus.kryptanandroid.core.CorePwdList;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
+import org.caelus.kryptanandroid.views.SecureTextView;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,7 +26,7 @@ import android.widget.TextView;
  * 
  */
 public class LabelAdapter extends BaseAdapter implements
-        OnCheckedChangeListener
+		OnCheckedChangeListener
 {
 	private Context mContext;
 	private CoreSecureStringHandler[] mLabels;
@@ -32,7 +36,8 @@ public class LabelAdapter extends BaseAdapter implements
 
 	interface OnLabelSelectionChangedListener
 	{
-		void OnLabelSelectionChanged(CoreSecureStringHandler label, boolean isSelected);
+		void OnLabelSelectionChanged(CoreSecureStringHandler label,
+				boolean isSelected);
 	}
 
 	/**
@@ -43,7 +48,7 @@ public class LabelAdapter extends BaseAdapter implements
 		mContext = c;
 		mSource = src;
 		mLabels = mSource.AllLabels();
-		for(int i=0; i<mLabels.length; i++)
+		for (int i = 0; i < mLabels.length; i++)
 		{
 			mChecked.add(Boolean.valueOf(false));
 		}
@@ -93,57 +98,75 @@ public class LabelAdapter extends BaseAdapter implements
 	{
 		LinearLayout group;
 		CheckBox checkBox;
-		TextView text;
+		SecureTextView checkBoxText;
+		TextView passwordCountText;
 
 		if (convertView == null)
 		{
 			group = new LinearLayout(mContext);
+			LinearLayout checkLayout = new LinearLayout(mContext);
 			checkBox = new CheckBox(mContext);
-			text = new TextView(mContext);
+			checkBoxText = new SecureTextView(mContext);
+			passwordCountText = new TextView(mContext);
 
 			// settings
 			group.setOrientation(LinearLayout.VERTICAL);
-			text.setTextAppearance(mContext,
-			        android.R.style.TextAppearance_Small);
-			text.setPadding(checkBox.getCompoundPaddingLeft(), text.getPaddingTop(), text.getPaddingRight(), text.getPaddingBottom());
-			
-			
+			checkLayout.setOrientation(LinearLayout.HORIZONTAL);
+			checkBoxText.setLayoutParams(new LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+			checkBox.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+
+			checkBoxText.setTextAppearance(mContext,
+					android.R.style.TextAppearance_Medium);
+			LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			checkBoxText.setLayoutParams(lparam);
+			checkBoxText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+
+			passwordCountText.setTextAppearance(mContext,
+					android.R.style.TextAppearance_Small);
+			passwordCountText.setPadding(checkBox.getCompoundPaddingLeft(),
+					passwordCountText.getPaddingTop(),
+					passwordCountText.getPaddingRight(),
+					passwordCountText.getPaddingBottom());
 
 			// add listener
 			checkBox.setOnCheckedChangeListener(this);
 
 			// add views to group
-			group.addView(checkBox);
-			group.addView(text);
+			checkLayout.addView(checkBox);
+			checkLayout.addView(checkBoxText);
+			group.addView(checkLayout);
+			group.addView(passwordCountText);
 		} else
 		{
 			group = (LinearLayout) convertView;
-			checkBox = (CheckBox) group.getChildAt(0);
-			text = (TextView) group.getChildAt(1);
+			checkBox = (CheckBox) ((LinearLayout) group.getChildAt(0))
+					.getChildAt(0);
+			checkBoxText = (SecureTextView) ((LinearLayout) group.getChildAt(0))
+					.getChildAt(1);
+			passwordCountText = (TextView) group.getChildAt(1);
 		}
 
 		// make text
 		String textFormat = mContext.getResources().getString(
-		        R.string.label_nr_of_passwords_format);
+				R.string.label_nr_of_passwords_format);
+
 		CoreSecureStringHandler label = mLabels[arg0];
-		//TODO: fix secure viewing of labels
-		String labelname = "";
-		int length = label.GetLength();
-		for(int i=0; i<length; i++)
-		{
-			labelname += label.GetChar(i);
-		}
+
 		int nrOfPasswords = mSource.CountPwds(label);
-		
+
 		checkBox.setTag(Integer.valueOf(arg0));
-		checkBox.setText(labelname);
 		checkBox.setChecked(mChecked.get(arg0).booleanValue());
-		text.setText(String.format(textFormat, nrOfPasswords));
+		checkBoxText.setSecureText(label);
+		passwordCountText.setText(String.format(textFormat, nrOfPasswords));
 
 		return group;
 	}
 
-	public void setOnLabelSelectionChangedListener(OnLabelSelectionChangedListener listener)
+	public void setOnLabelSelectionChangedListener(
+			OnLabelSelectionChangedListener listener)
 	{
 		mListener = listener;
 	}

@@ -174,8 +174,9 @@ public class SelectLabelActivity extends Activity implements
 		}
 		case R.id.action_change_master:
 		{
-			Intent intent = new Intent(this, ChangeMasterKeyActivity.class);
-			startActivity(intent);
+			ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this, mCorePwdFile);
+			alert.setToastMessage(R.string.masterkey_change_toast);
+			alert.show();
 			break;
 		}
 		case R.id.action_sync:

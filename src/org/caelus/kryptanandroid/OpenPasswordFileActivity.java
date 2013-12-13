@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.ChangeMasterKeyAlert.OnSuccessfullSaveListener;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
@@ -24,7 +25,8 @@ import android.widget.TextView;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class OpenPasswordFileActivity extends Activity
+public class OpenPasswordFileActivity extends Activity implements
+		OnSuccessfullSaveListener
 {
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -48,13 +50,13 @@ public class OpenPasswordFileActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_decrypt);
-		
+
 		String filename = getFilesDir().getAbsolutePath();
 		filename += "/secret.pwd";
 		mCorePwdFile = new CorePwdFile(filename);
-		
-		//check if password file exists
-		if(!mCorePwdFile.Exists())
+
+		// check if password file exists
+		if (!mCorePwdFile.Exists())
 		{
 			// it doesn't so we need to create one.
 			createNewPwdFile();
@@ -64,52 +66,57 @@ public class OpenPasswordFileActivity extends Activity
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
-		        .setOnEditorActionListener(new TextView.OnEditorActionListener()
-		        {
-			        @Override
-			        public boolean onEditorAction(TextView textView, int id,
-			                KeyEvent keyEvent)
-			        {
-				        if (id == R.id.login || id == EditorInfo.IME_NULL)
-				        {
-					        attemptLogin();
-					        return true;
-				        }
-				        return false;
-			        }
-		        });
+				.setOnEditorActionListener(new TextView.OnEditorActionListener()
+				{
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent)
+					{
+						if (id == R.id.login || id == EditorInfo.IME_NULL)
+						{
+							attemptLogin();
+							return true;
+						}
+						return false;
+					}
+				});
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		findViewById(R.id.sign_in_button).setOnClickListener(
-		        new View.OnClickListener()
-		        {
-			        @Override
-			        public void onClick(View view)
-			        {
-				        attemptLogin();
-			        }
-		        });
-		
+				new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View view)
+					{
+						attemptLogin();
+					}
+				});
 
-		
 	}
 
-	private void createNewPwdFile() {
-		//TODO: ask user for a master key. For now we simply set one a test key
-		CoreSecureStringHandler masterkey = mCorePwdFile.getMasterKeyHandler();
-		masterkey.Clear();
-		masterkey.AddChar('t');
-		masterkey.AddChar('e');
-		masterkey.AddChar('s');
-		masterkey.AddChar('t');
-		
+	private void createNewPwdFile()
+	{
+		//create the new file in memory
 		mCorePwdFile.CreateNew();
-		mCorePwdFile.Save();
 		
-		if(mCorePwdFile.IsOpen())
+		//display dialog for new master and let it save the file on disk
+		ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this,
+				mCorePwdFile, false, false, true);
+		alert.setOnSuccessfullSaveListener(this);
+		alert.setToastMessage(R.string.new_password_file_created);
+		alert.show();
+	}
+
+	/**
+	 * This is called when user has created a new password file
+	 */
+	@Override
+	public void onSuccessfullSave()
+	{
+		if (mCorePwdFile.IsOpen())
 		{
 			Intent data = new Intent();
 			data.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
@@ -125,7 +132,7 @@ public class OpenPasswordFileActivity extends Activity
 		getMenuInflater().inflate(R.menu.decrypt, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -152,7 +159,7 @@ public class OpenPasswordFileActivity extends Activity
 
 		// TODO: securely read password from user
 		mPassword = mPasswordView.getText().toString();
-		
+
 		boolean cancel = false;
 		View focusView = null;
 
@@ -162,7 +169,7 @@ public class OpenPasswordFileActivity extends Activity
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4)
+		} else if (mPassword.length() < Global.MINIMUM_MASTERKEY_LENGTH)
 		{
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
@@ -197,33 +204,33 @@ public class OpenPasswordFileActivity extends Activity
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
 		{
 			int shortAnimTime = getResources().getInteger(
-			        android.R.integer.config_shortAnimTime);
+					android.R.integer.config_shortAnimTime);
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
-			        .alpha(show ? 1 : 0)
-			        .setListener(new AnimatorListenerAdapter()
-			        {
-				        @Override
-				        public void onAnimationEnd(Animator animation)
-				        {
-					        mLoginStatusView.setVisibility(show ? View.VISIBLE
-					                : View.GONE);
-				        }
-			        });
+					.alpha(show ? 1 : 0)
+					.setListener(new AnimatorListenerAdapter()
+					{
+						@Override
+						public void onAnimationEnd(Animator animation)
+						{
+							mLoginStatusView.setVisibility(show ? View.VISIBLE
+									: View.GONE);
+						}
+					});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
-			        .alpha(show ? 0 : 1)
-			        .setListener(new AnimatorListenerAdapter()
-			        {
-				        @Override
-				        public void onAnimationEnd(Animator animation)
-				        {
-					        mLoginFormView.setVisibility(show ? View.GONE
-					                : View.VISIBLE);
-				        }
-			        });
+					.alpha(show ? 0 : 1)
+					.setListener(new AnimatorListenerAdapter()
+					{
+						@Override
+						public void onAnimationEnd(Animator animation)
+						{
+							mLoginFormView.setVisibility(show ? View.GONE
+									: View.VISIBLE);
+						}
+					});
 		} else
 		{
 			// The ViewPropertyAnimator APIs are not available, so simply show
@@ -242,17 +249,19 @@ public class OpenPasswordFileActivity extends Activity
 		@Override
 		protected Boolean doInBackground(Void... params)
 		{
-			//TODO: Securely read password form user
-			
-			CoreSecureStringHandler masterkey = mCorePwdFile.getMasterKeyHandler();
+			// TODO: Securely read password form user
+
+			CoreSecureStringHandler masterkey = mCorePwdFile
+					.getMasterKeyHandler();
 			masterkey.Clear();
 			int len = mPassword.length();
-            for (int i = 0; i < len; i++) {
-                masterkey.AddChar(mPassword.charAt(i));
-            }
-            
-            mCorePwdFile.TryOpenAndParse();
-            
+			for (int i = 0; i < len; i++)
+			{
+				masterkey.AddChar(mPassword.charAt(i));
+			}
+
+			mCorePwdFile.TryOpenAndParse();
+
 			if (mCorePwdFile.IsOpen())
 			{
 				Intent data = new Intent();
@@ -260,7 +269,7 @@ public class OpenPasswordFileActivity extends Activity
 				setResult(RESULT_OK, data);
 				return true;
 			}
-			
+
 			try
 			{
 				// Stop brute force attacks.
@@ -281,12 +290,12 @@ public class OpenPasswordFileActivity extends Activity
 
 			if (success)
 			{
-				//return to label list
+				// return to label list
 				finish();
 			} else
 			{
 				mPasswordView
-				        .setError(getString(R.string.error_incorrect_password));
+						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
 		}

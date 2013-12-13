@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.widget.TextView;
@@ -151,7 +152,10 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 			mPaint.setStyle(Paint.Style.FILL);
 			mPaint.setTextSize(this.getTextSize());
 			mPaint.setAntiAlias(true);
-			mPaint.setTextAlign(Align.CENTER);
+			if((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+				mPaint.setTextAlign(Align.LEFT);
+			else
+				mPaint.setTextAlign(Align.CENTER);
 			mPaint.setColor(Color.BLACK);
 		}
 
@@ -179,8 +183,10 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 						mTmp.elementAt(currentLine), mTmpArr, start, size);
 
 				// we draw the actual text
-
-				canvas.drawText(mTmp.get(currentLine), this.getWidth() / 2,
+				int gr = getGravity();
+				
+				int x = ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT) ? 0 : this.getWidth() / 2;
+				canvas.drawText(mTmp.get(currentLine), x,
 						this.getTotalPaddingTop()
 								+ (this.getTextSize() * (currentLine + 1)),
 						mPaint);

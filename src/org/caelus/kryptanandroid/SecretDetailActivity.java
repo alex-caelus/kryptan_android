@@ -1,5 +1,8 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.core.CorePwdFile;
+import org.caelus.kryptanandroid.core.CorePwd;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +19,9 @@ import android.view.MenuItem;
  */
 public class SecretDetailActivity extends FragmentActivity
 {
+
+	private CorePwdFile mPwdFile;
+	private CorePwd mPwd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,12 +46,17 @@ public class SecretDetailActivity extends FragmentActivity
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putParcelable(Global.EXTRA_CORE_PWD, getIntent()
-					.getParcelableExtra(Global.EXTRA_CORE_PWD));
-			arguments.putParcelable(
-					Global.EXTRA_CORE_PWD_FILE_INSTANCE,
-					getIntent().getParcelableExtra(
-							Global.EXTRA_CORE_PWD_FILE_INSTANCE));
+			
+			mPwd = (CorePwd) getIntent()
+					.getParcelableExtra(Global.EXTRA_CORE_PWD);
+			
+			arguments.putParcelable(Global.EXTRA_CORE_PWD, mPwd);
+
+			mPwdFile = (CorePwdFile) getIntent().getParcelableExtra(
+					Global.EXTRA_CORE_PWD_FILE_INSTANCE);
+
+			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					mPwdFile);
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -93,8 +104,9 @@ public class SecretDetailActivity extends FragmentActivity
 		}
 		case R.id.action_change_master:
 		{
-			Intent intent = new Intent(this, ChangeMasterKeyActivity.class);
-			startActivity(intent);
+			ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this, mPwdFile);
+			alert.setToastMessage(R.string.masterkey_change_toast);
+			alert.show();
 			break;
 		}
 		case R.id.action_sync:

@@ -10,8 +10,13 @@
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_sync">Syncronize with desktop</string>
-    <string name="action_change_master">Change Master key</string>
+    <string name="action_change_master">New Masterkey</string>
     <string name="action_new_password">Add new password</string>
+    <string name="new_masterkey_hint">New masterkey&#8230;</string>
+    <string name="confirm_masterkey_hint">Confirm&#8230;</string>
+    <string name="confirm_old_masterkey_hint">Old masterkey&#8230;</string>
+    <string name="masterkey_change_toast">Masterkey successfully changed!</string>
+    <string name="new_password_file_created">Successfully created a new password file!</string>
     <string name="button_browse_all_passwords">Browse all %d passwords</string>
     <string name="button_browse_filtered_passwords_format">Browse %d matching passwords</string>
     <string name="text_filter_format">Filtering based on %d label(s)</string>
