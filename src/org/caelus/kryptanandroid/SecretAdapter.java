@@ -6,11 +6,11 @@ package org.caelus.kryptanandroid;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
-import org.caelus.kryptanandroid.views.SecureTextView;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,17 +29,26 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	private Context mContext;
 	private ArrayList<CorePwd> mFilteredSecrets = new ArrayList<CorePwd>();
 	private SecretFilter mFilter;
+	private CoreSecureStringHandlerCollection mLabelsFilter;
+	private CorePwdFile mCorePwdFile;
 
 	/**
 	 * @param mLabelsFilter 
 	 * @param mCorePwdFile 
 	 * 
 	 */
-	public SecretAdapter(Context context, CorePwdFile mCorePwdFile, CoreSecureStringHandlerCollection mLabelsFilter)
+	public SecretAdapter(Context context, CorePwdFile corePwdFile, CoreSecureStringHandlerCollection labelsFilter)
 	{
 		mContext = context;
-
+		mCorePwdFile = corePwdFile;
+		mLabelsFilter = labelsFilter;
+		refreshData();
+	}
+	
+	public void refreshData()
+	{
 		mFilteredSecrets = mCorePwdFile.getPasswordList().filter(mLabelsFilter);
+		notifyDataSetChanged();
 	}
 
 	/*

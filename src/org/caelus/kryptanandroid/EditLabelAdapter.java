@@ -5,19 +5,19 @@ package org.caelus.kryptanandroid;
 
 import java.util.Vector;
 
+import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
+import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdList;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
-import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,14 +25,14 @@ import android.widget.TextView;
  * @author Alexander
  * 
  */
-public class LabelAdapter extends BaseAdapter implements
-		OnCheckedChangeListener
+public class EditLabelAdapter extends BaseAdapter implements OnClickListener
 {
 	private Context mContext;
-	private CoreSecureStringHandler[] mLabels;
-	private Vector<Boolean> mChecked = new Vector<Boolean>();
-	private OnLabelSelectionChangedListener mListener;
+	private CoreSecureStringHandler[] mSelectedLabels;
+	private CoreSecureStringHandler[] mAllLabels;
+	private Vector<CoreSecureStringHandler> mAvailableLabels;
 	private CorePwdList mSource;
+	private CorePwd mPwd;
 
 	interface OnLabelSelectionChangedListener
 	{
@@ -43,11 +43,38 @@ public class LabelAdapter extends BaseAdapter implements
 	/**
 	 * 
 	 */
-	public LabelAdapter(Context c, CorePwdList src)
+
+	public EditLabelAdapter(Activity c, CorePwdList src, CorePwd pwd)
 	{
 		mContext = c;
 		mSource = src;
-		refreshData();
+		mPwd = pwd;
+		mAvailableLabels = new Vector<CoreSecureStringHandler>();
+		updateAvailableLabels();
+	}
+
+	public void updateAvailableLabels()
+	{
+		mSelectedLabels = mPwd.GetLabels();
+		mAllLabels = mSource.AllLabels();
+		mAvailableLabels.clear();
+		for (CoreSecureStringHandler label : mAllLabels)
+		{
+			boolean add = true;
+			for (CoreSecureStringHandler selected : mSelectedLabels)
+			{
+				if (label.equals(selected))
+				{
+					add = false;
+					break;
+				}
+			}
+
+			if (add)
+			{
+				mAvailableLabels.add(label);
+			}
+		}
 	}
 
 	/*
@@ -58,7 +85,7 @@ public class LabelAdapter extends BaseAdapter implements
 	@Override
 	public int getCount()
 	{
-		return mLabels.length;
+		return mAvailableLabels.size();
 	}
 
 	/*
@@ -67,9 +94,9 @@ public class LabelAdapter extends BaseAdapter implements
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
-	public Object getItem(int arg0)
+	public Object getItem(int index)
 	{
-		return mLabels[arg0];
+		return mAvailableLabels.elementAt(index);
 	}
 
 	/*
@@ -83,6 +110,11 @@ public class LabelAdapter extends BaseAdapter implements
 		return 0;
 	}
 
+	public CoreSecureStringHandler[] getSelectedLabels()
+	{
+		return mSelectedLabels;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -90,58 +122,46 @@ public class LabelAdapter extends BaseAdapter implements
 	 * android.view.ViewGroup)
 	 */
 	@Override
-	public View getView(int arg0, View convertView, ViewGroup parent)
+	public View getView(int labelIndex, View convertView, ViewGroup parent)
 	{
 		LinearLayout group;
-		CheckBox checkBox;
 		SecureTextView mainText;
 		TextView passwordCountText;
 
 		if (convertView == null)
 		{
 			group = new LinearLayout(mContext);
-			LinearLayout checkLayout = new LinearLayout(mContext);
-			checkBox = new CheckBox(mContext);
 			mainText = new SecureTextView(mContext);
 			passwordCountText = new TextView(mContext);
 
 			// settings
 			group.setOrientation(LinearLayout.VERTICAL);
-			checkLayout.setOrientation(LinearLayout.HORIZONTAL);
+
 			mainText.setLayoutParams(new LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-			checkBox.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 
 			mainText.setTextAppearance(mContext,
 					android.R.style.TextAppearance_Medium);
 			LinearLayout.LayoutParams lparam = new LinearLayout.LayoutParams(
 					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			mainText.setLayoutParams(lparam);
-			mainText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+			mainText.setGravity(Gravity.CENTER);
 
 			passwordCountText.setTextAppearance(mContext,
 					android.R.style.TextAppearance_Small);
-			passwordCountText.setPadding(checkBox.getCompoundPaddingLeft(),
-					passwordCountText.getPaddingTop(),
-					passwordCountText.getPaddingRight(),
-					passwordCountText.getPaddingBottom());
+			passwordCountText.setGravity(Gravity.CENTER);
 
-			// add listener
-			checkBox.setOnCheckedChangeListener(this);
+			// add listeners
+			// mainText.setOnClickListener(this);
+			// passwordCountText.setOnClickListener(this);
 
 			// add views to group
-			checkLayout.addView(checkBox);
-			checkLayout.addView(mainText);
-			group.addView(checkLayout);
+			group.addView(mainText);
 			group.addView(passwordCountText);
 		} else
 		{
 			group = (LinearLayout) convertView;
-			checkBox = (CheckBox) ((LinearLayout) group.getChildAt(0))
-					.getChildAt(0);
-			mainText = (SecureTextView) ((LinearLayout) group.getChildAt(0))
-					.getChildAt(1);
+			mainText = (SecureTextView) group.getChildAt(0);
 			passwordCountText = (TextView) group.getChildAt(1);
 		}
 
@@ -149,48 +169,20 @@ public class LabelAdapter extends BaseAdapter implements
 		String textFormat = mContext.getResources().getString(
 				R.string.label_nr_of_passwords_format);
 
-		CoreSecureStringHandler label = mLabels[arg0];
+		CoreSecureStringHandler label = (CoreSecureStringHandler) getItem(labelIndex);
 
 		int nrOfPasswords = mSource.CountPwds(label);
 
-		checkBox.setTag(Integer.valueOf(arg0));
-		checkBox.setChecked(mChecked.get(arg0).booleanValue());
 		mainText.setSecureText(label);
 		passwordCountText.setText(String.format(textFormat, nrOfPasswords));
 
 		return group;
 	}
 
-	public void setOnLabelSelectionChangedListener(
-			OnLabelSelectionChangedListener listener)
-	{
-		mListener = listener;
-	}
-
 	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+	public void onClick(View v)
 	{
-		int label = (Integer) buttonView.getTag();
-		if (mChecked.get(label).booleanValue() != isChecked)
-		{
-			mChecked.set(label, Boolean.valueOf(isChecked));
-			if (mListener != null)
-			{
-				mListener.OnLabelSelectionChanged(mLabels[label], isChecked);
-			}
-		}
-		// else nothing has changed
-	}
-
-	public void refreshData()
-	{
-		mLabels = mSource.AllLabels();
-		mChecked.clear();
-		for (int i = 0; i < mLabels.length; i++)
-		{
-			mChecked.add(Boolean.valueOf(false));
-		}
-		notifyDataSetChanged();
+		// if a label has been clicked
 	}
 
 }

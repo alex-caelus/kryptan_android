@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CorePwd;
 

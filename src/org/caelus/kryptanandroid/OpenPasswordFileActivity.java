@@ -1,6 +1,7 @@
 package org.caelus.kryptanandroid;
 
-import org.caelus.kryptanandroid.ChangeMasterKeyAlert.OnSuccessfullSaveListener;
+import org.caelus.kryptanandroid.buildingblocks.BaseAlert;
+import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
@@ -26,7 +27,7 @@ import android.widget.TextView;
  * well.
  */
 public class OpenPasswordFileActivity extends Activity implements
-		OnSuccessfullSaveListener
+		BaseAlert.OnSuccessfullSaveListener
 {
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.

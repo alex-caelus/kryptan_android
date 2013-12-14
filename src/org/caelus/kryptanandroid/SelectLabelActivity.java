@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
@@ -20,6 +21,7 @@ public class SelectLabelActivity extends Activity implements
 
 	private CoreSecureStringHandlerCollection mSelectedLabels = new CoreSecureStringHandlerCollection();
 	private CorePwdFile mCorePwdFile = null;
+	private LabelAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -63,7 +65,10 @@ public class SelectLabelActivity extends Activity implements
 
 	private void onSecretListDone(int resultCode, Intent data)
 	{
-		// we realy do nothing here :)
+		// we must update the list of labels
+		mAdapter.refreshData();
+		mSelectedLabels.getContainer().clear();
+		setMatchingPasswordsText();
 	}
 
 	private void onFileDecryptDone(int resultCode, Intent data)
@@ -75,13 +80,13 @@ public class SelectLabelActivity extends Activity implements
 					Global.EXTRA_CORE_PWD_FILE_INSTANCE);
 
 			GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
-			LabelAdapter adapter = new LabelAdapter(this,
+			mAdapter = new LabelAdapter(this,
 					mCorePwdFile.getPasswordList());
-			adapter.setOnLabelSelectionChangedListener(this);
+			mAdapter.setOnLabelSelectionChangedListener(this);
 
 			if (labelLayout != null)
 			{
-				labelLayout.setAdapter(adapter);
+				labelLayout.setAdapter(mAdapter);
 			}
 
 			// set number of matching passwords

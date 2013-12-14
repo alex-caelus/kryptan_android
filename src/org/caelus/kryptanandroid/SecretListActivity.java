@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
 
 /**
  * An activity representing a list of Secrets. This activity has different
@@ -37,6 +38,7 @@ public class SecretListActivity extends FragmentActivity implements
 	private CorePwdFile mCorePwdFile;
 	private CoreSecureStringHandlerCollection mLabelsFilter;
 	private SecretListFragment mListFragment;
+	private SecretAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -85,8 +87,8 @@ public class SecretListActivity extends FragmentActivity implements
 				}
 				else
 				{
-					SecretAdapter adapter = new SecretAdapter(this, mCorePwdFile, mLabelsFilter);
-					mListFragment.setListAdapter(adapter);
+					mAdapter = new SecretAdapter(this, mCorePwdFile, mLabelsFilter);
+					mListFragment.setListAdapter(mAdapter);
 				}
 				if(extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
 				{
@@ -121,11 +123,9 @@ public class SecretListActivity extends FragmentActivity implements
 				return true;
 			case R.id.action_search:
 			{
-				SecretListFragment listFragment = (SecretListFragment) getSupportFragmentManager()
-				        .findFragmentById(R.id.secret_list);
-				if (listFragment != null)
+				if (mListFragment != null)
 				{
-					listFragment.showSearch(mLabelsFilter.size());
+					mListFragment.showSearch(mLabelsFilter.size());
 				}
 				break;
 			}
@@ -186,5 +186,10 @@ public class SecretListActivity extends FragmentActivity implements
 		{
 			mListFragment.showSearch(mLabelsFilter.size());
 		}
+	}
+
+	public void refreshListContents()
+	{
+		mAdapter.refreshData();
 	}
 }

@@ -1,4 +1,4 @@
-package org.caelus.kryptanandroid.views;
+package org.caelus.kryptanandroid.buildingblocks;
 
 import java.util.Vector;
 

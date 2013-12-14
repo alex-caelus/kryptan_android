@@ -68,7 +68,6 @@ void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_DecrementRefere
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);
 	}
-
 }
 
 void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Clear(
@@ -93,6 +92,19 @@ jchar Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetChar(
 		JNIEnv* env, jobject o, jint i) {
 	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
 	return i >= ptr->sString->length() || i < 0 ? 0 : ptr->sString->at(i);
+}
+
+jboolean Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_Equals(JNIEnv* env, jobject o, jobject oth)
+{
+	try {
+		SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
+		SPointer* other = getHandle<SPointer>(env, oth, HANDLE_SECURESTRING);
+		return (jboolean)ptr->sString->equals(*(other->sString));
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+		return false;
+	}
+	return false;
 }
 
 }

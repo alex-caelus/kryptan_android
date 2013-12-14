@@ -1,9 +1,10 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.buildingblocks.*;
+import org.caelus.kryptanandroid.buildingblocks.BaseAlert.OnSuccessfullSaveListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
-import org.caelus.kryptanandroid.views.SecureTextView;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -26,7 +27,7 @@ import android.widget.Toast;
  * either contained in a {@link SecretListActivity} in two-pane mode (on
  * tablets) or a {@link SecretDetailActivity} on handsets.
  */
-public class SecretDetailFragment extends Fragment implements OnClickListener
+public class SecretDetailFragment extends Fragment implements OnClickListener, OnSuccessfullSaveListener
 {
 	private CorePwd mPwd;
 	private CoreSecureStringHandler mDescription;
@@ -295,10 +296,9 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 
 	public void editLabels()
 	{
-		Intent intent = new Intent(getActivity(), EditLabelsActivity.class);
-		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
-		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
-		startActivityForResult(intent, 0);
+		EditLabelsAlert alert = new EditLabelsAlert(getActivity(), mPwdFile, mPwd);
+		alert.setOnSuccessfullSaveListener(this);
+		alert.show();
 	}
 
 	public void deletePassword()
@@ -337,5 +337,23 @@ public class SecretDetailFragment extends Fragment implements OnClickListener
 		{
 			deletePassword();
 		}
+	}
+
+	@Override
+	public void onSuccessfullSave()
+	{
+		//We end up here when the edit labels dialog has been saved
+		refreshContentView();
+		
+		//if we are in two pane mode
+		try{
+			SecretListActivity activity = (SecretListActivity) getActivity();
+			activity.refreshListContents();
+		}
+		catch(ClassCastException ex)
+		{
+			//apperently not in two pane mode, lets just ignore this
+		}
+		
 	}
 }
