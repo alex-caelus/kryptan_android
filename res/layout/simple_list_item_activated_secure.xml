@@ -13,17 +13,18 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
-     
+
 -->
 
 <org.caelus.kryptanandroid.buildingblocks.SecureTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item_activated_secure"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:gravity="center_vertical"
-    android:paddingStart="@dimen/listPreferredItemPaddingStart"
-    android:paddingEnd="@dimen/listPreferredItemPaddingEnd"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
     android:background="?android:attr/activatedBackgroundIndicator"
-    android:minHeight="@dimen/listPreferredItemHeightSmall" />
-
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/listPreferredItemHeightSmall"
+    android:paddingEnd="@dimen/listPreferredItemPaddingEnd"
+    android:paddingStart="@dimen/listPreferredItemPaddingStart"
+    android:textAppearance="?android:attr/textAppearanceMedium" />

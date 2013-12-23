@@ -159,4 +159,53 @@ public class CoreSecureStringHandler
 	
 	private native boolean Equals(CoreSecureStringHandler str);
 
+	/**
+	 * Returns a trimmed version of this string where
+	 * whitespace from the beginning and end of the string
+	 * has been removed
+	 */
+	public CoreSecureStringHandler trim()
+	{
+		int length = GetLength();
+		if(length == 0)
+		{
+			return this;
+		}
+		boolean hasNonWhitespace = false;
+		int firstNonWhitespace = 0;
+		int lastNonWhitespace = 0;
+		for(int i=0; i<length; i++)
+		{
+			char c = GetChar(i);
+			if(!Character.isWhitespace(c))
+			{
+				if(!hasNonWhitespace)
+				{
+					firstNonWhitespace = i;
+					hasNonWhitespace = true;
+				}
+				lastNonWhitespace = i;
+			}
+		}
+		
+		if(!hasNonWhitespace)
+		{
+			return NewSecureString();
+		}
+		
+		if(firstNonWhitespace == 0 && lastNonWhitespace == length-1)
+		{
+			return this;
+		}
+
+		CoreSecureStringHandler trimmed = NewSecureString();
+		
+		for(int i=firstNonWhitespace; i <= lastNonWhitespace; i++)
+		{
+			trimmed.AddChar(GetChar(i));
+		}
+		
+		return trimmed;
+	}
+
 }

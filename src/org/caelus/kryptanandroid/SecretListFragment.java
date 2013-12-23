@@ -1,6 +1,8 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
 import org.caelus.kryptanandroid.core.CorePwd;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,7 +11,9 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -47,6 +51,10 @@ public class SecretListFragment extends ListFragment
 	 * The current filter of the listView
 	 */
 	private CharSequence mCurrentFilter;
+
+	private SecureTextView mCurrentLabelFilterTextView;
+
+	private CoreSecureStringHandler mCurrentLabelFilterString;
 
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -86,6 +94,17 @@ public class SecretListFragment extends ListFragment
 	{
 		super.onCreate(savedInstanceState);
 	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
+	{
+		View content = inflater.inflate(R.layout.fragment_secret_list, container);
+		
+		mCurrentLabelFilterTextView = (SecureTextView) content.findViewById(R.id.listCurrentFilter);
+		
+		return content;
+	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState)
@@ -99,9 +118,12 @@ public class SecretListFragment extends ListFragment
 			setActivatedPosition(savedInstanceState
 					.getInt(STATE_ACTIVATED_POSITION));
 		}
-
-		// add searchbar
-		getListView().setTextFilterEnabled(true);
+	}
+	
+	public void setCurrentFilterString(CoreSecureStringHandler text)
+	{
+		mCurrentLabelFilterString = text;
+		mCurrentLabelFilterTextView.setSecureText(text);
 	}
 
 	@Override

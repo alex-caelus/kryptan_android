@@ -6,47 +6,47 @@ import org.caelus.kryptanandroid.core.CorePwdFile;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
-public abstract class BaseAlert implements OnClickListener
+public abstract class BaseAlert implements OnClickListener, OnDismissListener
 {
-
-	private AlertDialog mAlert;
+	public static int BUTTONS_CANCEL = 1;
+	public static int BUTTONS_OK = 2;
+	protected AlertDialog mAlert;
 	protected CorePwdFile mPwdFile;
 	protected Activity mActivity;
 	private String mToastMessage = null;
-	private boolean mIsCancelable;
+	private int mButtons;
 	private boolean mFullscreen;
-	
-	private OnSuccessfullSaveListener mSaveSuccessfull = new OnSuccessfullSaveListener()
-	{
+
+
+	private OnDismissListener mDissmiss = new OnDismissListener()
+	{	
 		@Override
-		public void onSuccessfullSave()
+		public void onDismiss(DialogInterface dialog)
 		{
-			// dummy function
+			//dummy function
 		}
 	};
+	
 	private int mTitleid;
 	protected View mContentRootView;
+	private boolean mIsInited = false;
 
-	public interface OnSuccessfullSaveListener
-	{
-		void onSuccessfullSave();
-	}
 
 	protected BaseAlert(Activity activity, CorePwdFile pwdFile, int titleId,
-			boolean isCancelable, boolean fullscreen)
+			int buttons, boolean fullscreen)
 	{
 		mPwdFile = pwdFile;
 		mActivity = activity;
 		mTitleid = titleId;
-		this.mIsCancelable = isCancelable;
+		this.mButtons = buttons;
 		this.mFullscreen = fullscreen;
 	}
 
@@ -63,16 +63,19 @@ public abstract class BaseAlert implements OnClickListener
 		alert.setView(mContentRootView);
 
 		// buttons
-		alert.setPositiveButton(
-				mActivity.getResources().getString(R.string.save), null);
-		if (mIsCancelable)
+		if ((mButtons & BUTTONS_OK) > 0)
+		{
+			alert.setPositiveButton(
+					mActivity.getResources().getString(R.string.save), null);
+		}
+
+		if ((mButtons & BUTTONS_CANCEL) > 0)
 		{
 			alert.setNegativeButton(
 					mActivity.getResources().getString(R.string.cancel), null);
-		}
-		else
+		} else
 		{
-			alert.setCancelable(mIsCancelable);
+			alert.setCancelable(false);
 		}
 
 		// create instance
@@ -85,30 +88,43 @@ public abstract class BaseAlert implements OnClickListener
 			public void onShow(DialogInterface dialog)
 			{
 				Button b = mAlert.getButton(DialogInterface.BUTTON_POSITIVE);
-				b.setOnClickListener(BaseAlert.this);
+				if (b != null)
+				{
+					b.setOnClickListener(BaseAlert.this);
+				}
 
 				mContentRootView.requestFocus();
 			}
 		});
-
-		// open keyboard on show
-		mAlert.getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
+		
 		// set mFullscreen
 		if (mFullscreen)
 		{
 			mAlert.getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN,
 					LayoutParams.FLAG_FULLSCREEN);
 		}
+		
+		mAlert.setOnDismissListener(this);
+
+		onInit();
+
 	}
+
+	protected abstract void onInit();
 
 	protected abstract View getView();
 
 	public final void show()
 	{
-		init();
+		if (!mIsInited)
+			init();
+		mIsInited = true;
 		mAlert.show();
+	}
+
+	public final void hide()
+	{
+		mAlert.hide();
 	}
 
 	public final void setToastMessage(String text)
@@ -121,15 +137,16 @@ public abstract class BaseAlert implements OnClickListener
 		mToastMessage = mActivity.getResources().getString(textId);
 	}
 
-	public final void setOnSuccessfullSaveListener(OnSuccessfullSaveListener listener)
+	public final void setOnDismissListener(
+			OnDismissListener listener)
 	{
-		mSaveSuccessfull = listener;
+		mDissmiss = listener;
 	}
 
 	@Override
 	public final void onClick(View v)
 	{
-		if(onPositiveClicked())
+		if (onPositiveClicked())
 		{
 			// show toast
 			if (mToastMessage != null)
@@ -138,9 +155,6 @@ public abstract class BaseAlert implements OnClickListener
 						Toast.LENGTH_SHORT);
 				t.show();
 			}
-
-			// call callback
-			mSaveSuccessfull.onSuccessfullSave();
 
 			// close dialog
 			mAlert.dismiss();
@@ -152,5 +166,11 @@ public abstract class BaseAlert implements OnClickListener
 	 * @return if true the alert dialog will close
 	 */
 	abstract protected boolean onPositiveClicked();
+	
+	@Override
+	public void onDismiss(DialogInterface dialog)
+	{
+		mDissmiss.onDismiss(dialog);
+	}
 
 }

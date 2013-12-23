@@ -27,7 +27,7 @@ import android.widget.TextView;
  * well.
  */
 public class OpenPasswordFileActivity extends Activity implements
-		BaseAlert.OnSuccessfullSaveListener
+		ChangeMasterKeyAlert.OnSuccessfullListener
 {
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -105,8 +105,8 @@ public class OpenPasswordFileActivity extends Activity implements
 		
 		//display dialog for new master and let it save the file on disk
 		ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this,
-				mCorePwdFile, false, false, true);
-		alert.setOnSuccessfullSaveListener(this);
+				mCorePwdFile, BaseAlert.BUTTONS_OK, false, true);
+		alert.setOnSuccessfullListener(this);
 		alert.setToastMessage(R.string.new_password_file_created);
 		alert.show();
 	}
@@ -115,7 +115,7 @@ public class OpenPasswordFileActivity extends Activity implements
 	 * This is called when user has created a new password file
 	 */
 	@Override
-	public void onSuccessfullSave()
+	public void onSuccessfull()
 	{
 		if (mCorePwdFile.IsOpen())
 		{

@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.BaseAdapter;
 
 /**
  * An activity representing a list of Secrets. This activity has different
@@ -27,7 +27,7 @@ import android.widget.BaseAdapter;
  * {@link SecretListFragment.Callbacks} interface to listen for item selections.
  */
 public class SecretListActivity extends FragmentActivity implements
-        SecretListFragment.Callbacks
+		SecretListFragment.Callbacks
 {
 
 	/**
@@ -50,7 +50,7 @@ public class SecretListActivity extends FragmentActivity implements
 
 		// get list fragment
 		mListFragment = (SecretListFragment) getSupportFragmentManager()
-		        .findFragmentById(R.id.secret_list);
+				.findFragmentById(R.id.secret_list);
 
 		//
 
@@ -68,29 +68,35 @@ public class SecretListActivity extends FragmentActivity implements
 		}
 
 		Intent intent = getIntent();
-		if(intent != null)
+		if (intent != null)
 		{
 			Bundle extras = intent.getExtras();
-			if(extras != null)
+			if (extras != null)
 			{
-				if(extras.containsKey(Global.EXTRA_CORE_PWD_FILE_INSTANCE))
+				if (extras.containsKey(Global.EXTRA_CORE_PWD_FILE_INSTANCE))
 				{
-					mCorePwdFile = (CorePwdFile) extras.getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
+					mCorePwdFile = (CorePwdFile) extras
+							.getParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE);
 				}
-				if(extras.containsKey(Global.EXTRA_CORE_FILTER_COLLECTION))
+				if (extras.containsKey(Global.EXTRA_CORE_FILTER_COLLECTION))
 				{
-					mLabelsFilter = (CoreSecureStringHandlerCollection) extras.getParcelable(Global.EXTRA_CORE_FILTER_COLLECTION);
+					mLabelsFilter = (CoreSecureStringHandlerCollection) extras
+							.getParcelable(Global.EXTRA_CORE_FILTER_COLLECTION);
 				}
-				if(mCorePwdFile == null || mLabelsFilter == null)
+				if (mCorePwdFile == null || mLabelsFilter == null)
 				{
-					throw new IllegalArgumentException("instances of password file and filter collection must be provided in the intent.");
-				}
-				else
+					throw new IllegalArgumentException(
+							"instances of password file and filter collection must be provided in the intent.");
+				} else
 				{
-					mAdapter = new SecretAdapter(this, mCorePwdFile, mLabelsFilter);
+					mAdapter = new SecretAdapter(this, mCorePwdFile,
+							mLabelsFilter);
 					mListFragment.setListAdapter(mAdapter);
+					mListFragment
+							.setCurrentFilterString(mLabelsFilter
+									.getCombinedCommaSeparatedString(getString(R.string.current_filter_prefix)));
 				}
-				if(extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
+				if (extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
 				{
 					mListFragment.showSearch(mLabelsFilter.size());
 				}
@@ -111,30 +117,44 @@ public class SecretListActivity extends FragmentActivity implements
 	{
 		switch (item.getItemId())
 		{
-			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
-				finish();
-				return true;
-			case R.id.action_search:
+		case android.R.id.home:
+			// This ID represents the Home or Up button. In the case of this
+			// activity, the Up button is shown. Use NavUtils to allow users
+			// to navigate up one level in the application structure. For
+			// more details, see the Navigation pattern on Android Design:
+			//
+			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
+			//
+			finish();
+			return true;
+		case R.id.action_search:
+		{
+			if (mListFragment != null)
 			{
-				if (mListFragment != null)
-				{
-					mListFragment.showSearch(mLabelsFilter.size());
-				}
-				break;
+				mListFragment.showSearch(mLabelsFilter.size());
 			}
-			case R.id.action_settings:
-			{
-				Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				break;
-			}
+			break;
+		}
+		case R.id.action_change_master:
+		{
+			ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this,
+					mCorePwdFile);
+			alert.setToastMessage(R.string.masterkey_change_toast);
+			alert.show();
+			break;
+		}
+		case R.id.action_settings:
+		{
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			break;
+		}
+		case R.id.action_sync:
+		{
+			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
+			startActivity(intent);
+			break;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -153,11 +173,12 @@ public class SecretListActivity extends FragmentActivity implements
 			// fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
-			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					mCorePwdFile);
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-			        .replace(R.id.secret_detail_container, fragment).commit();
+					.replace(R.id.secret_detail_container, fragment).commit();
 
 		} else
 		{
@@ -165,15 +186,18 @@ public class SecretListActivity extends FragmentActivity implements
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, SecretDetailActivity.class);
 			detailIntent.putExtra(Global.EXTRA_CORE_PWD, pwd);
-			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
-			startActivityForResult(detailIntent, Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL);
+			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					mCorePwdFile);
+			startActivityForResult(detailIntent,
+					Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL);
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestcode, int resultcode, Intent data)
 	{
-		switch(requestcode){
+		switch (requestcode)
+		{
 		case Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL:
 			onDetailDone(resultcode, data);
 		}
@@ -181,8 +205,12 @@ public class SecretListActivity extends FragmentActivity implements
 
 	private void onDetailDone(int resultcode, Intent data)
 	{
-		//if this happens, then the search button was pressed while showing the detail activity
-		if(data != null && data.hasExtra(Global.EXTRA_CORE_SHOW_SEARCH))
+		// we must update our list of data!
+		this.refreshListContents();
+
+		// if this happens, then the search button was pressed while showing the
+		// detail activity
+		if (data != null && data.hasExtra(Global.EXTRA_CORE_SHOW_SEARCH))
 		{
 			mListFragment.showSearch(mLabelsFilter.size());
 		}

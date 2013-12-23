@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -19,17 +20,37 @@ public class ChangeMasterKeyAlert extends BaseAlert
 	private boolean mConfirmOldKey;
 
 	private EditText mOldMasterkey;
+	
+	private OnSuccessfullListener mSuccessfull = new OnSuccessfullListener()
+	{
+		@Override
+		public void onSuccessfull()
+		{
+			// dummy function
+		}
+	};
+
+	public interface OnSuccessfullListener
+	{
+		void onSuccessfull();
+	}
 
 	public ChangeMasterKeyAlert(Activity activity, CorePwdFile pwdFile,
-			boolean isCancelable, boolean confirmOldKey, boolean fullscreen)
+			int buttons, boolean confirmOldKey, boolean fullscreen)
 	{
-		super(activity, pwdFile, R.string.action_change_master, isCancelable, fullscreen);
+		super(activity, pwdFile, R.string.action_change_master, buttons, fullscreen);
 		mConfirmOldKey = confirmOldKey;
 	}
 
 	public ChangeMasterKeyAlert(Activity activity, CorePwdFile pwdFile)
 	{
-		this(activity, pwdFile, true, true, false);
+		this(activity, pwdFile, BaseAlert.BUTTONS_CANCEL | BaseAlert.BUTTONS_OK, true, false);
+	}
+
+	public final void setOnSuccessfullListener(
+			OnSuccessfullListener listener)
+	{
+		mSuccessfull = listener;
 	}
 
 	protected View getView()
@@ -60,6 +81,14 @@ public class ChangeMasterKeyAlert extends BaseAlert
 				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		layout.addView(mConfirm);
 		return layout;
+	}
+	
+	
+	protected void onInit()
+	{
+		// open keyboard on show
+		mAlert.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 	}
 
 	private boolean oldKeyConfirmed()
@@ -118,6 +147,9 @@ public class ChangeMasterKeyAlert extends BaseAlert
 
 			// resave password file to set the new masterkey.
 			mPwdFile.Save();
+
+			// call callback
+			mSuccessfull.onSuccessfull();
 
 			return true;
 		}

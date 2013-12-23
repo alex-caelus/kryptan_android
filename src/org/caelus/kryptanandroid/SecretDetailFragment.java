@@ -1,12 +1,15 @@
 package org.caelus.kryptanandroid;
 
-import org.caelus.kryptanandroid.buildingblocks.*;
-import org.caelus.kryptanandroid.buildingblocks.BaseAlert.OnSuccessfullSaveListener;
+import java.util.ArrayList;
+
+import org.caelus.kryptanandroid.buildingblocks.EditLabelsAlert;
+import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
+import org.caelus.kryptanandroid.buildingblocks.SingleEditTextAlert;
+import org.caelus.kryptanandroid.buildingblocks.SingleEditTextAlert.DialogResultListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,7 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 /**
@@ -27,7 +29,8 @@ import android.widget.Toast;
  * either contained in a {@link SecretListActivity} in two-pane mode (on
  * tablets) or a {@link SecretDetailActivity} on handsets.
  */
-public class SecretDetailFragment extends Fragment implements OnClickListener, OnSuccessfullSaveListener
+public class SecretDetailFragment extends Fragment implements OnClickListener,
+		DialogInterface.OnDismissListener, DialogResultListener
 {
 	private CorePwd mPwd;
 	private CoreSecureStringHandler mDescription;
@@ -120,6 +123,17 @@ public class SecretDetailFragment extends Fragment implements OnClickListener, O
 
 			labels.setSecureText(labelText);
 		}
+
+		// if we are in two pane mode
+		if (getActivity() instanceof SecretListActivity)
+		{
+			SecretListActivity activity = (SecretListActivity) getActivity();
+			//we should let the list know that the content may hav been updated.
+			activity.refreshListContents();
+		} else
+		{
+			// apperently not in two pane mode, lets just ignore this
+		}
 	}
 
 	private void addOnClickListeners()
@@ -211,78 +225,31 @@ public class SecretDetailFragment extends Fragment implements OnClickListener, O
 				getString(R.string.details_toast_password_copied), mPassword);
 	}
 
-	private enum EditDestinations
-	{
-		Description, Username
-	}
-
-	public void promtNewStringFromUserDialog(int titleStringId,
-			int messageStringId, final int toastStringId,
-			final EditDestinations destination)
-	{
-		final EditText input = new EditText(getActivity());
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-		alert.setTitle(getResources().getString(titleStringId));
-		alert.setMessage(getResources().getString(messageStringId));
-		alert.setView(input);
-		alert.setPositiveButton(getResources().getString(R.string.save),
-				new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int whichButton)
-					{
-						// TODO: switch to safer input
-						String unsafe = input.getText().toString();
-						int size = unsafe.length();
-
-						switch (destination)
-						{
-						case Description:
-							mDescription.Clear();
-							for (int i = 0; i < size; i++)
-							{
-								mDescription.AddChar(unsafe.charAt(i));
-							}
-							mPwd.SetNewDescription(mDescription);
-							break;
-						case Username:
-							mUsername.Clear();
-							for (int i = 0; i < size; i++)
-							{
-								mUsername.AddChar(unsafe.charAt(i));
-							}
-							mPwd.SetNewUsername(mUsername);
-							break;
-						default:
-							break;
-
-						}
-						mPwdFile.Save();
-						refreshContentView();
-
-						Toast toast = Toast.makeText(getActivity(),
-								getResources().getString(toastStringId),
-								Toast.LENGTH_SHORT);
-						toast.show();
-					}
-				});
-		alert.setNegativeButton(getResources().getString(R.string.cancel), null);
-		alert.show();
-	}
+	private final int Description = 1;
+	private final int Username = 2;
 
 	public void editDescription()
 	{
-		promtNewStringFromUserDialog(R.string.details_description_edit_title,
-				R.string.details_description_edit_message,
-				R.string.details_toast_description_edited,
-				EditDestinations.Description);
+		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+				mPwdFile, R.string.details_description_edit_title,
+				R.string.details_description_edit_message, this, Description);
+
+		alert.setOnDismissListener(this);
+		alert.setToastMessage(R.string.details_toast_description_edited);
+
+		alert.show();
 	}
 
 	public void editUsername()
 	{
-		promtNewStringFromUserDialog(R.string.details_username_edit_title,
-				R.string.details_username_edit_message,
-				R.string.details_toast_username_edited,
-				EditDestinations.Username);
+		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+				mPwdFile, R.string.details_username_edit_title,
+				R.string.details_username_edit_message, this, Username);
+
+		alert.setOnDismissListener(this);
+		alert.setToastMessage(R.string.details_toast_username_edited);
+
+		alert.show();
 	}
 
 	public void editPassword()
@@ -296,8 +263,9 @@ public class SecretDetailFragment extends Fragment implements OnClickListener, O
 
 	public void editLabels()
 	{
-		EditLabelsAlert alert = new EditLabelsAlert(getActivity(), mPwdFile, mPwd);
-		alert.setOnSuccessfullSaveListener(this);
+		EditLabelsAlert alert = new EditLabelsAlert(getActivity(), mPwdFile,
+				mPwd);
+		alert.setOnDismissListener(this);
 		alert.show();
 	}
 
@@ -340,20 +308,61 @@ public class SecretDetailFragment extends Fragment implements OnClickListener, O
 	}
 
 	@Override
-	public void onSuccessfullSave()
+	public void onDismiss(DialogInterface dialog)
 	{
-		//We end up here when the edit labels dialog has been saved
+		// We end up here when the edit labels dialog has been closed
 		refreshContentView();
-		
-		//if we are in two pane mode
-		try{
-			SecretListActivity activity = (SecretListActivity) getActivity();
-			activity.refreshListContents();
-		}
-		catch(ClassCastException ex)
+	}
+
+	@Override
+	public boolean onDialogResult(SingleEditTextAlert dialog,
+			CoreSecureStringHandler result)
+	{
+		switch (dialog.getDialogId())
 		{
-			//apperently not in two pane mode, lets just ignore this
+		case Description:
+			// validate input
+			if (result.GetLength() == 0)
+			{
+				dialog.setErrorMessage(R.string.error_field_required);
+				return false;
+			}
+			ArrayList<CorePwd> filterResults = mPwdFile.getPasswordList()
+					.filter(result);
+			boolean exactMatch = false;
+			for (CorePwd filtered : filterResults)
+			{
+				if (filtered.GetDescriptionCopy().GetLength() == result
+						.GetLength())
+				{
+					exactMatch = true;
+				}
+			}
+			if (!exactMatch)
+			{
+				mDescription = result;
+				mPwd.SetNewDescription(mDescription);
+			} else
+			{
+				dialog.setErrorMessage(R.string.error_pwd_already_exists);
+				return false;
+			}
+
+			break;
+		case Username:
+			// no validation is needed, username can be empty or whatever else
+			mUsername = result;
+			mPwd.SetNewUsername(mUsername);
+			break;
+		default:
+			break;
+
 		}
+		mPwdFile.Save();
 		
+		//no need, it will be called in the onDissmiss metod
+		//refreshContentView();
+
+		return true;
 	}
 }
