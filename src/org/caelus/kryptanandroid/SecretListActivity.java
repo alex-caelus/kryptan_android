@@ -143,12 +143,6 @@ public class SecretListActivity extends FragmentActivity implements
 			alert.show();
 			break;
 		}
-		case R.id.action_settings:
-		{
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			break;
-		}
 		case R.id.action_sync:
 		{
 			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);

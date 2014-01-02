@@ -171,12 +171,6 @@ public class SelectLabelActivity extends Activity implements
 			startActivity(intent);
 			break;
 		}
-		case R.id.action_settings:
-		{
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			break;
-		}
 		case R.id.action_change_master:
 		{
 			ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this, mCorePwdFile);

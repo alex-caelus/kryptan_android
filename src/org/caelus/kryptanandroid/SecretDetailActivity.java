@@ -96,13 +96,6 @@ public class SecretDetailActivity extends FragmentActivity
 			finish();
 			break;
 		}
-		case R.id.action_settings:
-		{
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivityForResult(intent,
-					Global.ACTIVITY_REQUEST_CODE_SETTINGS);
-			break;
-		}
 		case R.id.action_change_master:
 		{
 			ChangeMasterKeyAlert alert = new ChangeMasterKeyAlert(this, mPwdFile);

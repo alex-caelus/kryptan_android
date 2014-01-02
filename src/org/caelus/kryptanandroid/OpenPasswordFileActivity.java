@@ -2,6 +2,7 @@ package org.caelus.kryptanandroid;
 
 import org.caelus.kryptanandroid.buildingblocks.BaseAlert;
 import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
+import org.caelus.kryptanandroid.buildingblocks.SecureEditText;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
@@ -13,13 +14,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -35,10 +32,10 @@ public class OpenPasswordFileActivity extends Activity implements
 	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
-	private String mPassword;
+	private CoreSecureStringHandler mPassword;
 
 	// UI references.
-	private EditText mPasswordView;
+	private SecureEditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
@@ -65,22 +62,8 @@ public class OpenPasswordFileActivity extends Activity implements
 
 		// Set up the login form.
 
-		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener()
-				{
-					@Override
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent)
-					{
-						if (id == R.id.login || id == EditorInfo.IME_NULL)
-						{
-							attemptLogin();
-							return true;
-						}
-						return false;
-					}
-				});
+		mPasswordView = (SecureEditText) findViewById(R.id.password);
+		mPasswordView.setKeyboardDialogTitle(getResources().getString(R.string.title_activity_decrypt));
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
@@ -159,18 +142,18 @@ public class OpenPasswordFileActivity extends Activity implements
 		mPasswordView.setError(null);
 
 		// TODO: securely read password from user
-		mPassword = mPasswordView.getText().toString();
+		mPassword = mPasswordView.getSecureText();
 
 		boolean cancel = false;
 		View focusView = null;
 
 		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword))
+		if (mPassword == null || mPassword.GetLength() == 0)
 		{
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < Global.MINIMUM_MASTERKEY_LENGTH)
+		} else if (mPassword.GetLength() < Global.MINIMUM_MASTERKEY_LENGTH)
 		{
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
@@ -255,10 +238,10 @@ public class OpenPasswordFileActivity extends Activity implements
 			CoreSecureStringHandler masterkey = mCorePwdFile
 					.getMasterKeyHandler();
 			masterkey.Clear();
-			int len = mPassword.length();
+			int len = mPassword.GetLength();
 			for (int i = 0; i < len; i++)
 			{
-				masterkey.AddChar(mPassword.charAt(i));
+				masterkey.AddChar(mPassword.GetChar(i));
 			}
 
 			mCorePwdFile.TryOpenAndParse();

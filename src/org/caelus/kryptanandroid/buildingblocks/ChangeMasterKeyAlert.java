@@ -15,11 +15,11 @@ import android.widget.LinearLayout;
 
 public class ChangeMasterKeyAlert extends BaseAlert
 {
-	private EditText mPassword;
-	private EditText mConfirm;
+	private SecureEditText mPassword;
+	private SecureEditText mConfirm;
 	private boolean mConfirmOldKey;
 
-	private EditText mOldMasterkey;
+	private SecureEditText mOldMasterkey;
 	
 	private OnSuccessfullListener mSuccessfull = new OnSuccessfullListener()
 	{
@@ -62,20 +62,20 @@ public class ChangeMasterKeyAlert extends BaseAlert
 		// create inputs
 		if (mConfirmOldKey)
 		{
-			mOldMasterkey = new EditText(mActivity);
+			mOldMasterkey = new SecureEditText(mActivity);
 			mOldMasterkey.setHint(R.string.confirm_old_masterkey_hint);
 			mOldMasterkey.setInputType(InputType.TYPE_CLASS_TEXT
 					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 			layout.addView(mOldMasterkey);
 		}
 
-		mPassword = new EditText(mActivity);
+		mPassword = new SecureEditText(mActivity);
 		mPassword.setHint(R.string.new_masterkey_hint);
 		mPassword.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		layout.addView(mPassword);
 
-		mConfirm = new EditText(mActivity);
+		mConfirm = new SecureEditText(mActivity);
 		mConfirm.setHint(R.string.confirm_masterkey_hint);
 		mConfirm.setInputType(InputType.TYPE_CLASS_TEXT
 				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -86,22 +86,22 @@ public class ChangeMasterKeyAlert extends BaseAlert
 	
 	protected void onInit()
 	{
-		// open keyboard on show
-		mAlert.getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+//		// open keyboard on show
+//		mAlert.getWindow().setSoftInputMode(
+//				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 	}
 
 	private boolean oldKeyConfirmed()
 	{
-		String pass = mOldMasterkey.getText().toString();
+		CoreSecureStringHandler pass = mOldMasterkey.getSecureText();
 		CoreSecureStringHandler key = mPwdFile.getMasterKeyHandler();
-		if (pass.length() != key.GetLength())
+		if (pass.GetLength() != key.GetLength())
 		{
 			return false;
 		}
-		for (int i = 0; i < pass.length(); i++)
+		for (int i = 0; i < pass.GetLength(); i++)
 		{
-			if (pass.charAt(i) != key.GetChar(i))
+			if (pass.GetChar(i) != key.GetChar(i))
 				return false;
 		}
 		return true;
@@ -111,25 +111,25 @@ public class ChangeMasterKeyAlert extends BaseAlert
 	protected boolean onPositiveClicked()
 	{
 		// Save was clicked
-		String pass = mPassword.getText().toString();
-		String conf = mConfirm.getText().toString();
+		CoreSecureStringHandler pass = mPassword.getSecureText();
+		CoreSecureStringHandler conf = mConfirm.getSecureText();
 
 		if (mConfirmOldKey && !oldKeyConfirmed())
 		{
 			mOldMasterkey.setError(mActivity.getResources().getString(
 					R.string.error_incorrect_password));
 			mOldMasterkey.requestFocus();
-		} else if (TextUtils.isEmpty(pass))
+		} else if (pass.GetLength() == 0)
 		{
 			mPassword.setError(mActivity.getResources().getString(
 					R.string.error_field_required));
 			mPassword.requestFocus();
-		} else if (pass.length() < Global.MINIMUM_MASTERKEY_LENGTH)
+		} else if (pass.GetLength() < Global.MINIMUM_MASTERKEY_LENGTH)
 		{
 			mPassword.setError(mActivity.getResources().getString(
 					R.string.error_invalid_password));
 			mPassword.requestFocus();
-		} else if (!TextUtils.equals(pass, conf))
+		} else if (!pass.equals(conf))
 		{
 			mConfirm.setError(mActivity.getResources().getString(
 					R.string.error_incorrect_confirm));
@@ -140,9 +140,9 @@ public class ChangeMasterKeyAlert extends BaseAlert
 
 			CoreSecureStringHandler key = mPwdFile.getMasterKeyHandler();
 			key.Clear();
-			for (int i = 0; i < pass.length(); i++)
+			for (int i = 0; i < pass.GetLength(); i++)
 			{
-				key.AddChar(pass.charAt(i));
+				key.AddChar(pass.GetChar(i));
 			}
 
 			// resave password file to set the new masterkey.

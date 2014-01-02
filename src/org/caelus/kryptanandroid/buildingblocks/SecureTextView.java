@@ -59,7 +59,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		int size = mText.GetLength();
 
 		// make sure we have enough space in our temporary buffer
-		if (size != mTmp.size())
+		if (size >= mTmpArr.length)
 		{
 			mTmpArr = new char[size];
 		}
@@ -69,10 +69,15 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		// set the shadow text
 		setText(new String(mTmpArr));
 
-		if(getLayout() != null)
+		if (getLayout() != null)
 		{
 			updateTmpLineStrings();
 		}
+	}
+
+	public CoreSecureStringHandler getSecureText()
+	{
+		return mText;
 	}
 
 	@Override
@@ -152,11 +157,11 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 			mPaint.setStyle(Paint.Style.FILL);
 			mPaint.setTextSize(this.getTextSize());
 			mPaint.setAntiAlias(true);
-			if((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+			if ((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
 				mPaint.setTextAlign(Align.LEFT);
 			else
 				mPaint.setTextAlign(Align.CENTER);
-			mPaint.setColor(Color.BLACK);
+			mPaint.setColor(getCurrentTextColor());
 		}
 
 		if (mText != null)
@@ -184,15 +189,17 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 
 				// we draw the actual text
 				int gr = getGravity();
-				
-				int x = ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT) ? 0 : this.getWidth() / 2;
+
+				int x = ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT) ? 0
+						: this.getWidth() / 2;
 				canvas.drawText(mTmp.get(currentLine), x,
 						this.getTotalPaddingTop()
 								+ (this.getTextSize() * (currentLine + 1)),
 						mPaint);
 
 				// And remove the sensitive information IMMEDIATELY afterwards.
-				CoreSecureStringHandler.overwriteStringInternalArr(mTmp.elementAt(currentLine));
+				CoreSecureStringHandler.overwriteStringInternalArr(mTmp
+						.elementAt(currentLine));
 			}
 
 			// Lets remove the leftover values from our temporary array
