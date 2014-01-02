@@ -15,5 +15,6 @@ public class Global
 	
 	public static final int MINIMUM_MASTERKEY_LENGTH = 8;
 	public static final long SHIFT_DOUBLE_CLICK_TIME_MILLIS = 500;
+	public static final String THEME_ACCENT_COLOR_STRING = "#669900";
 	
 }

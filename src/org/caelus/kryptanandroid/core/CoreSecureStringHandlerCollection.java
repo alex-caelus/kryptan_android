@@ -64,43 +64,49 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 		return mStrings.size();
 	}
 
-	public CoreSecureStringHandler getCombinedCommaSeparatedString()
-	{
-		return getCombinedCommaSeparatedString(null);
-	}
-
-	public CoreSecureStringHandler getCombinedCommaSeparatedString(String prefix)
+	public CoreSecureStringHandler getCombinedCommaSeparatedString(String prefix, String ifEmpty)
 	{
 		CoreSecureStringHandler combined = CoreSecureStringHandler
 				.NewSecureString();
 
 		boolean first = true;
 		
-		if(prefix != null)
+		if (!mStrings.isEmpty())
 		{
-			for(int i=0; i<prefix.length(); i++)
+			if (prefix != null)
 			{
-				combined.AddChar(prefix.charAt(i));
+				for (int i = 0; i < prefix.length(); i++)
+				{
+					combined.AddChar(prefix.charAt(i));
+				}
+			}
+			for (CoreSecureStringHandler string : mStrings)
+			{
+				if (first)
+				{
+					first = false;
+				} else
+				{
+					combined.AddChar(',');
+					combined.AddChar(' ');
+				}
+				int length = string.GetLength();
+				for (int i = 0; i < length; i++)
+				{
+					combined.AddChar(string.GetChar(i));
+				}
 			}
 		}
-
-		for (CoreSecureStringHandler string : mStrings)
+		else
 		{
-			if (first)
+			if (ifEmpty != null)
 			{
-				first = false;
-			} else
-			{
-				combined.AddChar(',');
-				combined.AddChar(' ');
-			}
-			int length = string.GetLength();
-			for (int i = 0; i < length; i++)
-			{
-				combined.AddChar(string.GetChar(i));
+				for (int i = 0; i < ifEmpty.length(); i++)
+				{
+					combined.AddChar(ifEmpty.charAt(i));
+				}
 			}
 		}
-
 		return combined;
 	}
 

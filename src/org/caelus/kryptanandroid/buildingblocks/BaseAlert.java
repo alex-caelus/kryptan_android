@@ -1,7 +1,10 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
+import org.caelus.kryptanandroid.Global;
 import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CorePwdFile;
+
+import com.qustom.dialog.QustomDialogBuilder;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,31 +58,33 @@ public abstract class BaseAlert implements OnClickListener, OnDismissListener
 		mContentRootView = getView();
 
 		// create alert
-		AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
+		QustomDialogBuilder builder = new QustomDialogBuilder(mActivity);
 
-		alert.setTitle(mActivity.getResources().getString(mTitleid));
+		builder.setTitle(mActivity.getResources().getString(mTitleid));
+		builder.setTitleColor(Global.THEME_ACCENT_COLOR_STRING);
+		builder.setDividerColor(Global.THEME_ACCENT_COLOR_STRING);
 
 		// add layout to dialog
-		alert.setView(mContentRootView);
+		builder.setCustomView(mContentRootView);
 
 		// buttons
 		if ((mButtons & BUTTONS_OK) > 0)
 		{
-			alert.setPositiveButton(
+			builder.setPositiveButton(
 					mActivity.getResources().getString(R.string.save), null);
 		}
 
 		if ((mButtons & BUTTONS_CANCEL) > 0)
 		{
-			alert.setNegativeButton(
+			builder.setNegativeButton(
 					mActivity.getResources().getString(R.string.cancel), null);
 		} else
 		{
-			alert.setCancelable(false);
+			builder.setCancelable(false);
 		}
 
 		// create instance
-		mAlert = alert.create();
+		mAlert = builder.create();
 
 		// set on click listener
 		mAlert.setOnShowListener(new OnShowListener()

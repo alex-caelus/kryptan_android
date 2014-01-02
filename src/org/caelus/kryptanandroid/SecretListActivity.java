@@ -92,9 +92,10 @@ public class SecretListActivity extends FragmentActivity implements
 					mAdapter = new SecretAdapter(this, mCorePwdFile,
 							mLabelsFilter);
 					mListFragment.setListAdapter(mAdapter);
-					mListFragment
-							.setCurrentFilterString(mLabelsFilter
-									.getCombinedCommaSeparatedString(getString(R.string.current_filter_prefix)));
+					mListFragment.setCurrentFilterString(mLabelsFilter
+							.getCombinedCommaSeparatedString(
+									getString(R.string.current_filter_prefix),
+									getString(R.string.current_filter_none)));
 				}
 				if (extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
 				{

@@ -308,12 +308,13 @@ containing a value of this type.
         public static final int EditLabelItemPwdCount=0x7f05001f;
         public static final int EditLabelRemoveButton=0x7f05001d;
         public static final int LabelLayout=0x7f05001b;
-        public static final int action_change_master=0x7f050093;
-        public static final int action_exit=0x7f050094;
-        public static final int action_new_password=0x7f050091;
-        public static final int action_search=0x7f050090;
-        public static final int action_settings=0x7f05008f;
-        public static final int action_sync=0x7f050092;
+        public static final int action_change_master=0x7f05009c;
+        public static final int action_exit=0x7f05009d;
+        public static final int action_new_password=0x7f05009a;
+        public static final int action_search=0x7f050099;
+        public static final int action_settings=0x7f050098;
+        public static final int action_sync=0x7f05009b;
+        public static final int alertTitle=0x7f050092;
         public static final int alignBounds=0x7f050002;
         public static final int alignMargins=0x7f050003;
         public static final int bottom=0x7f050005;
@@ -323,10 +324,12 @@ containing a value of this type.
         public static final int center_vertical=0x7f050008;
         public static final int clip_horizontal=0x7f05000f;
         public static final int clip_vertical=0x7f05000e;
+        public static final int contentPanel=0x7f050094;
         public static final int copyDescription=0x7f050028;
         public static final int copyPassword=0x7f050030;
         public static final int copyUsername=0x7f05002c;
         public static final int create_new_label_button=0x7f050024;
+        public static final int customPanel=0x7f050096;
         public static final int deletePassword=0x7f050035;
         public static final int descriptionHeader=0x7f050026;
         public static final int descriptionText=0x7f050027;
@@ -345,6 +348,7 @@ containing a value of this type.
         public static final int fill_vertical=0x7f050009;
         public static final int filterText=0x7f05001a;
         public static final int horizontal=0x7f050000;
+        public static final int icon=0x7f050091;
         public static final int key0=0x7f05006e;
         public static final int key1=0x7f050065;
         public static final int key2=0x7f050066;
@@ -368,9 +372,9 @@ containing a value of this type.
         public static final int keyBackSlash=0x7f050058;
         public static final int keyBullet=0x7f050046;
         public static final int keyC=0x7f050085;
+        public static final int keyCancel=0x7f05008b;
         public static final int keyCapitalSharpS=0x7f05005d;
         public static final int keyCaret=0x7f05004b;
-        public static final int keyClear=0x7f05008b;
         public static final int keyColon=0x7f050049;
         public static final int keyComma=0x7f05003a;
         public static final int keyD=0x7f05007b;
@@ -436,10 +440,12 @@ containing a value of this type.
         public static final int labelsText=0x7f050032;
         public static final int left=0x7f050006;
         public static final int listCurrentFilter=0x7f050022;
-        public static final int list_item_activated_secure=0x7f05008e;
+        public static final int list_item_activated_secure=0x7f050097;
         public static final int login_form=0x7f050014;
         public static final int login_status=0x7f050012;
         public static final int login_status_message=0x7f050013;
+        public static final int message=0x7f050095;
+        public static final int parentPanel=0x7f05008e;
         public static final int password=0x7f050015;
         public static final int passwordHeader=0x7f05002e;
         public static final int passwordText=0x7f05002f;
@@ -449,7 +455,10 @@ containing a value of this type.
         public static final int secret_list=0x7f050018;
         public static final int sign_in_button=0x7f050016;
         public static final int start=0x7f050010;
+        public static final int titleDivider=0x7f050093;
+        public static final int title_template=0x7f050090;
         public static final int top=0x7f050004;
+        public static final int topPanel=0x7f05008f;
         public static final int usernameHeader=0x7f05002a;
         public static final int usernameText=0x7f05002b;
         public static final int vertical=0x7f050001;
@@ -476,8 +485,9 @@ containing a value of this type.
         public static final int fragment_secret_detail=0x7f03000a;
         public static final int fragment_secret_list=0x7f03000b;
         public static final int kryptan_keyboard=0x7f03000c;
-        public static final int secure_text_edit=0x7f03000d;
-        public static final int simple_list_item_activated_secure=0x7f03000e;
+        public static final int qustom_dialog_layout=0x7f03000d;
+        public static final int secure_text_edit=0x7f03000e;
+        public static final int simple_list_item_activated_secure=0x7f03000f;
     }
     public static final class menu {
         public static final int change_master_key=0x7f0b0000;
@@ -491,14 +501,15 @@ containing a value of this type.
         public static final int action_change_master=0x7f070009;
         public static final int action_edit_labels=0x7f07000b;
         public static final int action_exit=0x7f07000c;
-        public static final int action_forgot_password=0x7f070051;
+        public static final int action_forgot_password=0x7f070053;
         public static final int action_new_password=0x7f07000a;
         public static final int action_search=0x7f070007;
         public static final int action_settings=0x7f070006;
-        public static final int action_sign_in_register=0x7f07004a;
-        public static final int action_sign_in_short=0x7f07004b;
+        public static final int action_sign_in_register=0x7f07004c;
+        public static final int action_sign_in_short=0x7f07004d;
         public static final int action_sync=0x7f070008;
         public static final int add_label_to_pwd=0x7f07003f;
+        public static final int alert_image_content_description=0x7f070049;
         public static final int app_name=0x7f070000;
         public static final int button_browse_all_passwords=0x7f070016;
         public static final int button_browse_filtered_passwords_format=0x7f070017;
@@ -508,6 +519,7 @@ containing a value of this type.
         public static final int confirm_old_masterkey_hint=0x7f07000f;
         public static final int create_new_label=0x7f070012;
         public static final int create_new_label_help=0x7f070013;
+        public static final int current_filter_none=0x7f070045;
         public static final int current_filter_prefix=0x7f070044;
         public static final int details_copy_to_clipboard_button=0x7f07001d;
         public static final int details_delete_password_button=0x7f070031;
@@ -533,49 +545,49 @@ containing a value of this type.
         public static final int details_username_edit_title=0x7f07002f;
         public static final int details_username_text=0x7f070023;
         public static final int edit_labels_create_new_label_button=0x7f07003e;
-        public static final int error_field_required=0x7f070050;
-        public static final int error_incorrect_confirm=0x7f07004f;
-        public static final int error_incorrect_password=0x7f07004e;
-        public static final int error_invalid_email=0x7f070052;
-        public static final int error_invalid_password=0x7f07004d;
+        public static final int error_field_required=0x7f070052;
+        public static final int error_incorrect_confirm=0x7f070051;
+        public static final int error_incorrect_password=0x7f070050;
+        public static final int error_invalid_email=0x7f070054;
+        public static final int error_invalid_password=0x7f07004f;
         public static final int error_label_already_exists=0x7f070041;
         public static final int error_pwd_already_exists=0x7f070042;
         public static final int hello_world=0x7f070038;
         public static final int invalid_text_input=0x7f070040;
-        public static final int keyboard_clear_close=0x7f070047;
-        public static final int keyboard_done=0x7f070045;
-        public static final int keyboard_space=0x7f070046;
+        public static final int keyboard_clear_close=0x7f070048;
+        public static final int keyboard_done=0x7f070046;
+        public static final int keyboard_space=0x7f070047;
         public static final int label_nr_of_passwords_format=0x7f07001c;
         public static final int loading=0x7f070001;
-        public static final int login_progress_signing_in=0x7f07004c;
+        public static final int login_progress_signing_in=0x7f07004e;
         public static final int masterkey_change_toast=0x7f070010;
         public static final int new_masterkey_hint=0x7f07000d;
         public static final int new_password_file_created=0x7f070011;
         public static final int no_matching_secrets=0x7f070043;
-        public static final int pref_default_display_name=0x7f070058;
-        public static final int pref_description_social_recommendations=0x7f070056;
+        public static final int pref_default_display_name=0x7f07005a;
+        public static final int pref_description_social_recommendations=0x7f070058;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f07005a;
+        public static final int pref_header_data_sync=0x7f07005c;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f070054;
+        public static final int pref_header_general=0x7f070056;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f07005d;
-        public static final int pref_ringtone_silent=0x7f070060;
-        public static final int pref_title_add_friends_to_messages=0x7f070059;
-        public static final int pref_title_display_name=0x7f070057;
-        public static final int pref_title_new_message_notifications=0x7f07005e;
-        public static final int pref_title_ringtone=0x7f07005f;
-        public static final int pref_title_social_recommendations=0x7f070055;
-        public static final int pref_title_sync_frequency=0x7f07005b;
-        public static final int pref_title_system_sync_settings=0x7f07005c;
-        public static final int pref_title_vibrate=0x7f070061;
+        public static final int pref_header_notifications=0x7f07005f;
+        public static final int pref_ringtone_silent=0x7f070062;
+        public static final int pref_title_add_friends_to_messages=0x7f07005b;
+        public static final int pref_title_display_name=0x7f070059;
+        public static final int pref_title_new_message_notifications=0x7f070060;
+        public static final int pref_title_ringtone=0x7f070061;
+        public static final int pref_title_social_recommendations=0x7f070057;
+        public static final int pref_title_sync_frequency=0x7f07005d;
+        public static final int pref_title_system_sync_settings=0x7f07005e;
+        public static final int pref_title_vibrate=0x7f070063;
         /**  Strings related to login 
          */
-        public static final int prompt_password=0x7f070049;
+        public static final int prompt_password=0x7f07004b;
         public static final int remove_label=0x7f07003d;
         public static final int save=0x7f070002;
         public static final int search_filter_hint=0x7f070036;
@@ -588,10 +600,10 @@ containing a value of this type.
         public static final int text_filter_format=0x7f070018;
         public static final int text_filter_none=0x7f070019;
         public static final int title_activity_change_master_key=0x7f070037;
-        public static final int title_activity_decrypt=0x7f070048;
+        public static final int title_activity_decrypt=0x7f07004a;
         public static final int title_activity_edit_labels=0x7f07003c;
         public static final int title_activity_generate_password=0x7f07003b;
-        public static final int title_activity_settings=0x7f070053;
+        public static final int title_activity_settings=0x7f070055;
         public static final int title_activity_syncronize_desktop=0x7f070039;
         public static final int title_secret_detail=0x7f07001b;
         public static final int title_secret_list=0x7f07001a;

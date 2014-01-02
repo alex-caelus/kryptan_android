@@ -70,8 +70,10 @@
     <string name="error_pwd_already_exists">A password with this name already exists!</string>
     <string name="no_matching_secrets">No matching passwords!</string>
     <string name="current_filter_prefix">Current filter: </string>
+    <string name="current_filter_none">Current filter: no labels</string>
     <string name="keyboard_done">done</string>
     <string name="keyboard_space">space</string>
-    <string name="keyboard_clear_close">clear</string>
+    <string name="keyboard_clear_close">cancel</string>
+    <string name="alert_image_content_description">Alert Image</string>
       
 </resources>

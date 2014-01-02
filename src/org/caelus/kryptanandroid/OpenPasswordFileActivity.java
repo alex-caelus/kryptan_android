@@ -148,7 +148,7 @@ public class OpenPasswordFileActivity extends Activity implements
 		View focusView = null;
 
 		// Check for a valid password.
-		if (mPassword == null || mPassword.GetLength() == 0)
+		if (mPassword.GetLength() == 0)
 		{
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;

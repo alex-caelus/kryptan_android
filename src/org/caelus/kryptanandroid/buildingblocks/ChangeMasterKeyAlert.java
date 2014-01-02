@@ -86,9 +86,9 @@ public class ChangeMasterKeyAlert extends BaseAlert
 	
 	protected void onInit()
 	{
-//		// open keyboard on show
-//		mAlert.getWindow().setSoftInputMode(
-//				WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		// disable default keyboard on show
+		mAlert.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 	}
 
 	private boolean oldKeyConfirmed()

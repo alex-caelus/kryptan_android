@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.EditText;
 
+@Deprecated
 public class SingleEditTextAlert extends BaseAlert
 {
 
@@ -50,7 +51,6 @@ public class SingleEditTextAlert extends BaseAlert
 	@Override
 	protected void onInit()
 	{
-		// TODO Auto-generated method stub
 		mAlert.setMessage(mActivity.getResources().getString(mMessageId));
 	}
 

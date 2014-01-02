@@ -18,6 +18,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.qustom.dialog.QustomDialogBuilder;
+
 /**
  * A list fragment representing a list of Secrets. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
@@ -236,21 +238,23 @@ public class SecretListFragment extends ListFragment
 			}
 		});
 
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-		alert.setTitle(getResources().getString(R.string.search_filter_title));
+		QustomDialogBuilder builder = new QustomDialogBuilder(getActivity());
+		builder.setTitle(getResources().getString(R.string.search_filter_title));
+		builder.setTitleColor(org.caelus.kryptanandroid.Global.THEME_ACCENT_COLOR_STRING);
+		builder.setDividerColor(org.caelus.kryptanandroid.Global.THEME_ACCENT_COLOR_STRING);
 
 		if (numberOfLabels > 0)
-			alert.setMessage(String.format(
+			builder.setMessage(String.format(
 					getResources().getString(
 							R.string.search_filter_message_labels),
 					numberOfLabels));
 		else
-			alert.setMessage(getResources().getString(
+			builder.setMessage(getResources().getString(
 					R.string.search_filter_message_nolabels));
 
-		alert.setView(input);
-		alert.setPositiveButton(getResources().getString(R.string.show), null);
-		alert.setNegativeButton(getResources().getString(R.string.clear),
+		builder.setCustomView(input);
+		builder.setPositiveButton(getResources().getString(R.string.show), null);
+		builder.setNegativeButton(getResources().getString(R.string.clear),
 				new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int whichButton)
@@ -258,8 +262,9 @@ public class SecretListFragment extends ListFragment
 						input.setText("");
 					}
 				});
-		AlertDialog a = alert.create();
+		AlertDialog a = builder.create();
 		a.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 		a.show();
+		input.requestFocus();
 	}
 }

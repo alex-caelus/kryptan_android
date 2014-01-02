@@ -2,7 +2,7 @@ package org.caelus.kryptanandroid.buildingblocks;
 
 import java.util.Arrays;
 
-import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardClosedListener;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseValidator;
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardTextChangedListener;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
 
-public class SecureEditText extends EditText implements KeyboardClosedListener,
+public class SecureEditText extends EditText implements KeyboardCloseValidator,
 		KeyboardTextChangedListener, OnTouchListener
 {
 
@@ -48,7 +48,7 @@ public class SecureEditText extends EditText implements KeyboardClosedListener,
 
 	public CoreSecureStringHandler getSecureText()
 	{
-		return mCurrentText;
+		return mCurrentText == null ? CoreSecureStringHandler.NewSecureString() : mCurrentText;
 	}
 	
 	public void setKeyboardDialogTitle(String title)
@@ -59,25 +59,33 @@ public class SecureEditText extends EditText implements KeyboardClosedListener,
 	@Override
 	public void KeyboardTextChanged(CoreSecureStringHandler text)
 	{
-		mCurrentText = text;
-		char[] dummyArray = new char[text.GetLength()];
-		Arrays.fill(dummyArray, '*');
-		setText(new String(dummyArray));
 	}
 
 	@Override
-	public void KeyboardClosed()
+	public boolean KeyboardCloseValidate(KryptanKeyboard keyboard,
+			CoreSecureStringHandler result)
 	{
-		//TODO: decide if the decrypt button should be pressed when closing the keyboard
+		mCurrentText = result;
+		char[] dummyArray = new char[result.GetLength()];
+		Arrays.fill(dummyArray, '*');
+		String dummyString = new String(dummyArray);
+		setText(dummyString);
+		return true;
 	}
 
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1)
 	{
+		//disable soft keyboard
+		int inType = getInputType();
+		setInputType(InputType.TYPE_NULL); // disable soft input
+		onTouchEvent(arg1); // call native handler
+		setInputType(inType); // restore input type
+		
 		if (mKeyboard == null)
 		{
 			mKeyboard = new KryptanKeyboard(getContext(), mKeyboardTitle);
-			mKeyboard.setClosedListener(this);
+			mKeyboard.setCloseValidator(this);
 			mKeyboard.setTextChangedListener(this);
 			mKeyboard.setHintText(getHint());
 			mKeyboard
@@ -88,6 +96,6 @@ public class SecureEditText extends EditText implements KeyboardClosedListener,
 		
 		setError(null);
 		
-		return true; //listener consumed the event (prevents default keyboard from showing up)
+		return false; 
 	}
 }

@@ -5,7 +5,7 @@ package org.caelus.kryptanandroid.buildingblocks;
 
 import org.caelus.kryptanandroid.EditLabelAdapter;
 import org.caelus.kryptanandroid.R;
-import org.caelus.kryptanandroid.buildingblocks.SingleEditTextAlert.DialogResultListener;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseValidator;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ import android.widget.TextView;
  * @author Alexander
  * 
  */
-public class EditLabelsAlert extends BaseAlert implements DialogResultListener
+public class EditLabelsAlert extends BaseAlert implements KeyboardCloseValidator
 {
 
 	private CorePwd mPwd;
@@ -90,18 +89,10 @@ public class EditLabelsAlert extends BaseAlert implements DialogResultListener
 
 	protected void CreateNewLabelClicked()
 	{
-		SingleEditTextAlert alert = new SingleEditTextAlert(mActivity, mPwdFile, R.string.create_new_label, R.string.create_new_label_help, this, 0);
-		alert.setOnDismissListener(new OnDismissListener()
-		{	
-			@Override
-			public void onDismiss(DialogInterface arg0)
-			{
-				//we must show 'this' dialog again 
-				EditLabelsAlert.this.show();
-			}
-		});
-		this.hide();
-		alert.show();
+		KryptanKeyboard keyboard = new KryptanKeyboard(mActivity, mActivity.getString(R.string.create_new_label));
+		keyboard.setHintText(mActivity.getString(R.string.create_new_label_help));
+		keyboard.setCloseValidator(this);
+		keyboard.show();
 	}
 
 	protected void ShowLabelSpinner()
@@ -228,11 +219,11 @@ public class EditLabelsAlert extends BaseAlert implements DialogResultListener
 	}
 
 	@Override
-	public boolean onDialogResult(SingleEditTextAlert dialog, CoreSecureStringHandler result)
+	public boolean KeyboardCloseValidate(KryptanKeyboard keyboard, CoreSecureStringHandler result)
 	{
 		if(result.GetLength() == 0)
 		{
-			dialog.setErrorMessage(R.string.error_field_required);
+			keyboard.setError(mActivity.getString(R.string.error_field_required));
 			return false;
 		}
 		//see if label already exists
@@ -249,7 +240,7 @@ public class EditLabelsAlert extends BaseAlert implements DialogResultListener
 		if(exists)
 		{
 			//if the label already exists we fail validation
-			dialog.setErrorMessage(R.string.error_label_already_exists);
+			keyboard.setError(mActivity.getString(R.string.error_label_already_exists));
 			return false;
 		}
 		

@@ -3,9 +3,9 @@ package org.caelus.kryptanandroid;
 import java.util.ArrayList;
 
 import org.caelus.kryptanandroid.buildingblocks.EditLabelsAlert;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseValidator;
 import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
-import org.caelus.kryptanandroid.buildingblocks.SingleEditTextAlert;
-import org.caelus.kryptanandroid.buildingblocks.SingleEditTextAlert.DialogResultListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -30,7 +30,7 @@ import android.widget.Toast;
  * tablets) or a {@link SecretDetailActivity} on handsets.
  */
 public class SecretDetailFragment extends Fragment implements OnClickListener,
-		DialogInterface.OnDismissListener, DialogResultListener
+		DialogInterface.OnDismissListener, KeyboardCloseValidator
 {
 	private CorePwd mPwd;
 	private CoreSecureStringHandler mDescription;
@@ -230,26 +230,38 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void editDescription()
 	{
-		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-				mPwdFile, R.string.details_description_edit_title,
-				R.string.details_description_edit_message, this, Description);
+//		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+//				mPwdFile, R.string.details_description_edit_title,
+//				R.string.details_description_edit_message, this, Description);
+//
+//		alert.setOnDismissListener(this);
+//		alert.setToastMessage(R.string.details_toast_description_edited);
+//
+//		alert.show();
 
-		alert.setOnDismissListener(this);
-		alert.setToastMessage(R.string.details_toast_description_edited);
-
-		alert.show();
+		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(), getString(R.string.details_description_edit_title));
+		keyboard.setId(Description);
+		keyboard.setHintText(getString(R.string.details_description_edit_message));
+		keyboard.setCloseValidator(this);
+		keyboard.show();
 	}
 
 	public void editUsername()
 	{
-		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-				mPwdFile, R.string.details_username_edit_title,
-				R.string.details_username_edit_message, this, Username);
+//		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+//				mPwdFile, R.string.details_username_edit_title,
+//				R.string.details_username_edit_message, this, Username);
+//
+//		alert.setOnDismissListener(this);
+//		alert.setToastMessage(R.string.details_toast_username_edited);
+//
+//		alert.show();
 
-		alert.setOnDismissListener(this);
-		alert.setToastMessage(R.string.details_toast_username_edited);
-
-		alert.show();
+		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(), getString(R.string.details_username_edit_title));
+		keyboard.setId(Username);
+		keyboard.setHintText(getString(R.string.details_username_edit_message));
+		keyboard.setCloseValidator(this);
+		keyboard.show();
 	}
 
 	public void editPassword()
@@ -306,7 +318,8 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			deletePassword();
 		}
 	}
-
+	
+	
 	@Override
 	public void onDismiss(DialogInterface dialog)
 	{
@@ -315,16 +328,16 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	@Override
-	public boolean onDialogResult(SingleEditTextAlert dialog,
+	public boolean KeyboardCloseValidate(KryptanKeyboard keyboard,
 			CoreSecureStringHandler result)
 	{
-		switch (dialog.getDialogId())
+		switch (keyboard.getId())
 		{
 		case Description:
 			// validate input
 			if (result.GetLength() == 0)
 			{
-				dialog.setErrorMessage(R.string.error_field_required);
+				keyboard.setError(getString(R.string.error_field_required));
 				return false;
 			}
 			ArrayList<CorePwd> filterResults = mPwdFile.getPasswordList()
@@ -342,9 +355,11 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			{
 				mDescription = result;
 				mPwd.SetNewDescription(mDescription);
+				Toast.makeText(getActivity(), getString(R.string.details_toast_description_edited),
+						Toast.LENGTH_SHORT).show();
 			} else
 			{
-				dialog.setErrorMessage(R.string.error_pwd_already_exists);
+				keyboard.setError(getString(R.string.error_pwd_already_exists));
 				return false;
 			}
 
@@ -353,6 +368,8 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			// no validation is needed, username can be empty or whatever else
 			mUsername = result;
 			mPwd.SetNewUsername(mUsername);
+			Toast.makeText(getActivity(), getString(R.string.details_toast_username_edited),
+					Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
@@ -361,7 +378,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 		mPwdFile.Save();
 		
 		//no need, it will be called in the onDissmiss metod
-		//refreshContentView();
+		refreshContentView();
 
 		return true;
 	}
