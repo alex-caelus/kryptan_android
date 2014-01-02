@@ -118,14 +118,9 @@ public class SecretDetailActivity extends FragmentActivity
 	{
 		switch (requestCode)
 		{
-		case Global.ACTIVITY_REQUEST_CODE_SETTINGS:
-			onSettingsDone(resultCode, data);
-			break;
+//		case Global.ACTIVITY_REQUEST_CODE_SETTINGS:
+//			onSettingsDone(resultCode, data);
+//			break;
 		}
-	}
-
-	private void onSettingsDone(int resultCode, Intent data)
-	{
-		// we do nothing.
 	}
 }

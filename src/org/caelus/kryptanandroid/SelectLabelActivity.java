@@ -168,7 +168,7 @@ public class SelectLabelActivity extends Activity implements
 			intent.putExtra(Global.EXTRA_CORE_SHOW_SEARCH, true);
 			intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 			intent.putExtra(Global.EXTRA_CORE_FILTER_COLLECTION, mSelectedLabels);
-			startActivity(intent);
+			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SECRET_LIST);
 			break;
 		}
 		case R.id.action_change_master:
@@ -181,7 +181,13 @@ public class SelectLabelActivity extends Activity implements
 		case R.id.action_sync:
 		{
 			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SYNC);
+			break;
+		}
+		case R.id.action_new_password:
+		{
+			Intent intent = new Intent(this, GeneratePasswordActivity.class);
+			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_NEW_PASSWORD);
 			break;
 		}
 		}

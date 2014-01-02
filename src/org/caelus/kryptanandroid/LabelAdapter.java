@@ -12,6 +12,7 @@ import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
@@ -26,7 +27,7 @@ import android.widget.TextView;
  * 
  */
 public class LabelAdapter extends BaseAdapter implements
-		OnCheckedChangeListener
+		OnCheckedChangeListener, OnClickListener
 {
 	private Context mContext;
 	private CoreSecureStringHandler[] mLabels;
@@ -129,6 +130,8 @@ public class LabelAdapter extends BaseAdapter implements
 
 			// add listener
 			checkBox.setOnCheckedChangeListener(this);
+			mainText.setOnClickListener(this);
+			passwordCountText.setOnClickListener(this);
 
 			// add views to group
 			checkLayout.addView(checkBox);
@@ -156,6 +159,8 @@ public class LabelAdapter extends BaseAdapter implements
 		checkBox.setTag(Integer.valueOf(arg0));
 		checkBox.setChecked(mChecked.get(arg0).booleanValue());
 		mainText.setSecureText(label);
+		mainText.setTag(checkBox);
+		passwordCountText.setTag(checkBox);
 		passwordCountText.setText(String.format(textFormat, nrOfPasswords));
 
 		return group;
@@ -191,6 +196,17 @@ public class LabelAdapter extends BaseAdapter implements
 			mChecked.add(Boolean.valueOf(false));
 		}
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public void onClick(View arg0)
+	{
+		Object obj = (CheckBox) arg0.getTag();
+		if (obj instanceof View)
+		{
+			View checkbox = (View) obj;
+			checkbox.performClick();
+		}
 	}
 
 }

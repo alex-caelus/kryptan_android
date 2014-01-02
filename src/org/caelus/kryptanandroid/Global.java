@@ -5,7 +5,8 @@ public class Global
 	public static final int ACTIVITY_REQUEST_CODE_OPEN_FILE = 0;
 	public static final int ACTIVITY_REQUEST_CODE_SECRET_LIST = 1;
 	public static final int ACTIVITY_REQUEST_CODE_SECRET_DETAIL = 2;
-	public static final int ACTIVITY_REQUEST_CODE_SETTINGS = 3;
+	public static final int ACTIVITY_REQUEST_CODE_SYNC = 3;
+	public static final int ACTIVITY_REQUEST_CODE_NEW_PASSWORD = 4;
 
 	public static final String EXTRA_CORE_PWD_LABELS = "org.caelus.kryptanandroid.PWD_LABELS";
 	public static final String EXTRA_CORE_SHOW_SEARCH = "org.caelus.kryptanandroid.SHOW_SEARCH";

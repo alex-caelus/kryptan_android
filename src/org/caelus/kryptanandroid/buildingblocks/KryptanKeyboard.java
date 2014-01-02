@@ -52,6 +52,8 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	private int mId;
 
+	private Context mContext;
+
 	public interface KeyboardCloseValidator
 	{
 		boolean KeyboardCloseValidate(KryptanKeyboard keyboard,
@@ -61,6 +63,8 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	public KryptanKeyboard(Context context, String Title)
 	{
 		mBuilder = new QustomDialogBuilder(context);
+		
+		mContext = context;
 
 		if (Title != null)
 		{
@@ -337,6 +341,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void shiftPressed(Button shiftButton)
 	{
 		mShiftPressed = !mShiftPressed;
@@ -345,7 +350,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		{
 			mShiftPressed = true;
 			mCapsOn = true;
-			shiftButton.requestFocus();
+			shiftButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.kryptantheme_btn_default_focused_holo_dark));
 		}
 
 		if (mShiftPressed)
@@ -354,7 +359,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		} else
 		{
 			mCapsOn = false;
-			shiftButton.clearFocus();
+			shiftButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.kryptantheme_btn_default_normal_holo_dark));
 		}
 
 		updateAllButtonsCase();

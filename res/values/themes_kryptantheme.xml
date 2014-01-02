@@ -7,16 +7,17 @@
 
     <item name="android:editTextBackground">@drawable/kryptantheme_edit_text_holo_dark</item>
 
-    <item name="android:textColorHighlight">#99669900</item>
-    <item name="android:textSelectHandleLeft">@drawable/kryptantheme_text_select_handle_left</item>
-    <item name="android:textSelectHandleRight">@drawable/kryptantheme_text_select_handle_right</item>
-    <item name="android:textSelectHandle">@drawable/kryptantheme_text_select_handle_middle</item>
-
     <item name="android:listChoiceIndicatorMultiple">@drawable/kryptantheme_btn_check_holo_dark</item>
 
     <item name="android:buttonStyle">@style/ButtonKryptanTheme</item>
 
     <item name="android:imageButtonStyle">@style/ImageButtonKryptanTheme</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarKryptanTheme</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarKryptanTheme</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleKryptanTheme</item>
 
   </style>
 
