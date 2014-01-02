@@ -13,6 +13,7 @@
     <string name="action_change_master">New Masterkey</string>
     <string name="action_new_password">Add new password</string>
     <string name="action_edit_labels">Edit labels</string>
+    <string name="action_exit">Exit Kryptan</string>
     <string name="new_masterkey_hint">New masterkey&#8230;</string>
     <string name="confirm_masterkey_hint">Confirm&#8230;</string>
     <string name="confirm_old_masterkey_hint">Old masterkey&#8230;</string>
@@ -69,5 +70,8 @@
     <string name="error_pwd_already_exists">A password with this name already exists!</string>
     <string name="no_matching_secrets">No matching passwords!</string>
     <string name="current_filter_prefix">Current filter: </string>
+    <string name="keyboard_done">done</string>
+    <string name="keyboard_space">space</string>
+    <string name="keyboard_clear_close">clear</string>
       
 </resources>

@@ -7,5 +7,6 @@
     <dimen name="listPreferredItemPaddingEnd">6dip</dimen>
     <dimen name="listPreferredItemHeightSmall">48dip</dimen>
     <dimen name="listPreferredItemPaddingTop">6dp</dimen>
+    <dimen name="keyboardText">14sp</dimen>
     
 </resources>
