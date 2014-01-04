@@ -35,6 +35,16 @@
             android:visibility="invisible"
             android:textSize="@dimen/keyboardText" 
             style="@android:style/Widget.EditText"/>
+
+        <Button
+            android:id="@+id/pasteButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="32sp"
+            android:layout_gravity="top|right"
+            android:padding="0dp"
+            android:text="@string/paste" />
+
     </FrameLayout>
 
     <LinearLayout

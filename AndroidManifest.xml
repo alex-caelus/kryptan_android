@@ -72,7 +72,7 @@
             android:screenOrientation="portrait" > >
         </activity>
         <activity
-            android:name="org.caelus.kryptanandroid.GeneratePasswordActivity"
+            android:name="org.caelus.kryptanandroid.GeneratePasswordDialog"
             android:label="@string/title_activity_generate_password"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" > >

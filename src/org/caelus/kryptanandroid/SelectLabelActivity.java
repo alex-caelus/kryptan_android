@@ -186,8 +186,8 @@ public class SelectLabelActivity extends Activity implements
 		}
 		case R.id.action_new_password:
 		{
-			Intent intent = new Intent(this, GeneratePasswordActivity.class);
-			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_NEW_PASSWORD);
+			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this, mCorePwdFile);
+			dialog.show();
 			break;
 		}
 		}

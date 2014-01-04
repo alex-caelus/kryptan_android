@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
@@ -110,6 +111,10 @@ public abstract class BaseAlert implements OnClickListener, OnDismissListener
 		}
 		
 		mAlert.setOnDismissListener(this);
+
+		// disable default keyboard on show
+		mAlert.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		onInit();
 

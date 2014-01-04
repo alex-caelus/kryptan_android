@@ -267,7 +267,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	public void editPassword()
 	{
 		Intent intent = new Intent(getActivity(),
-				GeneratePasswordActivity.class);
+				GeneratePasswordDialog.class);
 		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
 		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
 		startActivityForResult(intent, 0);

@@ -39,11 +39,12 @@ public class SecureEditText extends EditText implements KeyboardCloseValidator,
 		super(context, attrs, defStyle);
 		init();
 	}
-
+	
 	private void init()
 	{
 		setCursorVisible(false);
 		setOnTouchListener(this);
+		clearFocus();
 	}
 
 	public CoreSecureStringHandler getSecureText()
@@ -79,8 +80,10 @@ public class SecureEditText extends EditText implements KeyboardCloseValidator,
 		//disable soft keyboard
 		int inType = getInputType();
 		setInputType(InputType.TYPE_NULL); // disable soft input
-		onTouchEvent(arg1); // call native handler
+//		onTouchEvent(arg1); // call native handler
 		setInputType(inType); // restore input type
+		
+		clearFocus();
 		
 		if (mKeyboard == null)
 		{
@@ -95,6 +98,8 @@ public class SecureEditText extends EditText implements KeyboardCloseValidator,
 		mKeyboard.show();
 		
 		setError(null);
+		
+		
 		
 		return false; 
 	}

@@ -8,6 +8,9 @@ import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -54,6 +57,10 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	private Context mContext;
 
+	private Button mPasteButton;
+
+	private ClipboardManager clipboard;
+
 	public interface KeyboardCloseValidator
 	{
 		boolean KeyboardCloseValidate(KryptanKeyboard keyboard,
@@ -63,7 +70,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	public KryptanKeyboard(Context context, String Title)
 	{
 		mBuilder = new QustomDialogBuilder(context);
-		
+
 		mContext = context;
 
 		if (Title != null)
@@ -86,6 +93,8 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		mPasswordDottedView = (TextView) mKeyboardView
 				.findViewById(R.id.keyboardPasswordDottedText);
 		mHintView = (TextView) mKeyboardView.findViewById(R.id.keyboardHint);
+		mPasteButton = (Button) mKeyboardView.findViewById(R.id.pasteButton);
+		mPasteButton.setOnClickListener(this);
 
 		int rowCount = mKeyboardView.getChildCount();
 		for (int i = 0; i < rowCount; i++)
@@ -180,6 +189,10 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 			donePressed();
 			break;
 
+		case R.id.pasteButton:
+			pastePressed();
+			break;
+
 		default:
 			// The pressed button was obviously a normal key so lets add it to
 			// the text
@@ -193,7 +206,21 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		}
 	}
 
-	private void addToText(String s)
+	private void pastePressed()
+	{
+		clipboard = (ClipboardManager) mContext
+				.getSystemService(Context.CLIPBOARD_SERVICE);
+
+		if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription()
+				.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
+		{
+			ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+			
+			addToText(item.getText());
+		}
+	}
+
+	private void addToText(CharSequence charSequence)
 	{
 		if (mHintView.getVisibility() == View.VISIBLE)
 		{
@@ -206,9 +233,9 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 			currentText = CoreSecureStringHandler.NewSecureString();
 		}
 
-		for (int i = 0; i < s.length(); i++)
+		for (int i = 0; i < charSequence.length(); i++)
 		{
-			char c = s.charAt(i);
+			char c = charSequence.charAt(i);
 			// Process char
 			currentText.AddChar(c);
 		}
@@ -350,7 +377,11 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		{
 			mShiftPressed = true;
 			mCapsOn = true;
-			shiftButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.kryptantheme_btn_default_focused_holo_dark));
+			shiftButton
+					.setBackgroundDrawable(mContext
+							.getResources()
+							.getDrawable(
+									R.drawable.kryptantheme_btn_default_focused_holo_dark));
 		}
 
 		if (mShiftPressed)
@@ -359,7 +390,11 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		} else
 		{
 			mCapsOn = false;
-			shiftButton.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.kryptantheme_btn_default_normal_holo_dark));
+			shiftButton
+					.setBackgroundDrawable(mContext
+							.getResources()
+							.getDrawable(
+									R.drawable.kryptantheme_btn_default_normal_holo_dark));
 		}
 
 		updateAllButtonsCase();
