@@ -1,15 +1,17 @@
 package org.caelus.kryptanandroid;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.caelus.kryptanandroid.buildingblocks.EditLabelsAlert;
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard;
-import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseValidator;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseListener;
 import org.caelus.kryptanandroid.buildingblocks.SecureTextView;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -30,7 +32,7 @@ import android.widget.Toast;
  * tablets) or a {@link SecretDetailActivity} on handsets.
  */
 public class SecretDetailFragment extends Fragment implements OnClickListener,
-		DialogInterface.OnDismissListener, KeyboardCloseValidator
+		DialogInterface.OnDismissListener, KeyboardCloseListener
 {
 	private CorePwd mPwd;
 	private CoreSecureStringHandler mDescription;
@@ -52,18 +54,29 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	{
 		super.onCreate(savedInstanceState);
 
-		if (getArguments().containsKey(Global.EXTRA_CORE_PWD)
-				&& getArguments().containsKey(
+		if (!getArguments().containsKey(Global.EXTRA_CORE_PWD)
+				|| !getArguments().containsKey(
 						Global.EXTRA_CORE_PWD_FILE_INSTANCE))
+		{
+			throw new IllegalArgumentException(
+					"Arguments must include both EXTRA_CORE_PWD and EXTRA_CORE_PWD_FILE_INSTANCE instances.");
+		} else
 		{
 			mPwd = (CorePwd) getArguments()
 					.getParcelable(Global.EXTRA_CORE_PWD);
 			mPwdFile = (CorePwdFile) getArguments().getParcelable(
 					Global.EXTRA_CORE_PWD_FILE_INSTANCE);
-		} else
-		{
-			throw new IllegalArgumentException(
-					"Arguments must include both EXTRA_CORE_PWD and EXTRA_CORE_PWD_FILE_INSTANCE instances.");
+
+			if (getArguments().containsKey(
+					Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED))
+			{
+				// lets show the editLabel dialog for this newly created password
+				editLabels();
+
+				Toast.makeText(getActivity(),
+						getString(R.string.new_password_added_toast),
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 
@@ -128,7 +141,8 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 		if (getActivity() instanceof SecretListActivity)
 		{
 			SecretListActivity activity = (SecretListActivity) getActivity();
-			//we should let the list know that the content may hav been updated.
+			// we should let the list know that the content may hav been
+			// updated.
 			activity.refreshListContents();
 		} else
 		{
@@ -173,11 +187,11 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			button.setOnClickListener(this);
 	}
 
-	private void copyToClipboard(String name, String message,
-			CoreSecureStringHandler src)
+	public static void copyToClipboard(Activity activity, String name,
+			String message, CoreSecureStringHandler src)
 	{
 		// Copy to clipboard
-		ClipboardManager clipboard = (ClipboardManager) getActivity()
+		ClipboardManager clipboard = (ClipboardManager) activity
 				.getSystemService(Context.CLIPBOARD_SERVICE);
 
 		int size = src.GetLength();
@@ -189,7 +203,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 		String string = new String(arr);
 
-		ClipData clip = ClipData.newPlainText("Password username", string);
+		ClipData clip = ClipData.newPlainText(name, string);
 		clipboard.setPrimaryClip(clip);
 
 		// lets destroy this evil unsecure string with voodo reflection
@@ -201,27 +215,26 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			arr[i] = 0;
 		}
 
-		Toast toast = Toast
-				.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
 		toast.show();
 	}
 
 	public void copyDescription()
 	{
-		copyToClipboard("kryptan password description",
+		copyToClipboard(getActivity(), "kryptan password description",
 				getString(R.string.details_toast_description_copied),
 				mDescription);
 	}
 
 	public void copyUsername()
 	{
-		copyToClipboard("kryptan password username",
+		copyToClipboard(getActivity(), "kryptan password username",
 				getString(R.string.details_toast_username_copied), mUsername);
 	}
 
 	public void copyPassword()
 	{
-		copyToClipboard("kryptan password description",
+		copyToClipboard(getActivity(), "kryptan password description",
 				getString(R.string.details_toast_password_copied), mPassword);
 	}
 
@@ -230,16 +243,17 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void editDescription()
 	{
-//		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-//				mPwdFile, R.string.details_description_edit_title,
-//				R.string.details_description_edit_message, this, Description);
-//
-//		alert.setOnDismissListener(this);
-//		alert.setToastMessage(R.string.details_toast_description_edited);
-//
-//		alert.show();
+		// SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+		// mPwdFile, R.string.details_description_edit_title,
+		// R.string.details_description_edit_message, this, Description);
+		//
+		// alert.setOnDismissListener(this);
+		// alert.setToastMessage(R.string.details_toast_description_edited);
+		//
+		// alert.show();
 
-		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(), getString(R.string.details_description_edit_title));
+		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(),
+				getString(R.string.details_description_edit_title));
 		keyboard.setId(Description);
 		keyboard.setHintText(getString(R.string.details_description_edit_message));
 		keyboard.setCloseValidator(this);
@@ -248,16 +262,17 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void editUsername()
 	{
-//		SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-//				mPwdFile, R.string.details_username_edit_title,
-//				R.string.details_username_edit_message, this, Username);
-//
-//		alert.setOnDismissListener(this);
-//		alert.setToastMessage(R.string.details_toast_username_edited);
-//
-//		alert.show();
+		// SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
+		// mPwdFile, R.string.details_username_edit_title,
+		// R.string.details_username_edit_message, this, Username);
+		//
+		// alert.setOnDismissListener(this);
+		// alert.setToastMessage(R.string.details_toast_username_edited);
+		//
+		// alert.show();
 
-		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(), getString(R.string.details_username_edit_title));
+		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(),
+				getString(R.string.details_username_edit_title));
 		keyboard.setId(Username);
 		keyboard.setHintText(getString(R.string.details_username_edit_message));
 		keyboard.setCloseValidator(this);
@@ -266,8 +281,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void editPassword()
 	{
-		Intent intent = new Intent(getActivity(),
-				GeneratePasswordDialog.class);
+		Intent intent = new Intent(getActivity(), GeneratePasswordDialog.class);
 		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
 		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
 		startActivityForResult(intent, 0);
@@ -318,8 +332,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			deletePassword();
 		}
 	}
-	
-	
+
 	@Override
 	public void onDismiss(DialogInterface dialog)
 	{
@@ -355,7 +368,8 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			{
 				mDescription = result;
 				mPwd.SetNewDescription(mDescription);
-				Toast.makeText(getActivity(), getString(R.string.details_toast_description_edited),
+				Toast.makeText(getActivity(),
+						getString(R.string.details_toast_description_edited),
 						Toast.LENGTH_SHORT).show();
 			} else
 			{
@@ -368,7 +382,8 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			// no validation is needed, username can be empty or whatever else
 			mUsername = result;
 			mPwd.SetNewUsername(mUsername);
-			Toast.makeText(getActivity(), getString(R.string.details_toast_username_edited),
+			Toast.makeText(getActivity(),
+					getString(R.string.details_toast_username_edited),
 					Toast.LENGTH_SHORT).show();
 			break;
 		default:
@@ -376,10 +391,17 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 		}
 		mPwdFile.Save();
-		
-		//no need, it will be called in the onDissmiss metod
+
+		// no need, it will be called in the onDissmiss metod
 		refreshContentView();
 
 		return true;
+	}
+
+	@Override
+	public void KeyboardShowChanged(KryptanKeyboard keyboard, boolean isShowing)
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

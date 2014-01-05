@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -55,31 +56,16 @@ public class ChangeMasterKeyAlert extends BaseAlert
 
 	protected View getView()
 	{
-		// create layout
-		LinearLayout layout = new LinearLayout(mActivity);
-		layout.setOrientation(LinearLayout.VERTICAL);
+		ViewGroup layout = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.dialog_change_master_key, null);
 
-		// create inputs
-		if (mConfirmOldKey)
+		mOldMasterkey = (SecureEditText) layout.findViewById(R.id.oldMasterKey);
+		mPassword = (SecureEditText) layout.findViewById(R.id.newMasterKey);
+		mConfirm = (SecureEditText) layout.findViewById(R.id.confirmMasterKey);
+		if(!mConfirmOldKey)
 		{
-			mOldMasterkey = new SecureEditText(mActivity);
-			mOldMasterkey.setHint(R.string.confirm_old_masterkey_hint);
-			mOldMasterkey.setInputType(InputType.TYPE_CLASS_TEXT
-					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-			layout.addView(mOldMasterkey);
+			mOldMasterkey.setVisibility(View.GONE);
 		}
-
-		mPassword = new SecureEditText(mActivity);
-		mPassword.setHint(R.string.new_masterkey_hint);
-		mPassword.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		layout.addView(mPassword);
-
-		mConfirm = new SecureEditText(mActivity);
-		mConfirm.setHint(R.string.confirm_masterkey_hint);
-		mConfirm.setInputType(InputType.TYPE_CLASS_TEXT
-				| InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		layout.addView(mConfirm);
+		
 		return layout;
 	}
 	

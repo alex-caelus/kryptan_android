@@ -5,10 +5,12 @@ package org.caelus.kryptanandroid.buildingblocks;
 
 import org.caelus.kryptanandroid.EditLabelAdapter;
 import org.caelus.kryptanandroid.R;
-import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseValidator;
+import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
+
+import com.qustom.dialog.QustomDialogBuilder;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +27,7 @@ import android.widget.TextView;
  * @author Alexander
  * 
  */
-public class EditLabelsAlert extends BaseAlert implements KeyboardCloseValidator
+public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 {
 
 	private CorePwd mPwd;
@@ -97,9 +99,10 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseValidator
 
 	protected void ShowLabelSpinner()
 	{
-		AlertDialog.Builder b = new Builder(mActivity);
+		QustomDialogBuilder b = new QustomDialogBuilder(mActivity);
 		b.setTitle(mActivity.getResources().getString(
 				R.string.select_label_text));
+		b.setTitleColor(org.caelus.kryptanandroid.Global.THEME_ACCENT_COLOR_STRING);
 		b.setSingleChoiceItems(mAdapter, -1,
 				new DialogInterface.OnClickListener()
 				{
@@ -247,6 +250,13 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseValidator
 		//validation passed!
 		addLabelToPassword(result);
 		return true;
+	}
+
+	@Override
+	public void KeyboardShowChanged(KryptanKeyboard keyboard, boolean isShowing)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

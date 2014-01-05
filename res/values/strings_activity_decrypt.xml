@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_activity_decrypt">Decrypt</string>
+    <string name="title_activity_decrypt">Kryptan</string>
 
     <!-- Strings related to login -->
     <string name="prompt_password">Password</string>

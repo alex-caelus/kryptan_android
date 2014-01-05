@@ -1,6 +1,8 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.GeneratePasswordDialog.PasswordCreatedListener;
 import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
+import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandlerCollection;
@@ -16,7 +18,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 public class SelectLabelActivity extends Activity implements
-		LabelAdapter.OnLabelSelectionChangedListener
+		LabelAdapter.OnLabelSelectionChangedListener, PasswordCreatedListener
 {
 
 	private CoreSecureStringHandlerCollection mSelectedLabels = new CoreSecureStringHandlerCollection();
@@ -186,7 +188,7 @@ public class SelectLabelActivity extends Activity implements
 		}
 		case R.id.action_new_password:
 		{
-			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this, mCorePwdFile);
+			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this, mCorePwdFile, this);
 			dialog.show();
 			break;
 		}
@@ -219,6 +221,18 @@ public class SelectLabelActivity extends Activity implements
 		Intent intent = new Intent(this, SecretListActivity.class);
 		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 		intent.putExtra(Global.EXTRA_CORE_FILTER_COLLECTION, mSelectedLabels);
+		startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SECRET_LIST);
+	}
+
+	@Override
+	public void onPasswordCreated(CorePwd pwd)
+	{
+		// a new password has been created lets show it!
+		Intent intent = new Intent(this, SecretListActivity.class);
+		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+		intent.putExtra(Global.EXTRA_CORE_FILTER_COLLECTION, new CoreSecureStringHandlerCollection());
+		intent.putExtra(Global.EXTRA_CORE_PWD, pwd);
+		intent.putExtra(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
 		startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SECRET_LIST);
 	}
 

@@ -13,9 +13,14 @@ public class Global
 	public static final String EXTRA_CORE_PWD = "org.caelus.kryptanandroid.PWD";
 	public static final String EXTRA_CORE_PWD_FILE_INSTANCE = "org.caelus.kryptanandroid.PWD_FILE_INSTANCE";
 	public static final String EXTRA_CORE_FILTER_COLLECTION = "org.caelus.kryptanandroid.PWD_FILTER_INSTANCE";
+	public static final String EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED = "org.caelus.kryptanandroid.PWD_NEWLY_CREATED";
 	
 	public static final int MINIMUM_MASTERKEY_LENGTH = 8;
 	public static final long SHIFT_DOUBLE_CLICK_TIME_MILLIS = 500;
 	public static final String THEME_ACCENT_COLOR_STRING = "#669900";
+	
+	public static final int GENERATE_CHARACTERS_MIN = 4;
+	public static final int GENERATE_CHARACTERS_MAX = 64;
+	public static final int GENERATE_CHARACTERS_DEFAULT = 12;
 	
 }

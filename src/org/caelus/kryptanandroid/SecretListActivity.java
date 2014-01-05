@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.GeneratePasswordDialog.PasswordCreatedListener;
 import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
@@ -27,7 +28,7 @@ import android.view.MenuItem;
  * {@link SecretListFragment.Callbacks} interface to listen for item selections.
  */
 public class SecretListActivity extends FragmentActivity implements
-		SecretListFragment.Callbacks
+		SecretListFragment.Callbacks, PasswordCreatedListener
 {
 
 	/**
@@ -101,6 +102,10 @@ public class SecretListActivity extends FragmentActivity implements
 				{
 					mListFragment.showSearch(mLabelsFilter.size());
 				}
+				if(extras.containsKey(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED) && extras.containsKey(Global.EXTRA_CORE_PWD))
+				{
+					showNewlyCreatedPwd((CorePwd)extras.getParcelable(Global.EXTRA_CORE_PWD));
+				}
 			}
 		}
 	}
@@ -148,6 +153,12 @@ public class SecretListActivity extends FragmentActivity implements
 		{
 			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
 			startActivity(intent);
+			break;
+		}
+		case R.id.action_new_password:
+		{
+			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this, mCorePwdFile, this);
+			dialog.show();
 			break;
 		}
 		}
@@ -214,5 +225,45 @@ public class SecretListActivity extends FragmentActivity implements
 	public void refreshListContents()
 	{
 		mAdapter.refreshData();
+	}
+
+	private void showNewlyCreatedPwd(CorePwd pwd)
+	{
+		mListFragment.setSelection(-1);
+		
+		if (mTwoPane)
+		{
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction.
+			Bundle arguments = new Bundle();
+			arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
+			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					mCorePwdFile);
+			arguments.putBoolean(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
+			SecretDetailFragment fragment = new SecretDetailFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.secret_detail_container, fragment).commit();
+
+		} else
+		{
+			// In single-pane mode, simply start the detail activity
+			// for the selected item ID.
+			Intent detailIntent = new Intent(this, SecretDetailActivity.class);
+			detailIntent.putExtra(Global.EXTRA_CORE_PWD, pwd);
+			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+					mCorePwdFile);
+			detailIntent.putExtra(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
+			startActivityForResult(detailIntent,
+					Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL);
+		}
+	}
+
+	@Override
+	public void onPasswordCreated(CorePwd pwd)
+	{
+		//A new password has been created so lets view it!
+		showNewlyCreatedPwd(pwd);
 	}
 }

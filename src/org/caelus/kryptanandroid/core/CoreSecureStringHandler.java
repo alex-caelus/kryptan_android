@@ -128,6 +128,8 @@ public class CoreSecureStringHandler
 	@Override
 	public boolean equals(Object o)
 	{
+		if(o == null)
+			return false;
 		try
 		{
 			CoreSecureStringHandler obj = (CoreSecureStringHandler) o;

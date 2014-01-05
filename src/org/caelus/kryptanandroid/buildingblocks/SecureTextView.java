@@ -6,9 +6,9 @@ import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.text.InputType;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -24,6 +24,8 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 	private Vector<String> mTmp;
 	private char[] mTmpArr;
 	private Layout mLayout;
+	private Paint mHintPaint;
+	private boolean mTextVisible = true;
 
 	public SecureTextView(Context context)
 	{
@@ -59,7 +61,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		int size = mText.GetLength();
 
 		// make sure we have enough space in our temporary buffer
-		if (size >= mTmpArr.length)
+		if (size != mTmpArr.length) //BUGFIX: <= does not work
 		{
 			mTmpArr = new char[size];
 		}
@@ -77,7 +79,8 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 
 	public CoreSecureStringHandler getSecureText()
 	{
-		return mText;
+		return mText == null ? CoreSecureStringHandler.NewSecureString()
+				: mText;
 	}
 
 	@Override
@@ -147,25 +150,35 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		}
 
 	}
+	
+	public void setTextVisibility(boolean visible)
+	{
+		mTextVisible = visible;
+	}
 
 	@Override
 	public void onDraw(Canvas canvas)
 	{
-		if (mPaint == null)
+		if(!mTextVisible)
 		{
-			mPaint = new Paint();
-			mPaint.setStyle(Paint.Style.FILL);
-			mPaint.setTextSize(this.getTextSize());
-			mPaint.setAntiAlias(true);
-			if ((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
-				mPaint.setTextAlign(Align.LEFT);
-			else
-				mPaint.setTextAlign(Align.CENTER);
-			mPaint.setColor(getCurrentTextColor());
+			return; //nothing to do
 		}
-
-		if (mText != null)
+		
+		if (mText != null && mText.GetLength() != 0)
 		{
+			if (mPaint == null)
+			{
+				mPaint = new Paint();
+				mPaint.setStyle(Paint.Style.FILL);
+				mPaint.setTextSize(this.getTextSize());
+				mPaint.setAntiAlias(true);
+				if ((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+					mPaint.setTextAlign(Align.LEFT);
+				else
+					mPaint.setTextAlign(Align.CENTER);
+				mPaint.setColor(getCurrentTextColor());
+			}
+
 			// do this for each line of text
 			int lineCount = getLineCount();
 			for (int currentLine = 0; currentLine < lineCount; currentLine++)
@@ -180,7 +193,10 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 				// we fill our temporary array
 				for (int i = start; i < end; i++)
 				{
-					mTmpArr[i] = mText.GetChar(i);
+					if ((this.getInputType() & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_PASSWORD)
+						mTmpArr[i] = '•';
+					else
+						mTmpArr[i] = mText.GetChar(i);
 				}
 
 				// then we put the information in our temporary string instance
@@ -190,12 +206,17 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 				// we draw the actual text
 				int gr = getGravity();
 
-				int x = ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT) ? 0
-						: this.getWidth() / 2;
-				canvas.drawText(mTmp.get(currentLine), x,
-						this.getTotalPaddingTop()
-								+ (this.getTextSize() * (currentLine + 1)),
-						mPaint);
+				int x;
+				if ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+				{
+					x = this.getTotalPaddingLeft();
+				} else
+				{
+					x = this.getWidth() / 2;
+				}
+
+				canvas.drawText(mTmp.get(currentLine), x, this.getBaseline()
+						+ (this.getTextSize() * (currentLine)), mPaint);
 
 				// And remove the sensitive information IMMEDIATELY afterwards.
 				CoreSecureStringHandler.overwriteStringInternalArr(mTmp
@@ -207,6 +228,34 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 			{
 				mTmpArr[i] = 0;
 			}
+		} else if (getHint() != null && getHint().length() > 0)
+		{
+			// display hint
+			if (mHintPaint == null)
+			{
+				mHintPaint = new Paint();
+				mHintPaint.setStyle(Paint.Style.FILL);
+				mHintPaint.setTextSize(this.getTextSize());
+				mHintPaint.setAntiAlias(true);
+				if ((getGravity() & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+					mHintPaint.setTextAlign(Align.LEFT);
+				else
+					mHintPaint.setTextAlign(Align.CENTER);
+				mHintPaint.setColor(getCurrentHintTextColor());
+			}
+
+			int gr = getGravity();
+			int x;
+			if ((gr & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.LEFT)
+			{
+				x = this.getTotalPaddingLeft();
+			} else
+			{
+				x = this.getWidth() / 2;
+			}
+
+			canvas.drawText(getHint().toString(), x, this.getBaseline(),
+					mHintPaint);
 		}
 	}
 }

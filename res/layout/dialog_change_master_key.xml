@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <org.caelus.kryptanandroid.buildingblocks.SecureEditText
+        android:id="@+id/oldMasterKey"
+        style="@style/SecureTextEditStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/confirm_old_masterkey_hint"
+        android:inputType="textPassword" />
+
+    <org.caelus.kryptanandroid.buildingblocks.SecureEditText
+        android:id="@+id/newMasterKey"
+        style="@style/SecureTextEditStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/new_masterkey_hint"
+        android:inputType="textPassword" />
+
+    <org.caelus.kryptanandroid.buildingblocks.SecureEditText
+        android:id="@+id/confirmMasterKey"
+        style="@style/SecureTextEditStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/confirm_masterkey_hint"
+        android:inputType="textPassword" />
+
+</LinearLayout>

@@ -39,7 +39,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		void KeyboardTextChanged(CoreSecureStringHandler text);
 	}
 
-	public KeyboardCloseValidator mCloseValidator = null;
+	public KeyboardCloseListener mCloseListener = null;
 
 	private Dialog mDialog;
 
@@ -61,10 +61,12 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	private ClipboardManager clipboard;
 
-	public interface KeyboardCloseValidator
+	public interface KeyboardCloseListener
 	{
 		boolean KeyboardCloseValidate(KryptanKeyboard keyboard,
 				CoreSecureStringHandler result);
+
+		void KeyboardShowChanged(KryptanKeyboard keyboard, boolean isShowing);
 	}
 
 	public KryptanKeyboard(Context context, String Title)
@@ -90,8 +92,12 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 		mTextView = (SecureTextView) mKeyboardView
 				.findViewById(R.id.keyboardText);
+		mTextView
+				.setBackgroundResource(R.drawable.kryptantheme_textfield_focused_holo_dark);
 		mPasswordDottedView = (TextView) mKeyboardView
 				.findViewById(R.id.keyboardPasswordDottedText);
+		mPasswordDottedView
+				.setBackgroundResource(R.drawable.kryptantheme_textfield_focused_holo_dark);
 		mHintView = (TextView) mKeyboardView.findViewById(R.id.keyboardHint);
 		mPasteButton = (Button) mKeyboardView.findViewById(R.id.pasteButton);
 		mPasteButton.setOnClickListener(this);
@@ -134,6 +140,10 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	public void show()
 	{
 		mDialog.show();
+		if (mCloseListener != null)
+		{
+			mCloseListener.KeyboardShowChanged(this, true);
+		}
 	}
 
 	public void setInputTypePassword(boolean password)
@@ -154,9 +164,9 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		mTextChangedListener = listener;
 	}
 
-	public void setCloseValidator(KeyboardCloseValidator listener)
+	public void setCloseValidator(KeyboardCloseListener listener)
 	{
-		mCloseValidator = listener;
+		mCloseListener = listener;
 	}
 
 	public void setHintText(CharSequence charSequence)
@@ -211,11 +221,12 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		clipboard = (ClipboardManager) mContext
 				.getSystemService(Context.CLIPBOARD_SERVICE);
 
-		if (clipboard.hasPrimaryClip() && clipboard.getPrimaryClipDescription()
-				.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
+		if (clipboard.hasPrimaryClip()
+				&& clipboard.getPrimaryClipDescription().hasMimeType(
+						ClipDescription.MIMETYPE_TEXT_PLAIN))
 		{
 			ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-			
+
 			addToText(item.getText());
 		}
 	}
@@ -255,6 +266,10 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	public void onDismiss(DialogInterface arg0)
 	{
 		clearText();
+		if (mCloseListener != null)
+		{
+			mCloseListener.KeyboardShowChanged(this, false);
+		}
 	}
 
 	protected void clearText()
@@ -276,20 +291,28 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	private void donePressed()
 	{
-		if (mCloseValidator != null)
+		if (mCloseListener != null)
 		{
 			CoreSecureStringHandler currentText = mTextView.getSecureText();
 			if (currentText == null)
 			{
 				currentText = CoreSecureStringHandler.NewSecureString();
 			}
-			if (mCloseValidator.KeyboardCloseValidate(this, currentText))
+			if (mCloseListener.KeyboardCloseValidate(this, currentText))
 			{
 				mDialog.hide();
+				if (mCloseListener != null)
+				{
+					mCloseListener.KeyboardShowChanged(this, false);
+				}
 			}
 		} else
 		{
 			mDialog.hide();
+			if (mCloseListener != null)
+			{
+				mCloseListener.KeyboardShowChanged(this, false);
+			}
 		}
 	}
 
@@ -297,6 +320,11 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	{
 		clearText();
 		mDialog.hide();
+
+		if (mCloseListener != null)
+		{
+			mCloseListener.KeyboardShowChanged(this, false);
+		}
 	}
 
 	protected void onTextChanged(CoreSecureStringHandler currentText)
@@ -313,7 +341,8 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		if (mPasswordDottedView.getVisibility() == View.VISIBLE)
 		{
 			char[] dummyArray = new char[currentText.GetLength()];
-			Arrays.fill(dummyArray, '•');
+			char c = '•';
+			Arrays.fill(dummyArray, c);
 			mPasswordDottedView.setText(new String(dummyArray));
 		}
 
@@ -425,6 +454,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		switch (button.getId())
 		{
 		case R.id.keyCapitalSharpS:
+		case R.id.keyMy:
 		case R.id.keyCancel:
 		case R.id.keySpace:
 		case R.id.keyDone:
@@ -443,6 +473,31 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		{
 			button.setText(button.getText().toString()
 					.toLowerCase(Locale.ENGLISH));
+		}
+	}
+
+	public void setSecureText(CoreSecureStringHandler newText)
+	{
+		if (newText == null || newText.GetLength() == 0)
+		{
+			if (mHintView.getVisibility() == View.INVISIBLE)
+			{
+				mHintView.setVisibility(View.VISIBLE);
+			}
+		} else
+		{
+			if (mHintView.getVisibility() == View.VISIBLE)
+			{
+				mHintView.setVisibility(View.INVISIBLE);
+			}
+		}
+		CoreSecureStringHandler currentText = mTextView.getSecureText();
+
+		if (!currentText.equals(newText))
+		{
+			mTextView.setSecureText(newText);
+
+			onTextChanged(newText);
 		}
 	}
 }

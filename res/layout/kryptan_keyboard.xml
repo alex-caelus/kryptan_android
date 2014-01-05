@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/keyboardText"
-            style="@android:style/Widget.EditText" />
+            style="@style/SecureTextEditStyle" />
 
         <TextView
             android:id="@+id/keyboardPasswordDottedText"
@@ -34,7 +34,7 @@
             android:gravity="center"
             android:visibility="invisible"
             android:textSize="@dimen/keyboardText" 
-            style="@android:style/Widget.EditText"/>
+            style="@style/SecureTextEditStyle"/>
 
         <Button
             android:id="@+id/pasteButton"
@@ -129,7 +129,7 @@
         <Button
             android:id="@+id/keyBullet"
             style="@style/KeyButtonStyle"
-            android:text="•" />
+            android:text="§" />
 
         <Button
             android:id="@+id/keyAmpersand"
@@ -243,14 +243,14 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/keyEuro"
+            style="@style/KeyButtonStyle"
+            android:text="¤" />
+
+        <Button
             android:id="@+id/keyPound"
             style="@style/KeyButtonStyle"
             android:text="£" />
-
-        <Button
-            android:id="@+id/keyEuro"
-            style="@style/KeyButtonStyle"
-            android:text="€" />
 
         <Button
             android:id="@+id/keyYen"
@@ -258,19 +258,19 @@
             android:text="¥" />
 
         <Button
+            android:id="@+id/keyMy"
+            style="@style/KeyButtonStyle"
+            android:text="µ" />
+
+        <Button
             android:id="@+id/keyCapitalSharpS"
             style="@style/KeyButtonStyle"
             android:text="ß" />
 
         <Button
-            android:id="@+id/keyUumlaut"
+            android:id="@+id/keyUdiaresis"
             style="@style/KeyButtonStyle"
             android:text="Ü" />
-
-        <Button
-            android:id="@+id/keyMy"
-            style="@style/KeyButtonStyle"
-            android:text="µ" />
 
         <Button
             android:id="@+id/keyAE"

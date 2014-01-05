@@ -81,9 +81,14 @@
     <string name="new_password_hint">New password</string>
     <string name="copy">Copy</string>
     <string name="use_non_english_characters">Use non-english characters\n(t.ex. ÅÄÖ)</string>
-    <string name="number_of_characters_to_generate">Number of characters to generate:</string>
+    <string name="number_of_characters_to_generate">Generate %d characters.</string>
     <string name="save_password_with_description">Save password with the following description:</string>
     <string name="password_desciption_hint">Password description</string>
     <string name="paste">paste</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="password_username_hint">Username</string>
+    <string name="save_password_with_username">Add a username (optional):</string>
+    <string name="new_password_added_toast">New password successfully added!</string>
       
 </resources>

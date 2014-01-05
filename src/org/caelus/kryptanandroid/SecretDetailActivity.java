@@ -58,6 +58,12 @@ public class SecretDetailActivity extends FragmentActivity
 
 			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
 					mPwdFile);
+			
+			if(getIntent().hasExtra(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED))
+			{
+				arguments.putBoolean(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
+			}
+			
 			SecretDetailFragment fragment = new SecretDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
