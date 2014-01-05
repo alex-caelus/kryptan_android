@@ -4,17 +4,14 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
 import org.caelus.kryptanandroid.EditLabelAdapter;
+import org.caelus.kryptanandroid.Global;
 import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
-import com.qustom.dialog.QustomDialogBuilder;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.qustom.dialog.QustomDialogBuilder;
 
 /**
  * @author Alexander
@@ -91,7 +90,7 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 
 	protected void CreateNewLabelClicked()
 	{
-		KryptanKeyboard keyboard = new KryptanKeyboard(mActivity, mActivity.getString(R.string.create_new_label));
+		KryptanKeyboard keyboard = new KryptanKeyboard(mActivity, null);
 		keyboard.setHintText(mActivity.getString(R.string.create_new_label_help));
 		keyboard.setCloseValidator(this);
 		keyboard.show();
@@ -100,9 +99,7 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 	protected void ShowLabelSpinner()
 	{
 		QustomDialogBuilder b = new QustomDialogBuilder(mActivity);
-		b.setTitle(mActivity.getResources().getString(
-				R.string.select_label_text));
-		b.setTitleColor(org.caelus.kryptanandroid.Global.THEME_ACCENT_COLOR_STRING);
+		b.setDividerColor(Global.THEME_ACCENT_COLOR_STRING);
 		b.setSingleChoiceItems(mAdapter, -1,
 				new DialogInterface.OnClickListener()
 				{
@@ -116,6 +113,7 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 						dialog.dismiss();
 					}
 				});
+		//b.setMessage(R.string.select_label_text_help);
 		b.show();
 	}
 

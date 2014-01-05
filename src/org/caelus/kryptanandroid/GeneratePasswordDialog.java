@@ -30,11 +30,18 @@ public class GeneratePasswordDialog extends BaseAlert
 	private SeekBar mNumberOfCharctersSeekbar;
 	private TextView mNumberOfCharctersTextView;
 	private SecureEditText mUsernameEditText;
-	private PasswordCreatedListener mFinishedListener;
+	private PasswordCreatedListener mCreatedListener;
 	private ToggleButton mUseSpecialsToggle;
 	private ToggleButton mUseNonEnglishToggle;
+	private CorePwd mEditPwd;
+	private boolean mEditExisting;
 
 	interface PasswordCreatedListener
+	{
+		void onPasswordCreated(CorePwd pwd);
+	}
+	
+	interface PasswordEditedListener
 	{
 		void onPasswordCreated(CorePwd pwd);
 	}
@@ -42,10 +49,21 @@ public class GeneratePasswordDialog extends BaseAlert
 	protected GeneratePasswordDialog(Activity activity, CorePwdFile pwdFile,
 			PasswordCreatedListener finishedListener)
 	{
-		super(activity, pwdFile, R.string.title_activity_generate_password,
+		super(activity, pwdFile, R.string.title_generate_password,
 				BaseAlert.BUTTONS_OK | BaseAlert.BUTTONS_CANCEL, false);
 
-		mFinishedListener = finishedListener;
+		mCreatedListener = finishedListener;
+		mEditExisting = false;
+	}
+
+	protected GeneratePasswordDialog(Activity activity, CorePwdFile pwdFile,
+			CorePwd editMe)
+	{
+		super(activity, pwdFile, R.string.title_edit_password,
+				BaseAlert.BUTTONS_OK | BaseAlert.BUTTONS_CANCEL, false);
+
+		mEditPwd = editMe;
+		mEditExisting = true;
 	}
 
 	@Override
@@ -92,6 +110,16 @@ public class GeneratePasswordDialog extends BaseAlert
 		mNumberOfCharctersSeekbar
 				.setProgress(Global.GENERATE_CHARACTERS_DEFAULT
 						- Global.GENERATE_CHARACTERS_MIN);
+		
+		if(mEditExisting)
+		{
+			mDescriptionEditText.setVisibility(View.GONE);
+			mUsernameEditText.setVisibility(View.GONE);
+			contents.findViewById(R.id.newPasswordDescriptionText).setVisibility(View.GONE);
+			contents.findViewById(R.id.newPasswordUsernameText).setVisibility(View.GONE);
+			
+			mPasswordEditText.setSecureText(mEditPwd.GetPasswordCopy());
+		}
 
 		return contents;
 	}
@@ -216,11 +244,66 @@ public class GeneratePasswordDialog extends BaseAlert
 	@Override
 	protected boolean onPositiveClicked()
 	{
+		if(mEditExisting)
+			return editExistingPasswordClicked();
+		else
+			return createNewPasswordClicked();
+	}
+
+	private boolean editExistingPasswordClicked()
+	{
+		CoreSecureStringHandler password = mPasswordEditText.getSecureText();
+		if (password.GetLength() == 0)
+		{
+			mPasswordEditText.setError(mActivity
+					.getString(R.string.error_field_required));
+			mPasswordEditText.requestFocus();
+			return false;
+		}
+		
+		mEditPwd.SetNewPassword(password);
+		
+		return true;
+	}
+
+	private boolean createNewPasswordClicked()
+	{
 		CoreSecureStringHandler password = mPasswordEditText.getSecureText();
 		CoreSecureStringHandler description = mDescriptionEditText
 				.getSecureText();
 		CoreSecureStringHandler username = mUsernameEditText.getSecureText();
 
+		if(!validateNewPasswordAndDescription(password, description))
+			return false;
+
+		// create new password
+		CorePwd pwd;
+
+		if (username.GetLength() > 0)
+		{
+			pwd = mPwdFile.getPasswordList().createPwd(description, username,
+					password);
+		} else
+		{
+			pwd = mPwdFile.getPasswordList().createPwd(description, password);
+		}
+
+		mPwdFile.Save();
+
+		if (pwd == null)
+		{
+			return false;
+		}
+
+		mCreatedListener.onPasswordCreated(pwd);
+
+		return true;
+	}
+
+	private boolean validateNewPasswordAndDescription(
+			CoreSecureStringHandler password,
+			CoreSecureStringHandler description)
+	{
 		// Validate inputs
 		if (password.GetLength() == 0)
 		{
@@ -261,28 +344,7 @@ public class GeneratePasswordDialog extends BaseAlert
 				return false;
 			}
 		}
-
-		// create new password
-		CorePwd pwd;
-
-		if (username.GetLength() > 0)
-		{
-			pwd = mPwdFile.getPasswordList().createPwd(description, username,
-					password);
-		} else
-		{
-			pwd = mPwdFile.getPasswordList().createPwd(description, password);
-		}
-
-		mPwdFile.Save();
-
-		if (pwd == null)
-		{
-			return false;
-		}
-
-		mFinishedListener.onPasswordCreated(pwd);
-
+		
 		return true;
 	}
 }

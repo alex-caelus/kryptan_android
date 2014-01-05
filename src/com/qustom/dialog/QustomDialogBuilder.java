@@ -81,7 +81,7 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	public QustomDialogBuilder setMessage(int textResId)
 	{
 		mMessage.setText(textResId);
-		mDialogView.findViewById(R.id.message).setVisibility(View.VISIBLE);
+		mDialogView.findViewById(R.id.contentPanel).setVisibility(View.VISIBLE);
 		return this;
 	}
 
@@ -89,7 +89,7 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	public QustomDialogBuilder setMessage(CharSequence text)
 	{
 		mMessage.setText(text);
-		mDialogView.findViewById(R.id.message).setVisibility(View.VISIBLE);
+		mDialogView.findViewById(R.id.contentPanel).setVisibility(View.VISIBLE);
 		return this;
 	}
 
@@ -120,16 +120,20 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	public QustomDialogBuilder setCustomView(int resId, Context context)
 	{
 		mCustomView = View.inflate(context, resId, null);
-		((FrameLayout) mDialogView.findViewById(R.id.customPanel))
-				.addView(mCustomView);
+		FrameLayout customGroup = (FrameLayout) mDialogView
+				.findViewById(R.id.customPanel);
+		customGroup.setVisibility(View.VISIBLE);
+		customGroup.addView(mCustomView);
 		return this;
 	}
 
 	public Builder setCustomView(View view)
 	{
 		mCustomView = view;
-		((FrameLayout) mDialogView.findViewById(R.id.customPanel))
-				.addView(mCustomView);
+		FrameLayout customGroup = (FrameLayout) mDialogView
+				.findViewById(R.id.customPanel);
+		customGroup.setVisibility(View.VISIBLE);
+		customGroup.addView(mCustomView);
 		return this;
 	}
 
@@ -142,7 +146,10 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	public AlertDialog create()
 	{
 		if (mTitle.getText().equals(""))
-			mDialogView.findViewById(R.id.title_template).setVisibility(View.GONE);
+			mDialogView.findViewById(R.id.title_template).setVisibility(
+					View.GONE);
+		if (mMessage.getText().equals(""))
+			mDialogView.findViewById(R.id.message).setVisibility(View.GONE);
 		return super.create();
 	}
 
@@ -150,7 +157,10 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	public AlertDialog show()
 	{
 		if (mTitle.getText().equals(""))
-			mDialogView.findViewById(R.id.title_template).setVisibility(View.GONE);
+			mDialogView.findViewById(R.id.title_template).setVisibility(
+					View.GONE);
+		if (mMessage.getText().equals(""))
+			mDialogView.findViewById(R.id.message).setVisibility(View.GONE);
 		return super.show();
 	}
 

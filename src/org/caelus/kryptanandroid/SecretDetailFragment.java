@@ -243,48 +243,32 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void editDescription()
 	{
-		// SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-		// mPwdFile, R.string.details_description_edit_title,
-		// R.string.details_description_edit_message, this, Description);
-		//
-		// alert.setOnDismissListener(this);
-		// alert.setToastMessage(R.string.details_toast_description_edited);
-		//
-		// alert.show();
-
 		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(),
 				getString(R.string.details_description_edit_title));
 		keyboard.setId(Description);
 		keyboard.setHintText(getString(R.string.details_description_edit_message));
 		keyboard.setCloseValidator(this);
+		keyboard.setSecureText(mDescription);
 		keyboard.show();
 	}
 
 	public void editUsername()
 	{
-		// SingleEditTextAlert alert = new SingleEditTextAlert(getActivity(),
-		// mPwdFile, R.string.details_username_edit_title,
-		// R.string.details_username_edit_message, this, Username);
-		//
-		// alert.setOnDismissListener(this);
-		// alert.setToastMessage(R.string.details_toast_username_edited);
-		//
-		// alert.show();
-
 		KryptanKeyboard keyboard = new KryptanKeyboard(getActivity(),
 				getString(R.string.details_username_edit_title));
 		keyboard.setId(Username);
 		keyboard.setHintText(getString(R.string.details_username_edit_message));
 		keyboard.setCloseValidator(this);
+		keyboard.setSecureText(mUsername);
 		keyboard.show();
 	}
 
 	public void editPassword()
 	{
-		Intent intent = new Intent(getActivity(), GeneratePasswordDialog.class);
-		intent.putExtra(Global.EXTRA_CORE_PWD_LABELS, mPwd);
-		intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mPwdFile);
-		startActivityForResult(intent, 0);
+		GeneratePasswordDialog dialog = new GeneratePasswordDialog(getActivity(), mPwdFile, mPwd);
+		dialog.setToastMessage(R.string.details_toast_password_edited);
+		dialog.setOnDismissListener(this);
+		dialog.show();
 	}
 
 	public void editLabels()
@@ -306,37 +290,39 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	@Override
 	public void onClick(View v)
 	{
-		if (v == getActivity().findViewById(R.id.copyDescription))
+		switch(v.getId())
 		{
+		case R.id.copyDescription:
 			copyDescription();
-		} else if (v == getActivity().findViewById(R.id.copyUsername))
-		{
+			break;
+		case R.id.copyUsername:
 			copyUsername();
-		} else if (v == getActivity().findViewById(R.id.copyPassword))
-		{
+			break;
+		case R.id.copyPassword:
 			copyPassword();
-		} else if (v == getActivity().findViewById(R.id.editDescription))
-		{
+			break;
+		case R.id.editDescription:
 			editDescription();
-		} else if (v == getActivity().findViewById(R.id.editUsername))
-		{
+			break;
+		case R.id.editUsername:
 			editUsername();
-		} else if (v == getActivity().findViewById(R.id.editPassword))
-		{
+			break;
+		case R.id.editPassword:
 			editPassword();
-		} else if (v == getActivity().findViewById(R.id.editLabels))
-		{
+			break;
+		case R.id.editLabels:
 			editLabels();
-		} else if (v == getActivity().findViewById(R.id.deletePassword))
-		{
+			break;
+		case R.id.deletePassword:
 			deletePassword();
+			break;
 		}
 	}
 
 	@Override
 	public void onDismiss(DialogInterface dialog)
 	{
-		// We end up here when the edit labels dialog has been closed
+		// We end up here when the edit labels/password dialog has been closed
 		refreshContentView();
 	}
 

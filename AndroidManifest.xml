@@ -54,12 +54,6 @@
             android:screenOrientation="portrait" > >
         </activity>
         <activity
-            android:name="org.caelus.kryptanandroid.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" > >
-        </activity>
-        <activity
             android:name="org.caelus.kryptanandroid.ChangeMasterKeyActivity"
             android:label="@string/title_activity_change_master_key"
             android:configChanges="orientation|keyboardHidden"
@@ -73,7 +67,7 @@
         </activity>
         <activity
             android:name="org.caelus.kryptanandroid.GeneratePasswordDialog"
-            android:label="@string/title_activity_generate_password"
+            android:label="@string/title_generate_password"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" > >
         </activity>

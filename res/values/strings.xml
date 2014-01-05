@@ -22,7 +22,7 @@
     <string name="create_new_label">&#8230; or by creating a new one!</string>
     <string name="create_new_label_help">Enter a label name:</string>
     <string name="select_label_text">&#8230;selecting an existing label&#8230;</string>
-    <string name="select_label_text_help">Click here to add new label to this password!</string>
+    <string name="select_label_text_help">Click on a label above to add it to the password!</string>
     <string name="button_browse_all_passwords">Browse all %d passwords</string>
     <string name="button_browse_filtered_passwords_format">Browse %d matching passwords</string>
     <string name="text_filter_format">Filtering based on %d label(s)</string>
@@ -60,7 +60,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_syncronize_desktop">Syncronize with Desktop</string>
     <string name="details_labels_text">Labels:</string>
-    <string name="title_activity_generate_password">New Password</string>
+    <string name="title_generate_password">New Password</string>
+    <string name="title_edit_password">Edit Password</string>
     <string name="title_activity_edit_labels">Edit Labels</string>
     <string name="remove_label">X</string>
     <string name="edit_labels_create_new_label_button">Create new</string>

@@ -8,216 +8,10 @@
 package org.caelus.kryptanandroid;
 
 public final class R {
-    public static final class array {
-        public static final int pref_example_list_titles=0x7f080000;
-        public static final int pref_example_list_values=0x7f080001;
-        public static final int pref_sync_frequency_titles=0x7f080002;
-        public static final int pref_sync_frequency_values=0x7f080003;
-    }
     public static final class attr {
-        /** 
-        When set to alignMargins, causes alignment to take place between the outer
-        boundary of a view, as defined by its margins. When set to alignBounds,
-        causes alignment to take place between the edges of the view.
-        The default is alignMargins.
-        See {@link android.widget.GridLayout#setAlignmentMode(int)}.
-        
-         <p>Must be one of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>alignBounds</code></td><td>0</td><td>
-            Align the bounds of the children.
-            See {@link android.widget.GridLayout#ALIGN_BOUNDS}.
-            </td></tr>
-<tr><td><code>alignMargins</code></td><td>1</td><td>
-            Align the margins of the children.
-            See {@link android.widget.GridLayout#ALIGN_MARGINS}.
-            </td></tr>
-</table>
-         */
-        public static final int alignmentMode=0x7f010004;
-        /**  The maximum number of columns to create when automatically positioning children. 
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int columnCount=0x7f010002;
-        /** 
-        When set to true, forces column boundaries to appear in the same order
-        as column indices.
-        The default is true.
-        See {@link android.widget.GridLayout#setColumnOrderPreserved(boolean)}.
-        
-         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int columnOrderPreserved=0x7f010006;
-        /** 
-        The column boundary delimiting the left of the group of cells
-        occupied by this view.
-        
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int layout_column=0x7f010009;
-        /** 
-        The column span: the difference between the right and left
-        boundaries delimiting the group of cells occupied by this view.
-        The default is one.
-        See {@link android.widget.GridLayout.Spec}.
-        
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int layout_columnSpan=0x7f01000a;
-        /** 
-        Gravity specifies how a component should be placed in its group of cells.
-        The default is LEFT | BASELINE.
-        See {@link android.widget.GridLayout.LayoutParams#setGravity(int)}.
-        
-         <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>top</code></td><td>0x30</td><td> Push object to the top of its container, not changing its size. </td></tr>
-<tr><td><code>bottom</code></td><td>0x50</td><td> Push object to the bottom of its container, not changing its size. </td></tr>
-<tr><td><code>left</code></td><td>0x03</td><td> Push object to the left of its container, not changing its size. </td></tr>
-<tr><td><code>right</code></td><td>0x05</td><td> Push object to the right of its container, not changing its size. </td></tr>
-<tr><td><code>center_vertical</code></td><td>0x10</td><td> Place object in the vertical center of its container, not changing its size. </td></tr>
-<tr><td><code>fill_vertical</code></td><td>0x70</td><td> Grow the vertical size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>center_horizontal</code></td><td>0x01</td><td> Place object in the horizontal center of its container, not changing its size. </td></tr>
-<tr><td><code>fill_horizontal</code></td><td>0x07</td><td> Grow the horizontal size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>center</code></td><td>0x11</td><td> Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. </td></tr>
-<tr><td><code>fill</code></td><td>0x77</td><td> Grow the horizontal and vertical size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>clip_vertical</code></td><td>0x80</td><td>
-             Additional option that can be set to have the top and/or bottom edges of
-             the child clipped to its container's bounds.
-             The clip will be based on the vertical gravity: a top gravity will clip the bottom
-             edge, a bottom gravity will clip the top edge, and neither will clip both edges.
-            </td></tr>
-<tr><td><code>clip_horizontal</code></td><td>0x08</td><td>
-             Additional option that can be set to have the left and/or right edges of
-             the child clipped to its container's bounds.
-             The clip will be based on the horizontal gravity: a left gravity will clip the right
-             edge, a right gravity will clip the left edge, and neither will clip both edges.
-            </td></tr>
-<tr><td><code>start</code></td><td>0x00800003</td><td> Push object to the beginning of its container, not changing its size. </td></tr>
-<tr><td><code>end</code></td><td>0x00800005</td><td> Push object to the end of its container, not changing its size. </td></tr>
-</table>
-         */
-        public static final int layout_gravity=0x7f01000b;
-        /**  END MarginLayout layoutparams 
-
-        The row boundary delimiting the top of the group of cells
-        occupied by this view.
-        
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int layout_row=0x7f010007;
-        /** 
-        The row span: the difference between the bottom and top
-        boundaries delimiting the group of cells occupied by this view.
-        The default is one.
-        See {@link android.widget.GridLayout.Spec}.
-        
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int layout_rowSpan=0x7f010008;
-        /** 
-              support versions. All attributes not present in ViewGroup/View are
-              redefined in the support library namespace.
-        
-
-        The orientation property is not used during layout. It is only used to
-        allocate row and column parameters when they are not specified by its children's
-        layout parameters. GridLayout works like LinearLayout in this case;
-        putting all the components either in a single row or in a single column -
-        depending on the value of this flag. In the horizontal case, a columnCount
-        property may be additionally supplied to force new rows to be created when a
-        row is full. The rowCount attribute may be used similarly in the vertical case.
-        The default is horizontal.
-        
-         <p>Must be one of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>horizontal</code></td><td>0</td><td> Defines an horizontal widget. </td></tr>
-<tr><td><code>vertical</code></td><td>1</td><td> Defines a vertical widget. </td></tr>
-</table>
-         */
-        public static final int orientation=0x7f010000;
-        /**  The maximum number of rows to create when automatically positioning children. 
-         <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int rowCount=0x7f010001;
-        /** 
-        When set to true, forces row boundaries to appear in the same order
-        as row indices.
-        The default is true.
-        See {@link android.widget.GridLayout#setRowOrderPreserved(boolean)}.
-        
-         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int rowOrderPreserved=0x7f010005;
-        /** 
-        When set to true, tells GridLayout to use default margins when none are specified
-        in a view's layout parameters.
-        The default value is false.
-        See {@link android.widget.GridLayout#setUseDefaultMargins(boolean)}.
-        
-         <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-         */
-        public static final int useDefaultMargins=0x7f010003;
     }
     public static final class color {
-        public static final int red=0x7f0a0000;
+        public static final int red=0x7f070000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -228,16 +22,13 @@ containing a value of this type.
     
  Default screen margins, per the Android Design guidelines. 
          */
-        public static final int activity_horizontal_margin=0x7f060001;
-        public static final int activity_vertical_margin=0x7f060002;
-        /**  The default gap between components in a layout. 
-         */
-        public static final int default_gap=0x7f060000;
-        public static final int keyboardText=0x7f060007;
-        public static final int listPreferredItemHeightSmall=0x7f060005;
-        public static final int listPreferredItemPaddingEnd=0x7f060004;
-        public static final int listPreferredItemPaddingStart=0x7f060003;
-        public static final int listPreferredItemPaddingTop=0x7f060006;
+        public static final int activity_horizontal_margin=0x7f040000;
+        public static final int activity_vertical_margin=0x7f040001;
+        public static final int keyboardText=0x7f040006;
+        public static final int listPreferredItemHeightSmall=0x7f040004;
+        public static final int listPreferredItemPaddingEnd=0x7f040003;
+        public static final int listPreferredItemPaddingStart=0x7f040002;
+        public static final int listPreferredItemPaddingTop=0x7f040005;
     }
     public static final class drawable {
         public static final int ab_background_textured_kryptanactionbarstyle=0x7f020000;
@@ -337,183 +128,165 @@ containing a value of this type.
         public static final int tab_unselected_pressed_kryptanactionbarstyle=0x7f02005e;
     }
     public static final class id {
-        public static final int EditLabelItemName=0x7f050030;
-        public static final int EditLabelItemPwdCount=0x7f050031;
-        public static final int EditLabelRemoveButton=0x7f05002f;
-        public static final int LabelLayout=0x7f05001b;
-        public static final int action_change_master=0x7f0500af;
-        public static final int action_exit=0x7f0500b0;
-        public static final int action_new_password=0x7f0500ad;
-        public static final int action_search=0x7f0500ac;
-        public static final int action_settings=0x7f0500ab;
-        public static final int action_sync=0x7f0500ae;
-        public static final int alertTitle=0x7f0500a5;
-        public static final int alignBounds=0x7f050002;
-        public static final int alignMargins=0x7f050003;
-        public static final int bottom=0x7f050005;
-        public static final int browseButton=0x7f050019;
-        public static final int center=0x7f05000c;
-        public static final int center_horizontal=0x7f05000a;
-        public static final int center_vertical=0x7f050008;
-        public static final int clip_horizontal=0x7f05000f;
-        public static final int clip_vertical=0x7f05000e;
-        public static final int confirmMasterKey=0x7f05001e;
-        public static final int contentPanel=0x7f0500a7;
-        public static final int copyDescription=0x7f05003a;
-        public static final int copyPassword=0x7f050042;
-        public static final int copyUsername=0x7f05003e;
-        public static final int create_new_label_button=0x7f050036;
-        public static final int customPanel=0x7f0500a9;
-        public static final int deletePassword=0x7f050047;
-        public static final int descriptionHeader=0x7f050038;
-        public static final int descriptionText=0x7f050039;
-        public static final int details_misc_text=0x7f050046;
-        public static final int editDescription=0x7f05003b;
-        public static final int editLabels=0x7f050045;
-        public static final int editPassword=0x7f050043;
-        public static final int editUsername=0x7f05003f;
-        public static final int edit_label_content=0x7f050032;
-        public static final int edit_label_current_labels_layout=0x7f050033;
-        public static final int edit_label_item_layout=0x7f05002e;
-        public static final int edit_label_select_label_button=0x7f050035;
-        public static final int end=0x7f050011;
-        public static final int fill=0x7f05000d;
-        public static final int fill_horizontal=0x7f05000b;
-        public static final int fill_vertical=0x7f050009;
-        public static final int filterText=0x7f05001a;
-        public static final int horizontal=0x7f050000;
-        public static final int icon=0x7f0500a4;
-        public static final int key0=0x7f050081;
-        public static final int key1=0x7f050078;
-        public static final int key2=0x7f050079;
-        public static final int key3=0x7f05007a;
-        public static final int key4=0x7f05007b;
-        public static final int key5=0x7f05007c;
-        public static final int key6=0x7f05007d;
-        public static final int key7=0x7f05007e;
-        public static final int key8=0x7f05007f;
-        public static final int key9=0x7f050080;
-        public static final int keyA=0x7f05008c;
-        public static final int keyAE=0x7f050073;
-        public static final int keyAcute=0x7f050055;
-        public static final int keyAmpersand=0x7f05005a;
-        public static final int keyApostrophe=0x7f050054;
-        public static final int keyAring=0x7f050075;
-        public static final int keyAsterisx=0x7f050058;
-        public static final int keyAt=0x7f050057;
-        public static final int keyAumlaut=0x7f050076;
-        public static final int keyB=0x7f05009a;
-        public static final int keyBackSlash=0x7f05006b;
-        public static final int keyBullet=0x7f050059;
-        public static final int keyC=0x7f050098;
-        public static final int keyCancel=0x7f05009e;
-        public static final int keyCapitalSharpS=0x7f050071;
-        public static final int keyCaret=0x7f05005e;
-        public static final int keyColon=0x7f05005c;
-        public static final int keyComma=0x7f05004d;
-        public static final int keyD=0x7f05008e;
-        public static final int keyDEL=0x7f05009d;
-        public static final int keyDash=0x7f05004e;
-        public static final int keyDollar=0x7f050062;
-        public static final int keyDone=0x7f0500a0;
-        public static final int keyE=0x7f050084;
-        public static final int keyEqual=0x7f050060;
-        public static final int keyEuro=0x7f05006e;
-        public static final int keyExclamation=0x7f050051;
-        public static final int keyF=0x7f05008f;
-        public static final int keyForwardSlash=0x7f050065;
-        public static final int keyG=0x7f050090;
-        public static final int keyGreaterThan=0x7f050061;
-        public static final int keyH=0x7f050091;
-        public static final int keyHash=0x7f050056;
-        public static final int keyI=0x7f050089;
-        public static final int keyJ=0x7f050092;
-        public static final int keyK=0x7f050093;
-        public static final int keyL=0x7f050094;
-        public static final int keyLeftCurlyBracket=0x7f050067;
-        public static final int keyLeftPerenthesis=0x7f050064;
-        public static final int keyLeftSquareBracket=0x7f05006a;
-        public static final int keyLessThan=0x7f05005f;
-        public static final int keyM=0x7f05009c;
-        public static final int keyMy=0x7f050070;
-        public static final int keyN=0x7f05009b;
-        public static final int keyO=0x7f05008a;
-        public static final int keyOslash=0x7f050074;
-        public static final int keyOumlaut=0x7f050077;
-        public static final int keyP=0x7f05008b;
-        public static final int keyPercentage=0x7f05005b;
-        public static final int keyPeriod=0x7f05004c;
-        public static final int keyPipe=0x7f050068;
-        public static final int keyPlus=0x7f050050;
-        public static final int keyPound=0x7f05006d;
-        public static final int keyQ=0x7f050082;
-        public static final int keyQuestionMark=0x7f050052;
-        public static final int keyQuot=0x7f050053;
-        public static final int keyR=0x7f050085;
-        public static final int keyRightCurlyBracket=0x7f050069;
-        public static final int keyRightParentesis=0x7f050066;
-        public static final int keyRightSquareBracket=0x7f05006c;
-        public static final int keyS=0x7f05008d;
-        public static final int keySHIFT=0x7f050095;
-        public static final int keySemiColon=0x7f05005d;
-        public static final int keySpace=0x7f05009f;
-        public static final int keyT=0x7f050086;
-        public static final int keyTilde=0x7f050063;
-        public static final int keyU=0x7f050088;
-        public static final int keyUdiaresis=0x7f050072;
-        public static final int keyUnderscore=0x7f05004f;
-        public static final int keyV=0x7f050099;
-        public static final int keyW=0x7f050083;
-        public static final int keyX=0x7f050097;
-        public static final int keyY=0x7f050087;
-        public static final int keyYen=0x7f05006f;
-        public static final int keyZ=0x7f050096;
-        public static final int keyboardHint=0x7f050048;
-        public static final int keyboardPasswordDottedText=0x7f05004a;
-        public static final int keyboardText=0x7f050049;
-        public static final int labelsText=0x7f050044;
-        public static final int left=0x7f050006;
-        public static final int listCurrentFilter=0x7f050034;
-        public static final int list_item_activated_secure=0x7f0500aa;
-        public static final int login_form=0x7f050014;
-        public static final int login_status=0x7f050012;
-        public static final int login_status_message=0x7f050013;
-        public static final int message=0x7f0500a8;
-        public static final int newMasterKey=0x7f05001d;
-        public static final int newPasswordCopyButton=0x7f050022;
-        public static final int newPasswordDescriptionEditText=0x7f05002b;
-        public static final int newPasswordDescriptionText=0x7f05002a;
-        public static final int newPasswordEnterPasswordText=0x7f050020;
-        public static final int newPasswordGenerateButton=0x7f050023;
-        public static final int newPasswordNonEnglishText=0x7f050027;
-        public static final int newPasswordNonEnglishToggle=0x7f050026;
-        public static final int newPasswordNumberOfCharactersSeekbar=0x7f050029;
-        public static final int newPasswordNumberOfCharactersText=0x7f050028;
-        public static final int newPasswordSpecialCharacterText=0x7f050025;
-        public static final int newPasswordSpecialCharacterToggle=0x7f050024;
-        public static final int newPasswordTextEdit=0x7f050021;
-        public static final int newPasswordUsernameEditText=0x7f05002d;
-        public static final int newPasswordUsernameText=0x7f05002c;
-        public static final int oldMasterKey=0x7f05001c;
-        public static final int parentPanel=0x7f0500a1;
-        public static final int password=0x7f050015;
-        public static final int passwordHeader=0x7f050040;
-        public static final int passwordText=0x7f050041;
-        public static final int pasteButton=0x7f05004b;
-        public static final int right=0x7f050007;
-        public static final int scrollView1=0x7f05001f;
-        public static final int secret_detail=0x7f050037;
-        public static final int secret_detail_container=0x7f050017;
-        public static final int secret_list=0x7f050018;
-        public static final int sign_in_button=0x7f050016;
-        public static final int start=0x7f050010;
-        public static final int titleDivider=0x7f0500a6;
-        public static final int title_template=0x7f0500a3;
-        public static final int top=0x7f050004;
-        public static final int topPanel=0x7f0500a2;
-        public static final int usernameHeader=0x7f05003c;
-        public static final int usernameText=0x7f05003d;
-        public static final int vertical=0x7f050001;
+        public static final int EditLabelItemName=0x7f09001e;
+        public static final int EditLabelItemPwdCount=0x7f09001f;
+        public static final int EditLabelRemoveButton=0x7f09001d;
+        public static final int LabelLayout=0x7f090009;
+        public static final int action_change_master=0x7f09009d;
+        public static final int action_exit=0x7f09009e;
+        public static final int action_new_password=0x7f09009b;
+        public static final int action_search=0x7f09009a;
+        public static final int action_settings=0x7f090099;
+        public static final int action_sync=0x7f09009c;
+        public static final int alertTitle=0x7f090093;
+        public static final int browseButton=0x7f090007;
+        public static final int confirmMasterKey=0x7f09000c;
+        public static final int contentPanel=0x7f090095;
+        public static final int copyDescription=0x7f090028;
+        public static final int copyPassword=0x7f090030;
+        public static final int copyUsername=0x7f09002c;
+        public static final int create_new_label_button=0x7f090024;
+        public static final int customPanel=0x7f090097;
+        public static final int deletePassword=0x7f090035;
+        public static final int descriptionHeader=0x7f090026;
+        public static final int descriptionText=0x7f090027;
+        public static final int details_misc_text=0x7f090034;
+        public static final int editDescription=0x7f090029;
+        public static final int editLabels=0x7f090033;
+        public static final int editPassword=0x7f090031;
+        public static final int editUsername=0x7f09002d;
+        public static final int edit_label_content=0x7f090020;
+        public static final int edit_label_current_labels_layout=0x7f090021;
+        public static final int edit_label_item_layout=0x7f09001c;
+        public static final int edit_label_select_label_button=0x7f090023;
+        public static final int filterText=0x7f090008;
+        public static final int icon=0x7f090092;
+        public static final int key0=0x7f09006f;
+        public static final int key1=0x7f090066;
+        public static final int key2=0x7f090067;
+        public static final int key3=0x7f090068;
+        public static final int key4=0x7f090069;
+        public static final int key5=0x7f09006a;
+        public static final int key6=0x7f09006b;
+        public static final int key7=0x7f09006c;
+        public static final int key8=0x7f09006d;
+        public static final int key9=0x7f09006e;
+        public static final int keyA=0x7f09007a;
+        public static final int keyAE=0x7f090061;
+        public static final int keyAcute=0x7f090043;
+        public static final int keyAmpersand=0x7f090048;
+        public static final int keyApostrophe=0x7f090042;
+        public static final int keyAring=0x7f090063;
+        public static final int keyAsterisx=0x7f090046;
+        public static final int keyAt=0x7f090045;
+        public static final int keyAumlaut=0x7f090064;
+        public static final int keyB=0x7f090088;
+        public static final int keyBackSlash=0x7f090059;
+        public static final int keyBullet=0x7f090047;
+        public static final int keyC=0x7f090086;
+        public static final int keyCancel=0x7f09008c;
+        public static final int keyCapitalSharpS=0x7f09005f;
+        public static final int keyCaret=0x7f09004c;
+        public static final int keyColon=0x7f09004a;
+        public static final int keyComma=0x7f09003b;
+        public static final int keyD=0x7f09007c;
+        public static final int keyDEL=0x7f09008b;
+        public static final int keyDash=0x7f09003c;
+        public static final int keyDollar=0x7f090050;
+        public static final int keyDone=0x7f09008e;
+        public static final int keyE=0x7f090072;
+        public static final int keyEqual=0x7f09004e;
+        public static final int keyEuro=0x7f09005b;
+        public static final int keyExclamation=0x7f09003f;
+        public static final int keyF=0x7f09007d;
+        public static final int keyForwardSlash=0x7f090053;
+        public static final int keyG=0x7f09007e;
+        public static final int keyGreaterThan=0x7f09004f;
+        public static final int keyH=0x7f09007f;
+        public static final int keyHash=0x7f090044;
+        public static final int keyI=0x7f090077;
+        public static final int keyJ=0x7f090080;
+        public static final int keyK=0x7f090081;
+        public static final int keyL=0x7f090082;
+        public static final int keyLeftCurlyBracket=0x7f090055;
+        public static final int keyLeftPerenthesis=0x7f090052;
+        public static final int keyLeftSquareBracket=0x7f090058;
+        public static final int keyLessThan=0x7f09004d;
+        public static final int keyM=0x7f09008a;
+        public static final int keyMy=0x7f09005e;
+        public static final int keyN=0x7f090089;
+        public static final int keyO=0x7f090078;
+        public static final int keyOslash=0x7f090062;
+        public static final int keyOumlaut=0x7f090065;
+        public static final int keyP=0x7f090079;
+        public static final int keyPercentage=0x7f090049;
+        public static final int keyPeriod=0x7f09003a;
+        public static final int keyPipe=0x7f090056;
+        public static final int keyPlus=0x7f09003e;
+        public static final int keyPound=0x7f09005c;
+        public static final int keyQ=0x7f090070;
+        public static final int keyQuestionMark=0x7f090040;
+        public static final int keyQuot=0x7f090041;
+        public static final int keyR=0x7f090073;
+        public static final int keyRightCurlyBracket=0x7f090057;
+        public static final int keyRightParentesis=0x7f090054;
+        public static final int keyRightSquareBracket=0x7f09005a;
+        public static final int keyS=0x7f09007b;
+        public static final int keySHIFT=0x7f090083;
+        public static final int keySemiColon=0x7f09004b;
+        public static final int keySpace=0x7f09008d;
+        public static final int keyT=0x7f090074;
+        public static final int keyTilde=0x7f090051;
+        public static final int keyU=0x7f090076;
+        public static final int keyUdiaresis=0x7f090060;
+        public static final int keyUnderscore=0x7f09003d;
+        public static final int keyV=0x7f090087;
+        public static final int keyW=0x7f090071;
+        public static final int keyX=0x7f090085;
+        public static final int keyY=0x7f090075;
+        public static final int keyYen=0x7f09005d;
+        public static final int keyZ=0x7f090084;
+        public static final int keyboardHint=0x7f090036;
+        public static final int keyboardPasswordDottedText=0x7f090038;
+        public static final int keyboardText=0x7f090037;
+        public static final int labelsText=0x7f090032;
+        public static final int listCurrentFilter=0x7f090022;
+        public static final int list_item_activated_secure=0x7f090098;
+        public static final int login_form=0x7f090002;
+        public static final int login_status=0x7f090000;
+        public static final int login_status_message=0x7f090001;
+        public static final int message=0x7f090096;
+        public static final int newMasterKey=0x7f09000b;
+        public static final int newPasswordCopyButton=0x7f090010;
+        public static final int newPasswordDescriptionEditText=0x7f090019;
+        public static final int newPasswordDescriptionText=0x7f090018;
+        public static final int newPasswordEnterPasswordText=0x7f09000e;
+        public static final int newPasswordGenerateButton=0x7f090011;
+        public static final int newPasswordNonEnglishText=0x7f090015;
+        public static final int newPasswordNonEnglishToggle=0x7f090014;
+        public static final int newPasswordNumberOfCharactersSeekbar=0x7f090017;
+        public static final int newPasswordNumberOfCharactersText=0x7f090016;
+        public static final int newPasswordSpecialCharacterText=0x7f090013;
+        public static final int newPasswordSpecialCharacterToggle=0x7f090012;
+        public static final int newPasswordTextEdit=0x7f09000f;
+        public static final int newPasswordUsernameEditText=0x7f09001b;
+        public static final int newPasswordUsernameText=0x7f09001a;
+        public static final int oldMasterKey=0x7f09000a;
+        public static final int parentPanel=0x7f09008f;
+        public static final int password=0x7f090003;
+        public static final int passwordHeader=0x7f09002e;
+        public static final int passwordText=0x7f09002f;
+        public static final int pasteButton=0x7f090039;
+        public static final int scrollView1=0x7f09000d;
+        public static final int secret_detail=0x7f090025;
+        public static final int secret_detail_container=0x7f090005;
+        public static final int secret_list=0x7f090006;
+        public static final int sign_in_button=0x7f090004;
+        public static final int titleDivider=0x7f090094;
+        public static final int title_template=0x7f090091;
+        public static final int topPanel=0x7f090090;
+        public static final int usernameHeader=0x7f09002a;
+        public static final int usernameText=0x7f09002b;
     }
     public static final class layout {
         public static final int activity_decrypt=0x7f030000;
@@ -542,144 +315,123 @@ containing a value of this type.
         public static final int simple_list_item_activated_secure=0x7f03000f;
     }
     public static final class menu {
-        public static final int change_master_key=0x7f0b0000;
-        public static final int decrypt=0x7f0b0001;
-        public static final int edit_labels=0x7f0b0002;
-        public static final int generate_password=0x7f0b0003;
-        public static final int global_menu=0x7f0b0004;
-        public static final int syncronize_desktop=0x7f0b0005;
+        public static final int change_master_key=0x7f080000;
+        public static final int decrypt=0x7f080001;
+        public static final int edit_labels=0x7f080002;
+        public static final int generate_password=0x7f080003;
+        public static final int global_menu=0x7f080004;
+        public static final int syncronize_desktop=0x7f080005;
     }
     public static final class string {
-        public static final int action_change_master=0x7f070009;
-        public static final int action_edit_labels=0x7f07000b;
-        public static final int action_exit=0x7f07000c;
-        public static final int action_forgot_password=0x7f070062;
-        public static final int action_new_password=0x7f07000a;
-        public static final int action_search=0x7f070007;
-        public static final int action_settings=0x7f070006;
-        public static final int action_sign_in_register=0x7f07005b;
-        public static final int action_sign_in_short=0x7f07005c;
-        public static final int action_sync=0x7f070008;
-        public static final int add_label_to_pwd=0x7f07003f;
-        public static final int alert_image_content_description=0x7f070049;
-        public static final int app_name=0x7f070000;
-        public static final int button_browse_all_passwords=0x7f070016;
-        public static final int button_browse_filtered_passwords_format=0x7f070017;
-        public static final int cancel=0x7f070004;
-        public static final int clear=0x7f070005;
-        public static final int confirm_masterkey_hint=0x7f07000e;
-        public static final int confirm_old_masterkey_hint=0x7f07000f;
-        public static final int copy=0x7f07004e;
-        public static final int create_new_label=0x7f070012;
-        public static final int create_new_label_help=0x7f070013;
-        public static final int current_filter_none=0x7f070045;
-        public static final int current_filter_prefix=0x7f070044;
-        public static final int details_copy_to_clipboard_button=0x7f07001d;
-        public static final int details_delete_password_button=0x7f070031;
-        public static final int details_description_edit_message=0x7f07002b;
-        public static final int details_description_edit_title=0x7f07002e;
-        public static final int details_description_text=0x7f070022;
-        public static final int details_edit_description_button=0x7f070020;
-        public static final int details_edit_labels_button=0x7f070021;
-        public static final int details_edit_password_button=0x7f07001e;
-        public static final int details_edit_username_button=0x7f07001f;
-        public static final int details_labels_text=0x7f07003a;
-        public static final int details_misc_text=0x7f070032;
-        public static final int details_password_edit_message=0x7f07002d;
-        public static final int details_password_edit_title=0x7f070030;
-        public static final int details_password_text=0x7f070024;
-        public static final int details_toast_description_copied=0x7f070025;
-        public static final int details_toast_description_edited=0x7f070028;
-        public static final int details_toast_password_copied=0x7f070027;
-        public static final int details_toast_password_edited=0x7f07002a;
-        public static final int details_toast_username_copied=0x7f070026;
-        public static final int details_toast_username_edited=0x7f070029;
-        public static final int details_username_edit_message=0x7f07002c;
-        public static final int details_username_edit_title=0x7f07002f;
-        public static final int details_username_text=0x7f070023;
-        public static final int edit_labels_create_new_label_button=0x7f07003e;
-        public static final int enter_password_below=0x7f07004c;
-        public static final int error_field_required=0x7f070061;
-        public static final int error_incorrect_confirm=0x7f070060;
-        public static final int error_incorrect_password=0x7f07005f;
-        public static final int error_invalid_email=0x7f070063;
-        public static final int error_invalid_password=0x7f07005e;
-        public static final int error_label_already_exists=0x7f070041;
-        public static final int error_pwd_already_exists=0x7f070042;
-        public static final int generate_new_password_use_special_characters=0x7f07004b;
-        public static final int generate_password_line1=0x7f07004a;
-        public static final int hello_world=0x7f070038;
-        public static final int invalid_text_input=0x7f070040;
-        public static final int keyboard_clear_close=0x7f070048;
-        public static final int keyboard_done=0x7f070046;
-        public static final int keyboard_space=0x7f070047;
-        public static final int label_nr_of_passwords_format=0x7f07001c;
-        public static final int loading=0x7f070001;
-        public static final int login_progress_signing_in=0x7f07005d;
-        public static final int masterkey_change_toast=0x7f070010;
-        public static final int new_masterkey_hint=0x7f07000d;
-        public static final int new_password_added_toast=0x7f070058;
-        public static final int new_password_file_created=0x7f070011;
-        public static final int new_password_hint=0x7f07004d;
-        public static final int no_matching_secrets=0x7f070043;
-        public static final int number_of_characters_to_generate=0x7f070050;
-        public static final int off=0x7f070055;
-        public static final int on=0x7f070054;
-        public static final int password_desciption_hint=0x7f070052;
-        public static final int password_username_hint=0x7f070056;
-        public static final int paste=0x7f070053;
-        public static final int pref_default_display_name=0x7f070069;
-        public static final int pref_description_social_recommendations=0x7f070067;
-        /**  Example settings for Data & Sync 
-         */
-        public static final int pref_header_data_sync=0x7f07006b;
-        /**  Strings related to Settings 
- Example General settings 
-         */
-        public static final int pref_header_general=0x7f070065;
-        /**  Example settings for Notifications 
-         */
-        public static final int pref_header_notifications=0x7f07006e;
-        public static final int pref_ringtone_silent=0x7f070071;
-        public static final int pref_title_add_friends_to_messages=0x7f07006a;
-        public static final int pref_title_display_name=0x7f070068;
-        public static final int pref_title_new_message_notifications=0x7f07006f;
-        public static final int pref_title_ringtone=0x7f070070;
-        public static final int pref_title_social_recommendations=0x7f070066;
-        public static final int pref_title_sync_frequency=0x7f07006c;
-        public static final int pref_title_system_sync_settings=0x7f07006d;
-        public static final int pref_title_vibrate=0x7f070072;
+        public static final int action_change_master=0x7f050009;
+        public static final int action_edit_labels=0x7f05000b;
+        public static final int action_exit=0x7f05000c;
+        public static final int action_forgot_password=0x7f050063;
+        public static final int action_new_password=0x7f05000a;
+        public static final int action_search=0x7f050007;
+        public static final int action_settings=0x7f050006;
+        public static final int action_sign_in_register=0x7f05005c;
+        public static final int action_sign_in_short=0x7f05005d;
+        public static final int action_sync=0x7f050008;
+        public static final int add_label_to_pwd=0x7f050040;
+        public static final int alert_image_content_description=0x7f05004a;
+        public static final int app_name=0x7f050000;
+        public static final int button_browse_all_passwords=0x7f050016;
+        public static final int button_browse_filtered_passwords_format=0x7f050017;
+        public static final int cancel=0x7f050004;
+        public static final int clear=0x7f050005;
+        public static final int confirm_masterkey_hint=0x7f05000e;
+        public static final int confirm_old_masterkey_hint=0x7f05000f;
+        public static final int copy=0x7f05004f;
+        public static final int create_new_label=0x7f050012;
+        public static final int create_new_label_help=0x7f050013;
+        public static final int current_filter_none=0x7f050046;
+        public static final int current_filter_prefix=0x7f050045;
+        public static final int details_copy_to_clipboard_button=0x7f05001d;
+        public static final int details_delete_password_button=0x7f050031;
+        public static final int details_description_edit_message=0x7f05002b;
+        public static final int details_description_edit_title=0x7f05002e;
+        public static final int details_description_text=0x7f050022;
+        public static final int details_edit_description_button=0x7f050020;
+        public static final int details_edit_labels_button=0x7f050021;
+        public static final int details_edit_password_button=0x7f05001e;
+        public static final int details_edit_username_button=0x7f05001f;
+        public static final int details_labels_text=0x7f05003a;
+        public static final int details_misc_text=0x7f050032;
+        public static final int details_password_edit_message=0x7f05002d;
+        public static final int details_password_edit_title=0x7f050030;
+        public static final int details_password_text=0x7f050024;
+        public static final int details_toast_description_copied=0x7f050025;
+        public static final int details_toast_description_edited=0x7f050028;
+        public static final int details_toast_password_copied=0x7f050027;
+        public static final int details_toast_password_edited=0x7f05002a;
+        public static final int details_toast_username_copied=0x7f050026;
+        public static final int details_toast_username_edited=0x7f050029;
+        public static final int details_username_edit_message=0x7f05002c;
+        public static final int details_username_edit_title=0x7f05002f;
+        public static final int details_username_text=0x7f050023;
+        public static final int edit_labels_create_new_label_button=0x7f05003f;
+        public static final int enter_password_below=0x7f05004d;
+        public static final int error_field_required=0x7f050062;
+        public static final int error_incorrect_confirm=0x7f050061;
+        public static final int error_incorrect_password=0x7f050060;
+        public static final int error_invalid_email=0x7f050064;
+        public static final int error_invalid_password=0x7f05005f;
+        public static final int error_label_already_exists=0x7f050042;
+        public static final int error_pwd_already_exists=0x7f050043;
+        public static final int generate_new_password_use_special_characters=0x7f05004c;
+        public static final int generate_password_line1=0x7f05004b;
+        public static final int hello_world=0x7f050038;
+        public static final int invalid_text_input=0x7f050041;
+        public static final int keyboard_clear_close=0x7f050049;
+        public static final int keyboard_done=0x7f050047;
+        public static final int keyboard_space=0x7f050048;
+        public static final int label_nr_of_passwords_format=0x7f05001c;
+        public static final int loading=0x7f050001;
+        public static final int login_progress_signing_in=0x7f05005e;
+        public static final int masterkey_change_toast=0x7f050010;
+        public static final int new_masterkey_hint=0x7f05000d;
+        public static final int new_password_added_toast=0x7f050059;
+        public static final int new_password_file_created=0x7f050011;
+        public static final int new_password_hint=0x7f05004e;
+        public static final int no_matching_secrets=0x7f050044;
+        public static final int number_of_characters_to_generate=0x7f050051;
+        public static final int off=0x7f050056;
+        public static final int on=0x7f050055;
+        public static final int password_desciption_hint=0x7f050053;
+        public static final int password_username_hint=0x7f050057;
+        public static final int paste=0x7f050054;
         /**  Strings related to login 
          */
-        public static final int prompt_password=0x7f07005a;
-        public static final int remove_label=0x7f07003d;
-        public static final int save=0x7f070002;
-        public static final int save_password_with_description=0x7f070051;
-        public static final int save_password_with_username=0x7f070057;
-        public static final int search_filter_hint=0x7f070036;
-        public static final int search_filter_message_labels=0x7f070034;
-        public static final int search_filter_message_nolabels=0x7f070035;
-        public static final int search_filter_title=0x7f070033;
-        public static final int select_label_text=0x7f070014;
-        public static final int select_label_text_help=0x7f070015;
-        public static final int show=0x7f070003;
-        public static final int text_filter_format=0x7f070018;
-        public static final int text_filter_none=0x7f070019;
-        public static final int title_activity_change_master_key=0x7f070037;
-        public static final int title_activity_decrypt=0x7f070059;
-        public static final int title_activity_edit_labels=0x7f07003c;
-        public static final int title_activity_generate_password=0x7f07003b;
-        public static final int title_activity_settings=0x7f070064;
-        public static final int title_activity_syncronize_desktop=0x7f070039;
-        public static final int title_secret_detail=0x7f07001b;
-        public static final int title_secret_list=0x7f07001a;
-        public static final int use_non_english_characters=0x7f07004f;
+        public static final int prompt_password=0x7f05005b;
+        public static final int remove_label=0x7f05003e;
+        public static final int save=0x7f050002;
+        public static final int save_password_with_description=0x7f050052;
+        public static final int save_password_with_username=0x7f050058;
+        public static final int search_filter_hint=0x7f050036;
+        public static final int search_filter_message_labels=0x7f050034;
+        public static final int search_filter_message_nolabels=0x7f050035;
+        public static final int search_filter_title=0x7f050033;
+        public static final int select_label_text=0x7f050014;
+        public static final int select_label_text_help=0x7f050015;
+        public static final int show=0x7f050003;
+        public static final int text_filter_format=0x7f050018;
+        public static final int text_filter_none=0x7f050019;
+        public static final int title_activity_change_master_key=0x7f050037;
+        public static final int title_activity_decrypt=0x7f05005a;
+        public static final int title_activity_edit_labels=0x7f05003d;
+        public static final int title_activity_syncronize_desktop=0x7f050039;
+        public static final int title_edit_password=0x7f05003c;
+        public static final int title_generate_password=0x7f05003b;
+        public static final int title_secret_detail=0x7f05001b;
+        public static final int title_secret_list=0x7f05001a;
+        public static final int use_non_english_characters=0x7f050050;
     }
     public static final class style {
-        public static final int ActionBar_Solid_Kryptanactionbarstyle=0x7f090007;
-        public static final int ActionBar_Transparent_Kryptanactionbarstyle=0x7f090008;
-        public static final int ActionBarTabStyle_Kryptanactionbarstyle=0x7f09000b;
-        public static final int ActionButton_CloseMode_Kryptanactionbarstyle=0x7f09000e;
+        public static final int ActionBar_Solid_Kryptanactionbarstyle=0x7f060007;
+        public static final int ActionBar_Transparent_Kryptanactionbarstyle=0x7f060008;
+        public static final int ActionBarTabStyle_Kryptanactionbarstyle=0x7f06000b;
+        public static final int ActionButton_CloseMode_Kryptanactionbarstyle=0x7f06000e;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -692,493 +444,33 @@ containing a value of this type.
 
         
          */
-        public static final int AppBaseTheme=0x7f090000;
+        public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f090001;
-        public static final int ButtonKryptanTheme=0x7f090010;
-        public static final int DropDownListView_Kryptanactionbarstyle=0x7f09000a;
-        public static final int DropDownNav_Kryptanactionbarstyle=0x7f09000c;
-        public static final int ImageButtonKryptanTheme=0x7f090011;
-        public static final int KeyButtonStyle=0x7f090003;
-        public static final int KeyButtonStyle_Highlighted=0x7f090004;
-        public static final int KryptanTheme=0x7f090015;
-        public static final int LoginFormContainer=0x7f090002;
-        public static final int PopupMenu_Kryptanactionbarstyle=0x7f090009;
-        public static final int ProgressBar_Kryptanactionbarstyle=0x7f09000d;
-        public static final int ProgressBarKryptanTheme=0x7f090012;
+        public static final int AppTheme=0x7f060001;
+        public static final int ButtonKryptanTheme=0x7f060010;
+        public static final int DropDownListView_Kryptanactionbarstyle=0x7f06000a;
+        public static final int DropDownNav_Kryptanactionbarstyle=0x7f06000c;
+        public static final int ImageButtonKryptanTheme=0x7f060011;
+        public static final int KeyButtonStyle=0x7f060003;
+        public static final int KeyButtonStyle_Highlighted=0x7f060004;
+        public static final int KryptanTheme=0x7f060015;
+        public static final int LoginFormContainer=0x7f060002;
+        public static final int PopupMenu_Kryptanactionbarstyle=0x7f060009;
+        public static final int ProgressBar_Kryptanactionbarstyle=0x7f06000d;
+        public static final int ProgressBarKryptanTheme=0x7f060012;
         /**          <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">false</item>
         <item name="android:editable">false</item> 
          */
-        public static final int SecureTextEditStyle=0x7f090005;
-        public static final int SeekBarKryptanTheme=0x7f090013;
-        public static final int Theme_Kryptanactionbarstyle=0x7f090006;
+        public static final int SecureTextEditStyle=0x7f060005;
+        public static final int SeekBarKryptanTheme=0x7f060013;
+        public static final int Theme_Kryptanactionbarstyle=0x7f060006;
         /**  this style is only referenced in a Light.DarkActionBar based theme 
          */
-        public static final int Theme_Kryptanactionbarstyle_Widget=0x7f09000f;
-        public static final int ToggleKryptanTheme=0x7f090014;
+        public static final int Theme_Kryptanactionbarstyle_Widget=0x7f06000f;
+        public static final int ToggleKryptanTheme=0x7f060014;
     }
-    public static final class xml {
-        public static final int pref_data_sync=0x7f040000;
-        public static final int pref_general=0x7f040001;
-        public static final int pref_headers=0x7f040002;
-        public static final int pref_notification=0x7f040003;
-    }
-    public static final class styleable {
-        /** Attributes that can be used with a GridLayout.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #GridLayout_alignmentMode org.caelus.kryptanandroid:alignmentMode}</code></td><td>
-        When set to alignMargins, causes alignment to take place between the outer
-        boundary of a view, as defined by its margins.</td></tr>
-           <tr><td><code>{@link #GridLayout_columnCount org.caelus.kryptanandroid:columnCount}</code></td><td> The maximum number of columns to create when automatically positioning children.</td></tr>
-           <tr><td><code>{@link #GridLayout_columnOrderPreserved org.caelus.kryptanandroid:columnOrderPreserved}</code></td><td>
-        When set to true, forces column boundaries to appear in the same order
-        as column indices.</td></tr>
-           <tr><td><code>{@link #GridLayout_orientation org.caelus.kryptanandroid:orientation}</code></td><td>
-              support versions.</td></tr>
-           <tr><td><code>{@link #GridLayout_rowCount org.caelus.kryptanandroid:rowCount}</code></td><td> The maximum number of rows to create when automatically positioning children.</td></tr>
-           <tr><td><code>{@link #GridLayout_rowOrderPreserved org.caelus.kryptanandroid:rowOrderPreserved}</code></td><td>
-        When set to true, forces row boundaries to appear in the same order
-        as row indices.</td></tr>
-           <tr><td><code>{@link #GridLayout_useDefaultMargins org.caelus.kryptanandroid:useDefaultMargins}</code></td><td>
-        When set to true, tells GridLayout to use default margins when none are specified
-        in a view's layout parameters.</td></tr>
-           </table>
-           @see #GridLayout_alignmentMode
-           @see #GridLayout_columnCount
-           @see #GridLayout_columnOrderPreserved
-           @see #GridLayout_orientation
-           @see #GridLayout_rowCount
-           @see #GridLayout_rowOrderPreserved
-           @see #GridLayout_useDefaultMargins
-         */
-        public static final int[] GridLayout = {
-            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
-            0x7f010004, 0x7f010005, 0x7f010006
-        };
-        /**
-          <p>
-          @attr description
-          
-        When set to alignMargins, causes alignment to take place between the outer
-        boundary of a view, as defined by its margins. When set to alignBounds,
-        causes alignment to take place between the edges of the view.
-        The default is alignMargins.
-        See {@link android.widget.GridLayout#setAlignmentMode(int)}.
-        
-
-
-          <p>Must be one of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>alignBounds</code></td><td>0</td><td>
-            Align the bounds of the children.
-            See {@link android.widget.GridLayout#ALIGN_BOUNDS}.
-            </td></tr>
-<tr><td><code>alignMargins</code></td><td>1</td><td>
-            Align the margins of the children.
-            See {@link android.widget.GridLayout#ALIGN_MARGINS}.
-            </td></tr>
-</table>
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:alignmentMode
-        */
-        public static final int GridLayout_alignmentMode = 4;
-        /**
-          <p>
-          @attr description
-           The maximum number of columns to create when automatically positioning children. 
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:columnCount
-        */
-        public static final int GridLayout_columnCount = 2;
-        /**
-          <p>
-          @attr description
-          
-        When set to true, forces column boundaries to appear in the same order
-        as column indices.
-        The default is true.
-        See {@link android.widget.GridLayout#setColumnOrderPreserved(boolean)}.
-        
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:columnOrderPreserved
-        */
-        public static final int GridLayout_columnOrderPreserved = 6;
-        /**
-          <p>
-          @attr description
-          
-              support versions. All attributes not present in ViewGroup/View are
-              redefined in the support library namespace.
-        
-
-        The orientation property is not used during layout. It is only used to
-        allocate row and column parameters when they are not specified by its children's
-        layout parameters. GridLayout works like LinearLayout in this case;
-        putting all the components either in a single row or in a single column -
-        depending on the value of this flag. In the horizontal case, a columnCount
-        property may be additionally supplied to force new rows to be created when a
-        row is full. The rowCount attribute may be used similarly in the vertical case.
-        The default is horizontal.
-        
-
-
-          <p>Must be one of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>horizontal</code></td><td>0</td><td> Defines an horizontal widget. </td></tr>
-<tr><td><code>vertical</code></td><td>1</td><td> Defines a vertical widget. </td></tr>
-</table>
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:orientation
-        */
-        public static final int GridLayout_orientation = 0;
-        /**
-          <p>
-          @attr description
-           The maximum number of rows to create when automatically positioning children. 
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:rowCount
-        */
-        public static final int GridLayout_rowCount = 1;
-        /**
-          <p>
-          @attr description
-          
-        When set to true, forces row boundaries to appear in the same order
-        as row indices.
-        The default is true.
-        See {@link android.widget.GridLayout#setRowOrderPreserved(boolean)}.
-        
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:rowOrderPreserved
-        */
-        public static final int GridLayout_rowOrderPreserved = 5;
-        /**
-          <p>
-          @attr description
-          
-        When set to true, tells GridLayout to use default margins when none are specified
-        in a view's layout parameters.
-        The default value is false.
-        See {@link android.widget.GridLayout#setUseDefaultMargins(boolean)}.
-        
-
-
-          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:useDefaultMargins
-        */
-        public static final int GridLayout_useDefaultMargins = 3;
-        /** Attributes that can be used with a GridLayout_Layout.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_height android:layout_height}</code></td><td></td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_margin android:layout_margin}</code></td><td>
-              Specifies extra space on the left, top, right and bottom
-              sides of this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_marginBottom android:layout_marginBottom}</code></td><td>
-              Specifies extra space on the bottom side of this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_marginLeft android:layout_marginLeft}</code></td><td>
-              Specifies extra space on the left side of this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_marginRight android:layout_marginRight}</code></td><td>
-              Specifies extra space on the right side of this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_marginTop android:layout_marginTop}</code></td><td>
-              Specifies extra space on the top side of this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_android_layout_width android:layout_width}</code></td><td>
-              support versions.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_layout_column org.caelus.kryptanandroid:layout_column}</code></td><td>
-        The column boundary delimiting the left of the group of cells
-        occupied by this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_layout_columnSpan org.caelus.kryptanandroid:layout_columnSpan}</code></td><td>
-        The column span: the difference between the right and left
-        boundaries delimiting the group of cells occupied by this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_layout_gravity org.caelus.kryptanandroid:layout_gravity}</code></td><td>
-        Gravity specifies how a component should be placed in its group of cells.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_layout_row org.caelus.kryptanandroid:layout_row}</code></td><td> END MarginLayout layoutparams 
-
-        The row boundary delimiting the top of the group of cells
-        occupied by this view.</td></tr>
-           <tr><td><code>{@link #GridLayout_Layout_layout_rowSpan org.caelus.kryptanandroid:layout_rowSpan}</code></td><td>
-        The row span: the difference between the bottom and top
-        boundaries delimiting the group of cells occupied by this view.</td></tr>
-           </table>
-           @see #GridLayout_Layout_android_layout_height
-           @see #GridLayout_Layout_android_layout_margin
-           @see #GridLayout_Layout_android_layout_marginBottom
-           @see #GridLayout_Layout_android_layout_marginLeft
-           @see #GridLayout_Layout_android_layout_marginRight
-           @see #GridLayout_Layout_android_layout_marginTop
-           @see #GridLayout_Layout_android_layout_width
-           @see #GridLayout_Layout_layout_column
-           @see #GridLayout_Layout_layout_columnSpan
-           @see #GridLayout_Layout_layout_gravity
-           @see #GridLayout_Layout_layout_row
-           @see #GridLayout_Layout_layout_rowSpan
-         */
-        public static final int[] GridLayout_Layout = {
-            0x010100f4, 0x010100f5, 0x010100f6, 0x010100f7,
-            0x010100f8, 0x010100f9, 0x010100fa, 0x7f010007,
-            0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b
-        };
-        /**
-          <p>This symbol is the offset where the {@link android.R.attr#layout_height}
-          attribute's value can be found in the {@link #GridLayout_Layout} array.
-          @attr name android:layout_height
-        */
-        public static final int GridLayout_Layout_android_layout_height = 1;
-        /**
-          <p>
-          @attr description
-          
-              Specifies extra space on the left, top, right and bottom
-              sides of this view. This space is outside this view's bounds.
-        
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_margin}.
-          @attr name android:layout_margin
-        */
-        public static final int GridLayout_Layout_android_layout_margin = 2;
-        /**
-          <p>
-          @attr description
-          
-              Specifies extra space on the bottom side of this view.
-              This space is outside this view's bounds.
-        
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_marginBottom}.
-          @attr name android:layout_marginBottom
-        */
-        public static final int GridLayout_Layout_android_layout_marginBottom = 6;
-        /**
-          <p>
-          @attr description
-          
-              Specifies extra space on the left side of this view.
-              This space is outside this view's bounds.
-        
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_marginLeft}.
-          @attr name android:layout_marginLeft
-        */
-        public static final int GridLayout_Layout_android_layout_marginLeft = 3;
-        /**
-          <p>
-          @attr description
-          
-              Specifies extra space on the right side of this view.
-              This space is outside this view's bounds.
-        
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_marginRight}.
-          @attr name android:layout_marginRight
-        */
-        public static final int GridLayout_Layout_android_layout_marginRight = 5;
-        /**
-          <p>
-          @attr description
-          
-              Specifies extra space on the top side of this view.
-              This space is outside this view's bounds.
-        
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_marginTop}.
-          @attr name android:layout_marginTop
-        */
-        public static final int GridLayout_Layout_android_layout_marginTop = 4;
-        /**
-          <p>
-          @attr description
-          
-              support versions. All attributes not present in MarginLayout are
-              redefined in the support library name space.
-        
- START MarginLayout layoutparams 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#layout_width}.
-          @attr name android:layout_width
-        */
-        public static final int GridLayout_Layout_android_layout_width = 0;
-        /**
-          <p>
-          @attr description
-          
-        The column boundary delimiting the left of the group of cells
-        occupied by this view.
-        
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:layout_column
-        */
-        public static final int GridLayout_Layout_layout_column = 9;
-        /**
-          <p>
-          @attr description
-          
-        The column span: the difference between the right and left
-        boundaries delimiting the group of cells occupied by this view.
-        The default is one.
-        See {@link android.widget.GridLayout.Spec}.
-        
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:layout_columnSpan
-        */
-        public static final int GridLayout_Layout_layout_columnSpan = 10;
-        /**
-          <p>
-          @attr description
-          
-        Gravity specifies how a component should be placed in its group of cells.
-        The default is LEFT | BASELINE.
-        See {@link android.widget.GridLayout.LayoutParams#setGravity(int)}.
-        
-
-
-          <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>top</code></td><td>0x30</td><td> Push object to the top of its container, not changing its size. </td></tr>
-<tr><td><code>bottom</code></td><td>0x50</td><td> Push object to the bottom of its container, not changing its size. </td></tr>
-<tr><td><code>left</code></td><td>0x03</td><td> Push object to the left of its container, not changing its size. </td></tr>
-<tr><td><code>right</code></td><td>0x05</td><td> Push object to the right of its container, not changing its size. </td></tr>
-<tr><td><code>center_vertical</code></td><td>0x10</td><td> Place object in the vertical center of its container, not changing its size. </td></tr>
-<tr><td><code>fill_vertical</code></td><td>0x70</td><td> Grow the vertical size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>center_horizontal</code></td><td>0x01</td><td> Place object in the horizontal center of its container, not changing its size. </td></tr>
-<tr><td><code>fill_horizontal</code></td><td>0x07</td><td> Grow the horizontal size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>center</code></td><td>0x11</td><td> Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. </td></tr>
-<tr><td><code>fill</code></td><td>0x77</td><td> Grow the horizontal and vertical size of the object if needed so it completely fills its container. </td></tr>
-<tr><td><code>clip_vertical</code></td><td>0x80</td><td>
-             Additional option that can be set to have the top and/or bottom edges of
-             the child clipped to its container's bounds.
-             The clip will be based on the vertical gravity: a top gravity will clip the bottom
-             edge, a bottom gravity will clip the top edge, and neither will clip both edges.
-            </td></tr>
-<tr><td><code>clip_horizontal</code></td><td>0x08</td><td>
-             Additional option that can be set to have the left and/or right edges of
-             the child clipped to its container's bounds.
-             The clip will be based on the horizontal gravity: a left gravity will clip the right
-             edge, a right gravity will clip the left edge, and neither will clip both edges.
-            </td></tr>
-<tr><td><code>start</code></td><td>0x00800003</td><td> Push object to the beginning of its container, not changing its size. </td></tr>
-<tr><td><code>end</code></td><td>0x00800005</td><td> Push object to the end of its container, not changing its size. </td></tr>
-</table>
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:layout_gravity
-        */
-        public static final int GridLayout_Layout_layout_gravity = 11;
-        /**
-          <p>
-          @attr description
-           END MarginLayout layoutparams 
-
-        The row boundary delimiting the top of the group of cells
-        occupied by this view.
-        
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:layout_row
-        */
-        public static final int GridLayout_Layout_layout_row = 7;
-        /**
-          <p>
-          @attr description
-          
-        The row span: the difference between the bottom and top
-        boundaries delimiting the group of cells occupied by this view.
-        The default is one.
-        See {@link android.widget.GridLayout.Spec}.
-        
-
-
-          <p>Must be an integer value, such as "<code>100</code>".
-<p>This may also be a reference to a resource (in the form
-"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
-theme attribute (in the form
-"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
-containing a value of this type.
-          <p>This is a private symbol.
-          @attr name org.caelus.kryptanandroid:layout_rowSpan
-        */
-        public static final int GridLayout_Layout_layout_rowSpan = 8;
-    };
 }
