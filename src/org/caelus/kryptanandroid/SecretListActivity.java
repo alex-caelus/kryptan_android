@@ -40,6 +40,7 @@ public class SecretListActivity extends FragmentActivity implements
 	private CoreSecureStringHandlerCollection mLabelsFilter;
 	private SecretListFragment mListFragment;
 	private SecretAdapter mAdapter;
+	private SecretDetailFragment mCurrentDetailsFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -49,7 +50,7 @@ public class SecretListActivity extends FragmentActivity implements
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		// get list fragment
+		// get list mCurrentDetailsFragment
 		mListFragment = (SecretListFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.secret_list);
 
@@ -102,9 +103,12 @@ public class SecretListActivity extends FragmentActivity implements
 				{
 					mListFragment.showSearch(mLabelsFilter.size());
 				}
-				if(extras.containsKey(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED) && extras.containsKey(Global.EXTRA_CORE_PWD))
+				if (extras
+						.containsKey(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED)
+						&& extras.containsKey(Global.EXTRA_CORE_PWD))
 				{
-					showNewlyCreatedPwd((CorePwd)extras.getParcelable(Global.EXTRA_CORE_PWD));
+					showNewlyCreatedPwd((CorePwd) extras
+							.getParcelable(Global.EXTRA_CORE_PWD));
 				}
 			}
 		}
@@ -157,7 +161,8 @@ public class SecretListActivity extends FragmentActivity implements
 		}
 		case R.id.action_new_password:
 		{
-			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this, mCorePwdFile, this);
+			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this,
+					mCorePwdFile, this);
 			dialog.show();
 			break;
 		}
@@ -175,8 +180,8 @@ public class SecretListActivity extends FragmentActivity implements
 		if (mTwoPane)
 		{
 			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
+			// adding or replacing the detail mCurrentDetailsFragment using a
+			// mCurrentDetailsFragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
 			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
@@ -205,6 +210,10 @@ public class SecretListActivity extends FragmentActivity implements
 		switch (requestcode)
 		{
 		case Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL:
+			switch(resultcode){
+			case Global.ACTIVITY_REQUEST_CODE_NEW_PASSWORD:
+				showNewlyCreatedPwd((CorePwd) data.getParcelableExtra(Global.EXTRA_CORE_PWD));
+			}
 			onDetailDone(resultcode, data);
 		}
 	}
@@ -227,24 +236,47 @@ public class SecretListActivity extends FragmentActivity implements
 		mAdapter.refreshData();
 	}
 
+	public void deselectCurrentlySelected()
+	{
+		this.mListFragment.getListView().clearChoices();
+		refreshListContents();
+		onItemSelected(null);
+	}
+
 	private void showNewlyCreatedPwd(CorePwd pwd)
 	{
 		mListFragment.setSelection(-1);
-		
+
 		if (mTwoPane)
 		{
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
-			arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
-					mCorePwdFile);
-			arguments.putBoolean(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
-			SecretDetailFragment fragment = new SecretDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.secret_detail_container, fragment).commit();
+			if (pwd == null)
+			{
+				if (mCurrentDetailsFragment != null)
+				{
+					getSupportFragmentManager().beginTransaction()
+							.detach(mCurrentDetailsFragment).commit();
+					
+					mCurrentDetailsFragment = null;
+				}
+			} else
+			{
+				// In two-pane mode, show the detail view in this activity by
+				// adding or replacing the detail mCurrentDetailsFragment using
+				// a
+				// mCurrentDetailsFragment transaction.
+				Bundle arguments = new Bundle();
+				arguments.putParcelable(Global.EXTRA_CORE_PWD, pwd);
+				arguments.putParcelable(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
+						mCorePwdFile);
+				arguments.putBoolean(
+						Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
+				mCurrentDetailsFragment = new SecretDetailFragment();
+				mCurrentDetailsFragment.setArguments(arguments);
+				getSupportFragmentManager()
+						.beginTransaction()
+						.replace(R.id.secret_detail_container,
+								mCurrentDetailsFragment).commit();
+			}
 
 		} else
 		{
@@ -254,7 +286,8 @@ public class SecretListActivity extends FragmentActivity implements
 			detailIntent.putExtra(Global.EXTRA_CORE_PWD, pwd);
 			detailIntent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE,
 					mCorePwdFile);
-			detailIntent.putExtra(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED, true);
+			detailIntent.putExtra(Global.EXTRA_CORE_PASSWORD_IS_NEWLY_CREATED,
+					true);
 			startActivityForResult(detailIntent,
 					Global.ACTIVITY_REQUEST_CODE_SECRET_DETAIL);
 		}
@@ -263,7 +296,7 @@ public class SecretListActivity extends FragmentActivity implements
 	@Override
 	public void onPasswordCreated(CorePwd pwd)
 	{
-		//A new password has been created so lets view it!
+		// A new password has been created so lets view it!
 		showNewlyCreatedPwd(pwd);
 	}
 }

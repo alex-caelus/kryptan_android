@@ -17,23 +17,23 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Kryptanactionbarstyle" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_kryptanactionbarstyle</item>
+        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selectable_background_kryptanactionbarstyle</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Kryptanactionbarstyle</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Kryptanactionbarstyle</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Kryptanactionbarstyle</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Kryptanactionbarstyle</item>
         <item name="android:actionBarStyle">@style/ActionBar.Transparent.Kryptanactionbarstyle</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_kryptanactionbarstyle</item>
-        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_kryptanactionbarstyle</item>
+        <item name="android:actionModeSplitBackground" tools:targetApi="14">@drawable/cab_background_bottom_kryptanactionbarstyle</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Kryptanactionbarstyle</item>
         
         
     </style>
 
-    <style name="ActionBar.Solid.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <style name="ActionBar.Solid.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.Solid" tools:targetApi="14">
         <item name="android:background">@drawable/ab_background_textured_kryptanactionbarstyle</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_kryptanactionbarstyle</item>
         <item name="android:backgroundSplit">@drawable/ab_background_textured_kryptanactionbarstyle</item>
@@ -53,7 +53,7 @@
         <item name="android:listSelector">@drawable/selectable_background_kryptanactionbarstyle</item>
     </style>
 
-    <style name="ActionBarTabStyle.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <style name="ActionBarTabStyle.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.TabView" tools:targetApi="13">
         <item name="android:background">@drawable/tab_indicator_ab_kryptanactionbarstyle</item>
     </style>
 

@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Kryptan</string>
-    <string name="loading">Loading</string>
     <string name="save">OK</string>
     <string name="show">Show</string>
     <string name="cancel">Close</string>
     <string name="clear">Clear</string>
-    <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_sync">Syncronize with desktop</string>
     <string name="action_change_master">New Masterkey</string>
     <string name="action_new_password">Add new password</string>
     <string name="action_edit_labels">Edit labels</string>
-    <string name="action_exit">Exit Kryptan</string>
     <string name="new_masterkey_hint">New masterkey&#8230;</string>
     <string name="confirm_masterkey_hint">Confirm&#8230;</string>
     <string name="confirm_old_masterkey_hint">Old masterkey&#8230;</string>
     <string name="masterkey_change_toast">Masterkey successfully changed!</string>
     <string name="new_password_file_created">Successfully created a new password file!</string>
-    <string name="create_new_label">&#8230; or by creating a new one!</string>
+    <string name="create_new_label">&#8230;or create a new one!</string>
     <string name="create_new_label_help">Enter a label name:</string>
     <string name="select_label_text">&#8230;selecting an existing label&#8230;</string>
-    <string name="select_label_text_help">Click on a label above to add it to the password!</string>
+    <string name="select_label_title">Select an existing label!</string>
     <string name="button_browse_all_passwords">Browse all %d passwords</string>
     <string name="button_browse_filtered_passwords_format">Browse %d matching passwords</string>
     <string name="text_filter_format">Filtering based on %d label(s)</string>
@@ -46,25 +43,21 @@
     <string name="details_toast_password_edited">New password saved!</string>
     <string name="details_description_edit_message">Please input a new description!</string>
     <string name="details_username_edit_message">Please input a new username!</string>
-    <string name="details_password_edit_message">Please input a new password!</string>
     <string name="details_description_edit_title">New description!</string>
     <string name="details_username_edit_title">New username!</string>
-    <string name="details_password_edit_title">New password!</string>
     <string name="details_delete_password_button">Delete this password!</string>
+    <string name="details_delete_password_confirm">Are you sure you want to completely delete this password and all its associated data?</string>
     <string name="details_misc_text">Other actions:</string>
     <string name="search_filter_title">Search</string>
     <string name="search_filter_message_labels">Searching on current filter (%d selected label(s)).</string>
     <string name="search_filter_message_nolabels">Searches all passwords.</string>
     <string name="search_filter_hint">Search&#8230;</string>
-    <string name="title_activity_change_master_key">Change Master Key</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_syncronize_desktop">Syncronize with Desktop</string>
     <string name="details_labels_text">Labels:</string>
     <string name="title_generate_password">New Password</string>
     <string name="title_edit_password">Edit Password</string>
-    <string name="title_activity_edit_labels">Edit Labels</string>
     <string name="remove_label">X</string>
-    <string name="edit_labels_create_new_label_button">Create new</string>
     <string name="add_label_to_pwd">Add labels by&#8230;</string>
     <string name="invalid_text_input">This is not a valid value!</string>
     <string name="error_label_already_exists">This label already exists!</string>
@@ -74,7 +67,7 @@
     <string name="current_filter_none">Current filter: no labels</string>
     <string name="keyboard_done">done</string>
     <string name="keyboard_space">space</string>
-    <string name="keyboard_clear_close">cancel</string>
+    <string name="keyboard_clear_close" tools:ignore="ButtonCase">cancel</string>
     <string name="alert_image_content_description">Alert Image</string>
     <string name="generate_password_line1">Or generate a password!</string>
     <string name="generate_new_password_use_special_characters">Use special characters\n(t.ex. %*\'!#)</string>
@@ -91,5 +84,6 @@
     <string name="password_username_hint">Username</string>
     <string name="save_password_with_username">Add a username (optional):</string>
     <string name="new_password_added_toast">New password successfully added!</string>
+    <string name="empty_label_list">Nothing to show here yet, you need to add some passwords and add them to labels.</string>
       
 </resources>

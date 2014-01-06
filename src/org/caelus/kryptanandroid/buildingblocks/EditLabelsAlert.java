@@ -99,7 +99,9 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 	protected void ShowLabelSpinner()
 	{
 		QustomDialogBuilder b = new QustomDialogBuilder(mActivity);
+		b.setTitle(mActivity.getString(R.string.select_label_title));
 		b.setDividerColor(Global.THEME_ACCENT_COLOR_STRING);
+		b.setTitleColor(Global.THEME_ACCENT_COLOR_STRING);
 		b.setSingleChoiceItems(mAdapter, -1,
 				new DialogInterface.OnClickListener()
 				{
@@ -253,8 +255,6 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 	@Override
 	public void KeyboardShowChanged(KryptanKeyboard keyboard, boolean isShowing)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 }

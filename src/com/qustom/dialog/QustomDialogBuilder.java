@@ -5,17 +5,22 @@ package com.qustom.dialog;
  * and modified by Alexander Nilsson
  */
 
+import org.caelus.kryptanandroid.R;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
-
-import org.caelus.kryptanandroid.R;
 
 public class QustomDialogBuilder extends AlertDialog.Builder
 {
@@ -36,6 +41,10 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	private View mDivider;
 
 	private View mCustomView;
+
+	private OnClickListener mItemClickedListener;
+
+	private ListView mList;
 
 	public QustomDialogBuilder(Context context)
 	{
@@ -141,27 +150,58 @@ public class QustomDialogBuilder extends AlertDialog.Builder
 	{
 		return mCustomView;
 	}
+	
+	@Override
+	public Builder setSingleChoiceItems(ListAdapter adapter, int checkedItem,
+			final OnClickListener listener)
+	{
+		mList = new ListView(getContext());
+		
+		mList.setAdapter(adapter);
+		
+		setCustomView(mList);
+		
+		mItemClickedListener = listener;
+		
+		return this;
+	}
 
 	@Override
 	public AlertDialog create()
 	{
-		if (mTitle.getText().equals(""))
-			mDialogView.findViewById(R.id.title_template).setVisibility(
-					View.GONE);
-		if (mMessage.getText().equals(""))
-			mDialogView.findViewById(R.id.message).setVisibility(View.GONE);
-		return super.create();
+		onCreate();
+		
+		AlertDialog dialog = super.create();
+		
+		onCreated(dialog);
+		
+		return dialog;
 	}
 
-	@Override
-	public AlertDialog show()
+	private void onCreate()
 	{
 		if (mTitle.getText().equals(""))
 			mDialogView.findViewById(R.id.title_template).setVisibility(
 					View.GONE);
 		if (mMessage.getText().equals(""))
 			mDialogView.findViewById(R.id.message).setVisibility(View.GONE);
-		return super.show();
+	}
+
+	private void onCreated(final AlertDialog dialog)
+	{
+		if(mItemClickedListener != null && mList != null)
+		{
+			mList.setOnItemClickListener(new OnItemClickListener()
+			{
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int position, long arg3)
+				{
+					mItemClickedListener.onClick(dialog, position);
+				}
+			});
+		}
 	}
 
 }

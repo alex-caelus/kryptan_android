@@ -15,8 +15,8 @@
 #include "kryptan_core/SecureString.h"
 #include <android/log.h>
 
-//TODO: Remove debug print before release, it is a SERIOUS(!) security hole
-#define DEBUG_PRINT
+//Remove debug print before release, it is a SERIOUS(!) security hole
+//#define DEBUG_PRINT
 
 //-------------Logging ------------------------------------
 

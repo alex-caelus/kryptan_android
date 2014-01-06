@@ -44,23 +44,23 @@ void Java_org_caelus_kryptanandroid_core_CorePwdFile_CreateNew(JNIEnv* env,
 		LOG_DEBUG("%s", "Creating new file on disk");
 		file->CreateNew();
 
-		//TODO: remove dummy data
-		LOG_DEBUG("%s", "Filling it with dummy data");
-		PwdList* list = file->GetPasswordList();
-		Pwd* pwd1 = list->CreatePwd(
-				SecureString("This is my first dummy password!"),
-				SecureString("Username 1"), SecureString("Password 1"));
-		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
-		pwd1 = list->CreatePwd(
-				SecureString("This is my second dummy password!"),
-				SecureString("Username 2"), SecureString("Password 2"));
-		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
-		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
-		pwd1 = list->CreatePwd(SecureString("This is my third dummy password!"),
-				SecureString("Username 3"), SecureString("Password 3"));
-		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
-		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
-		list->AddPwdToLabel(pwd1, SecureString("Third dummy label"));
+//		//This is just dummy data used while debugging
+//		LOG_DEBUG("%s", "Filling it with dummy data");
+//		PwdList* list = file->GetPasswordList();
+//		Pwd* pwd1 = list->CreatePwd(
+//				SecureString("This is my first dummy password!"),
+//				SecureString("Username 1"), SecureString("Password 1"));
+//		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+//		pwd1 = list->CreatePwd(
+//				SecureString("This is my second dummy password!"),
+//				SecureString("Username 2"), SecureString("Password 2"));
+//		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+//		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
+//		pwd1 = list->CreatePwd(SecureString("This is my third dummy password!"),
+//				SecureString("Username 3"), SecureString("Password 3"));
+//		list->AddPwdToLabel(pwd1, SecureString("Dummy data"));
+//		list->AddPwdToLabel(pwd1, SecureString("Another dummy label"));
+//		list->AddPwdToLabel(pwd1, SecureString("Third dummy label"));
 
 	} catch (...) {
 		swallow_cpp_exception_and_throw_java(env);

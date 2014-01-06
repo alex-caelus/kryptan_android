@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import org.caelus.kryptanandroid.GeneratePasswordDialog.PasswordCreatedListener;
 import org.caelus.kryptanandroid.buildingblocks.ChangeMasterKeyAlert;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CorePwd;
@@ -18,7 +19,7 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link SecretDetailFragment}.
  */
-public class SecretDetailActivity extends FragmentActivity
+public class SecretDetailActivity extends FragmentActivity implements PasswordCreatedListener
 {
 
 	private CorePwdFile mPwdFile;
@@ -115,6 +116,13 @@ public class SecretDetailActivity extends FragmentActivity
 			startActivity(intent);
 			break;
 		}
+		case R.id.action_new_password:
+		{
+			GeneratePasswordDialog dialog = new GeneratePasswordDialog(this,
+					mPwdFile, this);
+			dialog.show();
+			break;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -128,5 +136,14 @@ public class SecretDetailActivity extends FragmentActivity
 //			onSettingsDone(resultCode, data);
 //			break;
 		}
+	}
+
+	@Override
+	public void onPasswordCreated(CorePwd pwd)
+	{
+		Intent data = new Intent();
+		data.putExtra(Global.EXTRA_CORE_PWD, pwd);
+		setResult(Global.ACTIVITY_REQUEST_CODE_NEW_PASSWORD, data);
+		finish();
 	}
 }

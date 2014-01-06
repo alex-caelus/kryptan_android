@@ -3,4 +3,7 @@
     <issue id="HardcodedText">
         <ignore path="res/layout/kryptan_keyboard.xml" />
     </issue>
+    <issue id="TooManyViews">
+        <ignore path="res/layout/kryptan_keyboard.xml" />
+    </issue>
 </lint>

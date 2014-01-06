@@ -15,10 +15,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class GeneratePasswordDialog extends BaseAlert
 {
@@ -110,6 +109,10 @@ public class GeneratePasswordDialog extends BaseAlert
 		mNumberOfCharctersSeekbar
 				.setProgress(Global.GENERATE_CHARACTERS_DEFAULT
 						- Global.GENERATE_CHARACTERS_MIN);
+		
+		//default value
+		mUseSpecialsToggle.setChecked(Global.GENERATE_CHARACTERS_USE_SPECIALS_DEFAULT);
+		mUseNonEnglishToggle.setChecked(Global.GENERATE_CHARACTERS_USE_NON_ENGLISH_DEFAULT);
 		
 		if(mEditExisting)
 		{

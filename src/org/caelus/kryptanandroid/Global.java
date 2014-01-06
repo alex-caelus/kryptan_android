@@ -22,5 +22,7 @@ public class Global
 	public static final int GENERATE_CHARACTERS_MIN = 4;
 	public static final int GENERATE_CHARACTERS_MAX = 64;
 	public static final int GENERATE_CHARACTERS_DEFAULT = 12;
+	public static final boolean GENERATE_CHARACTERS_USE_SPECIALS_DEFAULT = true;
+	public static final boolean GENERATE_CHARACTERS_USE_NON_ENGLISH_DEFAULT = false;
 	
 }

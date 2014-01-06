@@ -3,7 +3,7 @@
     android:id="@+id/edit_label_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/edit_label_current_labels_layout"
@@ -30,17 +30,19 @@
             android:id="@+id/edit_label_select_label_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:layout_gravity="center"
-            android:text="@string/select_label_text"/>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/select_label_text"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/create_new_label_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:layout_gravity="center"
-            android:text="@string/create_new_label" />
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/create_new_label"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 

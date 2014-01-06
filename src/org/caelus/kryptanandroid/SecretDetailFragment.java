@@ -1,8 +1,8 @@
 package org.caelus.kryptanandroid;
 
 import java.util.ArrayList;
-import java.util.Set;
 
+import org.caelus.kryptanandroid.buildingblocks.BaseAlert;
 import org.caelus.kryptanandroid.buildingblocks.EditLabelsAlert;
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard;
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseListener;
@@ -16,7 +16,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -281,10 +281,42 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 
 	public void deletePassword()
 	{
-		// TODO: implement this
-		Toast toast = Toast.makeText(getActivity(),
-				"Action not implemented yet!", Toast.LENGTH_SHORT);
-		toast.show();
+		BaseAlert confirm = new BaseAlert(getActivity(), mPwdFile, R.string.details_delete_password_button, BaseAlert.BUTTONS_OK | BaseAlert.BUTTONS_CANCEL, false)
+		{
+			
+			@Override
+			protected boolean onPositiveClicked()
+			{
+				mPwdFile.getPasswordList().deletePwd(mPwd);
+				mPwdFile.Save();
+				if (getActivity() instanceof SecretListActivity)
+				{
+					SecretListActivity activity = (SecretListActivity) getActivity();
+					// we should let the list know that the content no longer exists
+					activity.deselectCurrentlySelected();
+				}
+				else if(getActivity() instanceof SecretDetailActivity)
+				{
+					getActivity().finish();
+				}
+				return true;
+			}
+			
+			@Override
+			protected void onInit()
+			{
+			}
+			
+			@Override
+			protected View getView()
+			{
+				TextView message = new TextView(mActivity);
+				message.setTextAppearance(mActivity, android.R.style.TextAppearance_Medium);
+				message.setText(R.string.details_delete_password_confirm);
+				return message;
+			}
+		};
+		confirm.show();
 	}
 
 	@Override
@@ -387,7 +419,5 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	@Override
 	public void KeyboardShowChanged(KryptanKeyboard keyboard, boolean isShowing)
 	{
-		// TODO Auto-generated method stub
-
 	}
 }

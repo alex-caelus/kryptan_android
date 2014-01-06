@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -16,25 +17,25 @@
             android:gravity="center"
             android:text="Hint"
             android:textColor="#555555"
-            android:typeface="monospace"
-            android:textSize="@dimen/keyboardText" />
+            android:textSize="@dimen/keyboardText"
+            android:typeface="monospace" />
 
         <org.caelus.kryptanandroid.buildingblocks.SecureTextView
             android:id="@+id/keyboardText"
+            style="@style/SecureTextEditStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/keyboardText" />
+
+        <TextView
+            android:id="@+id/keyboardPasswordDottedText"
+            style="@style/SecureTextEditStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/keyboardText"
-            style="@style/SecureTextEditStyle" />
-
-        <TextView
-            android:id="@+id/keyboardPasswordDottedText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:textSize="@dimen/keyboardText" 
-            style="@style/SecureTextEditStyle"/>
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/pasteButton"
@@ -44,7 +45,6 @@
             android:layout_gravity="top|right"
             android:padding="0dp"
             android:text="@string/paste" />
-
     </FrameLayout>
 
     <LinearLayout
@@ -107,7 +107,6 @@
             android:id="@+id/keyHash"
             style="@style/KeyButtonStyle"
             android:text="#" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -420,7 +419,8 @@
 
         <View
             style="@style/KeyButtonStyle"
-            android:layout_weight="5" />
+            android:layout_weight="5"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/keyA"
@@ -482,7 +482,8 @@
             android:id="@+id/keySHIFT"
             style="@style/KeyButtonStyle"
             android:layout_weight="15"
-            android:text="⇧" />
+            android:text="⇧"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/keyZ"
@@ -540,8 +541,10 @@
         <Button
             android:id="@+id/keySpace"
             style="@style/KeyButtonStyle"
+            android:layout_width="0dp"
             android:layout_weight="30"
-            android:text="@string/keyboard_space" />
+            android:text="@string/keyboard_space"
+            tools:ignore="NestedWeights" />
 
         <Button
             android:id="@+id/keyDone"

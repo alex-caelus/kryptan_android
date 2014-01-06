@@ -10,11 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/KryptanTheme" >
- <!-- TODO: remove this line before publishing -->
         <activity
             android:name="org.caelus.kryptanandroid.SelectLabelActivity"
             android:label="@string/app_name"
@@ -54,26 +52,8 @@
             android:screenOrientation="portrait" > >
         </activity>
         <activity
-            android:name="org.caelus.kryptanandroid.ChangeMasterKeyActivity"
-            android:label="@string/title_activity_change_master_key"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" > >
-        </activity>
-        <activity
             android:name="org.caelus.kryptanandroid.SyncronizeDesktopActivity"
             android:label="@string/title_activity_syncronize_desktop"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" > >
-        </activity>
-        <activity
-            android:name="org.caelus.kryptanandroid.GeneratePasswordDialog"
-            android:label="@string/title_generate_password"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" > >
-        </activity>
-        <activity
-            android:name="org.caelus.kryptanandroid.EditLabelsActivity"
-            android:label="@string/title_activity_edit_labels"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" > >
         </activity>

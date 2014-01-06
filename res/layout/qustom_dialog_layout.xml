@@ -23,6 +23,7 @@ I should have probably just rewritten similar code, but i was feeling lazy. Mayb
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentPanel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -62,7 +63,8 @@ I should have probably just rewritten similar code, but i was feeling lazy. Mayb
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dip"
                 android:ellipsize="end"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="MissingRegistered" />
         </LinearLayout>
 
         <View

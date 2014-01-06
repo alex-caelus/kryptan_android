@@ -82,6 +82,9 @@ public class SelectLabelActivity extends Activity implements
 					Global.EXTRA_CORE_PWD_FILE_INSTANCE);
 
 			GridView labelLayout = (GridView) findViewById(R.id.LabelLayout);
+			
+			labelLayout.setEmptyView(findViewById(R.id.emptyLabelView));
+			
 			mAdapter = new LabelAdapter(this,
 					mCorePwdFile.getPasswordList());
 			mAdapter.setOnLabelSelectionChangedListener(this);
@@ -131,8 +134,9 @@ public class SelectLabelActivity extends Activity implements
 		int nrOfMatches = mCorePwdFile.getPasswordList()
 				.filter(mSelectedLabels).size();
 
-		// TODO: if number of matches is zero, disable the button and change the
-		// text.
+		//if number of matches is zero, disable the button.
+		if(button.isEnabled() != (nrOfMatches > 0))
+			button.setEnabled(nrOfMatches > 0);
 
 		button.setText(String.format(buttonFormat, nrOfMatches));
 		text.setText(String.format(textFormat, mSelectedLabels.getContainer()

@@ -56,8 +56,6 @@ public class SecretListFragment extends ListFragment
 
 	private SecureTextView mCurrentLabelFilterTextView;
 
-	private CoreSecureStringHandler mCurrentLabelFilterString;
-
 	/**
 	 * A callback interface that all activities containing this fragment must
 	 * implement. This mechanism allows activities to be notified of item
@@ -124,7 +122,6 @@ public class SecretListFragment extends ListFragment
 	
 	public void setCurrentFilterString(CoreSecureStringHandler text)
 	{
-		mCurrentLabelFilterString = text;
 		mCurrentLabelFilterTextView.setSecureText(text);
 	}
 
