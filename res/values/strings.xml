@@ -84,6 +84,7 @@
     <string name="password_username_hint">Username</string>
     <string name="save_password_with_username">Add a username (optional):</string>
     <string name="new_password_added_toast">New password successfully added!</string>
-    <string name="empty_label_list">Nothing to show here yet, you need to add some passwords and maybe add them to labels to keep things organised.</string>
+    <string name="empty_label_list">Nothing to show here yet, you need to add some passwords and maybe add labels to them to keep things organised.</string>
+    <string name="minimum_masterkey_length_msg">Minimum length: 8 characters</string>
       
 </resources>

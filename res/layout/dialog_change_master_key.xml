@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/minimum_masterkey_length_msg"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <org.caelus.kryptanandroid.buildingblocks.SecureEditText
         android:id="@+id/oldMasterKey"
         style="@style/SecureTextEditStyle"
