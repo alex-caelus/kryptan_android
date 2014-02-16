@@ -223,11 +223,18 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 		if (clipboard.hasPrimaryClip()
 				&& clipboard.getPrimaryClipDescription().hasMimeType(
-						ClipDescription.MIMETYPE_TEXT_PLAIN))
+						ClipDescription.MIMETYPE_TEXT_PLAIN)
+						&& clipboard.getPrimaryClip().getItemCount() > 0)
 		{
 			ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
 
-			addToText(item.getText());
+			if(item != null){
+				CharSequence text = item.getText();
+				if(text != null && text.length() > 0)
+				{
+					addToText(text);
+				}
+			}
 		}
 	}
 
