@@ -54,8 +54,18 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 
 	public void setSecureText(CoreSecureStringHandler text)
 	{
-		// store the text
-		mText = text;
+		if(text == null)
+		{
+			if(mText == null)
+				mText = CoreSecureStringHandler.NewSecureString();
+			else
+				mText.Clear();
+		}
+		else
+		{
+			// store the new text
+			mText = text;
+		}
 
 		// length of text
 		int size = mText.GetLength();
@@ -80,7 +90,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 	public CoreSecureStringHandler getSecureText()
 	{
 		return mText == null ? CoreSecureStringHandler.NewSecureString()
-				: mText;
+				: new CoreSecureStringHandler(mText);
 	}
 
 	@Override

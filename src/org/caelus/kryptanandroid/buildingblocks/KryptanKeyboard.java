@@ -32,13 +32,6 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	private TextView mHintView;
 
-	public KeyboardTextChangedListener mTextChangedListener = null;
-
-	public interface KeyboardTextChangedListener
-	{
-		void KeyboardTextChanged(CoreSecureStringHandler text);
-	}
-
 	public KeyboardCloseListener mCloseListener = null;
 
 	private Dialog mDialog;
@@ -60,6 +53,8 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	private Button mPasteButton;
 
 	private ClipboardManager clipboard;
+
+	private boolean mIsPassword = false;
 
 	public interface KeyboardCloseListener
 	{
@@ -148,6 +143,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	public void setInputTypePassword(boolean password)
 	{
+		mIsPassword = password;
 		if (password)
 		{
 			mTextView.setVisibility(View.INVISIBLE);
@@ -158,10 +154,10 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 			mPasswordDottedView.setVisibility(View.INVISIBLE);
 		}
 	}
-
-	public void setTextChangedListener(KeyboardTextChangedListener listener)
+	
+	public boolean getInputTypePassword()
 	{
-		mTextChangedListener = listener;
+		return mIsPassword;
 	}
 
 	public void setCloseValidator(KeyboardCloseListener listener)
@@ -308,18 +304,11 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 			if (mCloseListener.KeyboardCloseValidate(this, currentText))
 			{
 				mDialog.hide();
-				if (mCloseListener != null)
-				{
-					mCloseListener.KeyboardShowChanged(this, false);
-				}
+				mCloseListener.KeyboardShowChanged(this, false);
 			}
 		} else
 		{
 			mDialog.hide();
-			if (mCloseListener != null)
-			{
-				mCloseListener.KeyboardShowChanged(this, false);
-			}
 		}
 	}
 
@@ -358,12 +347,6 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		{
 			mTextView.setError(null);
 			mPasswordDottedView.setError(null);
-		}
-
-		// LISTENER
-		if (mTextChangedListener != null)
-		{
-			mTextChangedListener.KeyboardTextChanged(currentText);
 		}
 	}
 
@@ -485,7 +468,12 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 	public void setSecureText(CoreSecureStringHandler newText)
 	{
-		if (newText == null || newText.GetLength() == 0)
+		if(newText == null)
+		{
+			newText = CoreSecureStringHandler.NewSecureString();
+		}
+		
+		if (newText.GetLength() == 0)
 		{
 			if (mHintView.getVisibility() == View.INVISIBLE)
 			{

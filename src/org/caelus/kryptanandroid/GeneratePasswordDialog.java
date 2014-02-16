@@ -3,8 +3,8 @@ package org.caelus.kryptanandroid;
 import java.util.ArrayList;
 
 import org.caelus.kryptanandroid.buildingblocks.BaseAlert;
-import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardTextChangedListener;
 import org.caelus.kryptanandroid.buildingblocks.SecureEditText;
+import org.caelus.kryptanandroid.buildingblocks.SecureEditText.SecureEditTextChangedListener;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -131,10 +131,10 @@ public class GeneratePasswordDialog extends BaseAlert
 	{
 
 		mPasswordEditText
-				.setOnSecureTextChangedListener(new KeyboardTextChangedListener()
+				.setOnSecureTextChangedListener(new SecureEditTextChangedListener()
 				{
 					@Override
-					public void KeyboardTextChanged(CoreSecureStringHandler text)
+					public void SecureEditTextChanged(CoreSecureStringHandler text)
 					{
 						passwordChanged(text);
 					}

@@ -1,7 +1,6 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
 import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardCloseListener;
-import org.caelus.kryptanandroid.buildingblocks.KryptanKeyboard.KeyboardTextChangedListener;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.content.Context;
@@ -12,12 +11,17 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 public class SecureEditText extends SecureTextView implements
-		KeyboardCloseListener, KeyboardTextChangedListener, OnTouchListener
+		KeyboardCloseListener, OnTouchListener
 {
 
 	private KryptanKeyboard mKeyboard;
 	private String mKeyboardTitle = null;
-	private KeyboardTextChangedListener mTextChangedListener;
+	private SecureEditTextChangedListener mTextChangedListener;
+	
+	public interface SecureEditTextChangedListener
+	{
+		void SecureEditTextChanged(CoreSecureStringHandler text);
+	}
 
 	public SecureEditText(Context context)
 	{
@@ -48,18 +52,9 @@ public class SecureEditText extends SecureTextView implements
 		mKeyboardTitle = title;
 	}
 	
-	public void setOnSecureTextChangedListener(KeyboardTextChangedListener listener)
+	public void setOnSecureTextChangedListener(SecureEditTextChangedListener listener)
 	{
 		mTextChangedListener = listener;
-	}
-
-	@Override
-	public void KeyboardTextChanged(CoreSecureStringHandler text)
-	{
-		if(mTextChangedListener != null)
-		{
-			mTextChangedListener.KeyboardTextChanged(text);
-		}
 	}
 
 	@Override
@@ -67,6 +62,10 @@ public class SecureEditText extends SecureTextView implements
 			CoreSecureStringHandler result)
 	{
 		setSecureText(result);
+		if(mTextChangedListener != null)
+		{
+			mTextChangedListener.SecureEditTextChanged(result);
+		}
 		return true;
 	}
 
@@ -95,13 +94,18 @@ public class SecureEditText extends SecureTextView implements
 					mKeyboard = new KryptanKeyboard(getContext(),
 							mKeyboardTitle);
 					mKeyboard.setCloseValidator(SecureEditText.this);
-					mKeyboard.setTextChangedListener(SecureEditText.this);
 					mKeyboard.setHintText(getHint());
 					mKeyboard.setInputTypePassword((SecureEditText.this
 							.getInputType() & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_PASSWORD);
 				}
-
-				mKeyboard.setSecureText(getSecureText());
+				
+				if(mKeyboard.getInputTypePassword())
+				{
+					mKeyboard.setSecureText(null);
+				} else
+				{
+					mKeyboard.setSecureText(getSecureText());
+				}
 				mKeyboard.show();
 			}
 		});
