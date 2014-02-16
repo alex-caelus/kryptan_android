@@ -303,19 +303,19 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 			}
 			if (mCloseListener.KeyboardCloseValidate(this, currentText))
 			{
-				mDialog.hide();
+				mDialog.dismiss();
 				mCloseListener.KeyboardShowChanged(this, false);
 			}
 		} else
 		{
-			mDialog.hide();
+			mDialog.dismiss();
 		}
 	}
 
 	private void cancelPressed()
 	{
 		clearText();
-		mDialog.hide();
+		mDialog.dismiss();
 
 		if (mCloseListener != null)
 		{
