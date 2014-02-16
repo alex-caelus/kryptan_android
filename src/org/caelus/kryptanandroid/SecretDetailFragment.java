@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -313,6 +314,14 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 				TextView message = new TextView(mActivity);
 				message.setTextAppearance(mActivity, android.R.style.TextAppearance_Medium);
 				message.setText(R.string.details_delete_password_confirm);
+				message.setPadding(
+						(int) TypedValue
+						.applyDimension(
+								TypedValue.COMPLEX_UNIT_DIP, 
+								14, 
+								getResources()
+								.getDisplayMetrics()
+						), 0, 0, 0);
 				return message;
 			}
 		};
