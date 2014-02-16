@@ -432,7 +432,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 	protected void updateAllButtonsCase()
 	{
 		int rowCount = mKeyboardView.getChildCount();
-		for (int i = 0; i < rowCount; i++)
+		for (int i = 1; i < rowCount; i++) //first row is the keyboardText and PASTE button
 		{
 			ViewGroup row = (ViewGroup) mKeyboardView.getChildAt(i);
 			int columnCount = row.getChildCount();
