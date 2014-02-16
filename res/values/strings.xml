@@ -70,11 +70,11 @@
     <string name="keyboard_clear_close" tools:ignore="ButtonCase">cancel</string>
     <string name="alert_image_content_description">Alert Image</string>
     <string name="generate_password_line1">Or generate a password!</string>
-    <string name="generate_new_password_use_special_characters">Use special characters\n(t.ex. %*\'!#)</string>
+    <string name="generate_new_password_use_special_characters">Include special characters\n(e.g. %*\'!#)</string>
     <string name="enter_password_below">Enter a new password below:</string>
     <string name="new_password_hint">New password</string>
     <string name="copy">Copy</string>
-    <string name="use_non_english_characters">Use non-english characters\n(t.ex. ÅÄÖ)</string>
+    <string name="use_non_english_characters">Include non-english characters\n(e.g. ÆØÅÄÖ)</string>
     <string name="number_of_characters_to_generate">Generate %d characters.</string>
     <string name="save_password_with_description">Save password with the following description:</string>
     <string name="password_desciption_hint">Password description</string>
