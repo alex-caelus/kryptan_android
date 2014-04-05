@@ -520,7 +520,7 @@
             style="@style/KeyButtonStyle"
             android:text="M" />
 
-        <Button
+        <org.caelus.kryptanandroid.buildingblocks.AutoRepeatButton
             android:id="@+id/keyDEL"
             style="@style/KeyButtonStyle"
             android:layout_weight="15"
