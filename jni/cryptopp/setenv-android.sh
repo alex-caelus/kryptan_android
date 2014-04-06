@@ -20,7 +20,8 @@ _ANDROID_NDK="android-ndk-r9d"
 
 # Set _ANDROID_EABI to the EABI you want to use. You can find the
 # list in $ANDROID_NDK_ROOT/toolchains. This value is always used.
-_ANDROID_EABI="arm-linux-androideabi-4.8"
+_ANDROID_EABI="$_TOOL_PREFIX-$_COMPILER"
+# Modified to be set by external environment variable instead
 
 # Set _ANDROID_API to the API you want to use. You should set it
 # to one of: android-14, android-9, android-8, android-14, android-5
@@ -28,10 +29,10 @@ _ANDROID_EABI="arm-linux-androideabi-4.8"
 # example, API-17) because the NDK does not supply the platform. At
 # Android 5.0, there will likely be another platform added (android-18?).
 # This value is always used.
-_ANDROID_API="android-11"
+_ANDROID_API="android-9"
 
 # For Android 4.3 (released July 2013), the tuple is { android-ndk-r9,
-# arm-linux-androideabi-4.8, android-18 }.
+# $_TOOL_PREFIX-4.8, android-18 }.
 
 #####################################################################
 
@@ -87,7 +88,7 @@ fi
 #####################################################################
 
 # Based on ANDROID_NDK_ROOT, try and pick up the required toolchain. We expect something like:
-# /opt/android-ndk-r83/toolchains/arm-linux-androideabi-4.7/prebuilt/linux-x86_64/bin
+# /opt/android-ndk-r83/toolchains/$_TOOL_PREFIX-4.7/prebuilt/linux-x86_64/bin
 # Once we locate the toolchain, we add it to the PATH. Note: this is the 'hard way' of
 # doing things according to the NDK documentation for Ice Cream Sandwich.
 # https://android.googlesource.com/platform/ndk/+/ics-mr0/docs/STANDALONE-TOOLCHAIN.html
@@ -108,42 +109,42 @@ if [ -z "$ANDROID_TOOLCHAIN" ] || [ ! -d "$ANDROID_TOOLCHAIN" ]; then
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-cpp" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-cpp" ]; then
   echo "Error: Failed to find Android cpp. Please edit this script."
   # exit 1
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-gcc" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-gcc" ]; then
   echo "Error: Failed to find Android gcc. Please edit this script."
   # exit 1
 fi
 
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-g++" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-g++" ]; then
   echo "Error: Failed to find Android g++. Please edit this script."
   # exit 1
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-ranlib" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-ranlib" ]; then
   echo "Error: Failed to find Android ranlib. Please edit this script."
   # exit 1
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-ar" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-ar" ]; then
   echo "Error: Failed to find Android ar. Please edit this script."
 # exit 1
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-as" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-as" ]; then
   echo "Error: Failed to find Android as. Please edit this script."
 # exit 1
 fi
 
 # Error checking
-if [ ! -e "$ANDROID_TOOLCHAIN/arm-linux-androideabi-ld" ]; then
+if [ ! -e "$ANDROID_TOOLCHAIN/$_TOOL_PREFIX-ld" ]; then
   echo "Error: Failed to find Android ld. Please edit this script."
   # exit 1
 fi
@@ -184,17 +185,17 @@ fi
 
 # If more than one library is using STLport, all libraries ***must*** use the shared version
 # STLPORT_LIB=libstlport_static.a
-STLPORT_LIB=libgnustl_shared.so
+STLPORT_LIB=libstlport_shared.so
 
 
 # Error checking
-if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi/$STLPORT_LIB" ]; then
+if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/armeabi/$STLPORT_LIB" ]; then
   echo "Error: STLport library is not valid. Please edit this script."
   # exit 1
 fi
 
-export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include/"
-export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi/$STLPORT_LIB"
+export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/stlport/"
+export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/armeabi/$STLPORT_LIB"
 
 #####################################################################
 
@@ -207,13 +208,13 @@ export IS_CROSS_COMPILE=1
 # We need to set them early because IS_ANDROID is used after some
 # capabilities are determined. We set the others (like AS and RANLIB because
 # this script is useful for other projects, including Autotools.
-export CPP=arm-linux-androideabi-cpp
-export CC=arm-linux-androideabi-gcc
-export CXX=arm-linux-androideabi-g++
-export LD=arm-linux-androideabi-ld
-export AS=arm-linux-androideabi-as
-export AR=arm-linux-androideabi-ar
-export RANLIB=arm-linux-androideabi-ranlib
+export CPP=$_TOOL_PREFIX-cpp
+export CC=$_TOOL_PREFIX-gcc
+export CXX=$_TOOL_PREFIX-g++
+export LD=$_TOOL_PREFIX-ld
+export AS=$_TOOL_PREFIX-as
+export AR=$_TOOL_PREFIX-ar
+export RANLIB=$_TOOL_PREFIX-ranlib
 
 VERBOSE=1
 if [ ! -z "$VERBOSE" ] && [ "$VERBOSE" != "0" ]; then
