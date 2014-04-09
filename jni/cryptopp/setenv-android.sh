@@ -20,7 +20,12 @@ _ANDROID_NDK="android-ndk-r9d"
 
 # Set _ANDROID_EABI to the EABI you want to use. You can find the
 # list in $ANDROID_NDK_ROOT/toolchains. This value is always used.
-_ANDROID_EABI="$_TOOL_PREFIX-$_COMPILER"
+_ANDROID_EABI="$_ANDROID_EABI"
+ARCH=$TARGET_EABI
+if [[ $ARCH == *armeabi* ]]
+then
+  ARCH="arm"
+fi
 # Modified to be set by external environment variable instead
 
 # Set _ANDROID_API to the API you want to use. You should set it
@@ -165,7 +170,7 @@ fi
 # For the Android SYSROOT. Can be used on the command line with --sysroot
 # https://android.googlesource.com/platform/ndk/+/ics-mr0/docs/STANDALONE-TOOLCHAIN.html
 ANDROID_API="$_ANDROID_API"
-export ANDROID_SYSROOT="$ANDROID_NDK_ROOT/platforms/$ANDROID_API/arch-arm"
+export ANDROID_SYSROOT="$ANDROID_NDK_ROOT/platforms/$ANDROID_API/arch-$ARCH"
 
 # Error checking
 if [ -z "$ANDROID_SYSROOT" ] || [ ! -d "$ANDROID_SYSROOT" ]; then
@@ -189,13 +194,13 @@ STLPORT_LIB=libstlport_shared.so
 
 
 # Error checking
-if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/armeabi/$STLPORT_LIB" ]; then
+if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/$TARGET_EABI/$STLPORT_LIB" ]; then
   echo "Error: STLport library is not valid. Please edit this script."
   # exit 1
 fi
 
 export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/stlport/"
-export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/armeabi/$STLPORT_LIB"
+export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/$TARGET_EABI/$STLPORT_LIB"
 
 #####################################################################
 

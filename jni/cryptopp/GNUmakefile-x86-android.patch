@@ -82,7 +82,7 @@ Index: GNUmakefile
 +  # Cortex A8 requires a bug fix:
 +  #   LDFLAGS += --fix-cortex-a8
 +
-+  # CXX=arm-linux-androideabi-g++ (and friends) was set in setenv-android.sh
++  # CXX=i686-linux-android-g++ (and friends) was set in setenv-android.sh
 +  CXXFLAGS += -fPIC -DCRYPTOPP_DISABLE_ASM=1 --sysroot=$(ANDROID_SYSROOT) -I$(ANDROID_STL_INC)
 +  LDLIBS += $(ANDROID_STL_LIB)
 +endif
