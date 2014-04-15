@@ -45,6 +45,10 @@ _ANDROID_API="android-9"
 # We expect something like ANDROID_NDK_ROOT=/opt/android-ndk-r8e
 # or ANDROID_NDK_ROOT=/usr/local/android-ndk-r8e.
 
+_ANDROID_COMPILER=${_ANDROID_EABI##*-}
+
+echo "Compiler is: $_ANDROID_COMPILER"
+
 if [ -z "$ANDROID_NDK_ROOT" ]; then
 
   _ANDROID_NDK_ROOT=""
@@ -183,24 +187,24 @@ fi
 # For the Android STL.
 
 # Error checking
-if [ ! -d "$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/stlport/" ]; then
+if [ ! -d "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/$_ANDROID_COMPILER/include/" ]; then
   echo "Error: STLport headers is not valid. Please edit this script."
   # exit 1
 fi
 
 # If more than one library is using STLport, all libraries ***must*** use the shared version
 # STLPORT_LIB=libstlport_static.a
-STLPORT_LIB=libstlport_shared.so
+STLPORT_LIB=libgnustl_shared.so
 
 
 # Error checking
-if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/$TARGET_EABI/$STLPORT_LIB" ]; then
+if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/$_ANDROID_COMPILER/libs/$TARGET_EABI/$STLPORT_LIB" ]; then
   echo "Error: STLport library is not valid. Please edit this script."
   # exit 1
 fi
 
-export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/stlport/"
-export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/stlport/libs/$TARGET_EABI/$STLPORT_LIB"
+export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/$_ANDROID_COMPILER/include/ -I$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/$_ANDROID_COMPILER/libs/$TARGET_EABI/include"
+export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/$_ANDROID_COMPILER/libs/$TARGET_EABI/$STLPORT_LIB"
 
 #####################################################################
 

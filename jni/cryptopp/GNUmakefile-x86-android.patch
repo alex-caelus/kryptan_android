@@ -28,7 +28,7 @@ Index: GNUmakefile
  
 +# Set in the environment
 +ifeq ($(IS_CROSS_COMPILE),1)
-+  ISX86=0
++  # ISX86=0
 +  IS_LINUX=0
 +  IS_MINGW=0
 +  IS_DARWIN=0
@@ -83,7 +83,7 @@ Index: GNUmakefile
 +  #   LDFLAGS += --fix-cortex-a8
 +
 +  # CXX=i686-linux-android-g++ (and friends) was set in setenv-android.sh
-+  CXXFLAGS += -fPIC -DCRYPTOPP_DISABLE_ASM=1 --sysroot=$(ANDROID_SYSROOT) -I$(ANDROID_STL_INC)
++  CXXFLAGS += -fPIC --sysroot=$(ANDROID_SYSROOT) -I$(ANDROID_STL_INC)
 +  LDLIBS += $(ANDROID_STL_LIB)
 +endif
 +
