@@ -83,7 +83,7 @@ Index: GNUmakefile
 +  #   LDFLAGS += --fix-cortex-a8
 +
 +  # CXX=i686-linux-android-g++ (and friends) was set in setenv-android.sh
-+  CXXFLAGS += -fPIC --sysroot=$(ANDROID_SYSROOT) -I$(ANDROID_STL_INC)
++  CXXFLAGS += -fPIC -DCRYPTOPP_DISABLE_ASM=1 --sysroot=$(ANDROID_SYSROOT) -I$(ANDROID_STL_INC)
 +  LDLIBS += $(ANDROID_STL_LIB)
 +endif
 +

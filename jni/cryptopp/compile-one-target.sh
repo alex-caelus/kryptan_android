@@ -38,6 +38,9 @@ then
 	patch -p0 -i "$_CWD/config.h.patch"
 fi
 
+#Store definesa
+$CXX -dM -E - < /dev/null > "$_CWD/$TARGET_EABI/defines.txt"
+
 #compile
 echo "Compilation started ..."
 make clean
