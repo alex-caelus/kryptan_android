@@ -124,7 +124,7 @@ public class ChangeMasterKeyAlert extends BaseAlert
 			}
 
 			// resave password file to set the new masterkey.
-			mPwdFile.Save();
+			mPwdFile.SaveWithDialog(mActivity);
 
 			// call callback
 			mSuccessfull.onSuccessfull();

@@ -86,5 +86,5 @@
     <string name="new_password_added_toast">New password successfully added!</string>
     <string name="empty_label_list">Nothing to show here yet, you need to add some passwords and maybe add labels to them to keep things organised.</string>
     <string name="minimum_masterkey_length_msg">Minimum length: 8 characters</string>
-      
+    <string name="progress_saving">Saving changes&#8230;</string>
 </resources>

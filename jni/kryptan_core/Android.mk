@@ -2,7 +2,7 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_CPPFLAGS = -std=c++0x -g
+LOCAL_CPPFLAGS = -DKRYPTAN_CORE_DO_NOT_USE_SERVER
 LOCAL_MODULE    := kryptan_core
 LOCAL_LDLIBS    := -llog
 NDK_DEBUG=1

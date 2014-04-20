@@ -291,7 +291,7 @@ public class GeneratePasswordDialog extends BaseAlert
 			pwd = mPwdFile.getPasswordList().createPwd(description, password);
 		}
 
-		mPwdFile.Save();
+		mPwdFile.SaveWithDialog(mActivity);
 
 		if (pwd == null)
 		{

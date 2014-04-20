@@ -1,5 +1,12 @@
 package org.caelus.kryptanandroid.core;
 
+import org.caelus.kryptanandroid.R;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -48,13 +55,20 @@ public class CorePwdFile implements Parcelable{
 		return mMasterkey;
 	}
 	
+	public void SaveWithDialog(Context context)
+	{
+		//start dialog
+		SaveAsync saver = new SaveAsync(context);
+		saver.execute();
+	}
+	
 	private native long CreateInstance(String filename);
 	public native void Dispose();
 	
 	public native void CreateNew();
 	public native void TryOpenAndParse();
 	
-	public native void Save();
+	private native void Save();
 
 	private native long GetPasswordListHandle();
 	public native String GetFilename();
@@ -82,6 +96,42 @@ public class CorePwdFile implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeLong(nativeHandle);
 		dest.writeLong(nativeMasterKeyHandle);
+	}
+	private class SaveAsync extends AsyncTask<Void, Void, Void> {
+
+	    private ProgressDialog dialog;
+	    
+	    private Context mContext;
+	    
+	    public SaveAsync(Context context)
+	    {
+	    	mContext = context;
+	    	dialog = new ProgressDialog(context);
+	    }
+
+	    /** progress dialog to show user that the backup is processing. */
+	    /** application context. */
+	    @Override
+	    protected void onPreExecute() {
+	        this.dialog.setMessage(mContext.getResources().getString(R.string.progress_saving));
+	        this.dialog.show();
+	    }
+
+	    @Override
+		protected Void doInBackground(Void... params)
+	    {
+        	Save();
+        	return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(final Void arg) {
+
+	        if (dialog.isShowing()) {
+	            dialog.dismiss();
+	        }
+
+	    }
 	}
 	
 }

@@ -320,7 +320,7 @@ public final class R {
         public static final int action_edit_labels=0x7f050009;
         public static final int action_new_password=0x7f050008;
         public static final int action_search=0x7f050005;
-        public static final int action_sign_in_register=0x7f050057;
+        public static final int action_sign_in_register=0x7f050058;
         public static final int action_sync=0x7f050006;
         public static final int add_label_to_pwd=0x7f050039;
         public static final int alert_image_content_description=0x7f050043;
@@ -360,10 +360,10 @@ public final class R {
         public static final int details_username_text=0x7f050020;
         public static final int empty_label_list=0x7f050053;
         public static final int enter_password_below=0x7f050046;
-        public static final int error_field_required=0x7f05005c;
-        public static final int error_incorrect_confirm=0x7f05005b;
-        public static final int error_incorrect_password=0x7f05005a;
-        public static final int error_invalid_password=0x7f050059;
+        public static final int error_field_required=0x7f05005d;
+        public static final int error_incorrect_confirm=0x7f05005c;
+        public static final int error_incorrect_password=0x7f05005b;
+        public static final int error_invalid_password=0x7f05005a;
         public static final int error_label_already_exists=0x7f05003b;
         public static final int error_pwd_already_exists=0x7f05003c;
         public static final int generate_new_password_use_special_characters=0x7f050045;
@@ -374,7 +374,7 @@ public final class R {
         public static final int keyboard_done=0x7f050040;
         public static final int keyboard_space=0x7f050041;
         public static final int label_nr_of_passwords_format=0x7f050019;
-        public static final int login_progress_signing_in=0x7f050058;
+        public static final int login_progress_signing_in=0x7f050059;
         public static final int masterkey_change_toast=0x7f05000d;
         public static final int minimum_masterkey_length_msg=0x7f050054;
         public static final int new_masterkey_hint=0x7f05000a;
@@ -388,9 +388,10 @@ public final class R {
         public static final int password_desciption_hint=0x7f05004c;
         public static final int password_username_hint=0x7f050050;
         public static final int paste=0x7f05004d;
+        public static final int progress_saving=0x7f050055;
         /**  Strings related to login 
          */
-        public static final int prompt_password=0x7f050056;
+        public static final int prompt_password=0x7f050057;
         public static final int remove_label=0x7f050038;
         public static final int save=0x7f050001;
         public static final int save_password_with_description=0x7f05004b;
@@ -404,7 +405,7 @@ public final class R {
         public static final int show=0x7f050002;
         public static final int text_filter_format=0x7f050015;
         public static final int text_filter_none=0x7f050016;
-        public static final int title_activity_decrypt=0x7f050055;
+        public static final int title_activity_decrypt=0x7f050056;
         public static final int title_activity_syncronize_desktop=0x7f050034;
         public static final int title_edit_password=0x7f050037;
         public static final int title_generate_password=0x7f050036;

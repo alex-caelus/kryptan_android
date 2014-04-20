@@ -289,7 +289,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			protected boolean onPositiveClicked()
 			{
 				mPwdFile.getPasswordList().deletePwd(mPwd);
-				mPwdFile.Save();
+				mPwdFile.SaveWithDialog(mActivity);
 				if (getActivity() instanceof SecretListActivity)
 				{
 					SecretListActivity activity = (SecretListActivity) getActivity();
@@ -417,7 +417,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			break;
 
 		}
-		mPwdFile.Save();
+		mPwdFile.SaveWithDialog(getActivity());
 
 		// no need, it will be called in the onDissmiss metod
 		refreshContentView();

@@ -122,7 +122,7 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 	protected void addLabelToPassword(CoreSecureStringHandler label)
 	{
 		mPwdFile.getPasswordList().addPwdToLabel(mPwd, label);
-		mPwdFile.Save();
+		mPwdFile.SaveWithDialog(mActivity);
 		mAdapter.updateAvailableLabels();
 		if (mAdapter.getCount() == 0)
 		{
@@ -186,7 +186,7 @@ public class EditLabelsAlert extends BaseAlert implements KeyboardCloseListener
 	{
 		CoreSecureStringHandler label = (CoreSecureStringHandler) v.getTag();
 		mPwdFile.getPasswordList().removePwdFromLabel(mPwd, label);
-		mPwdFile.Save();
+		mPwdFile.SaveWithDialog(mActivity);
 
 		mAdapter.updateAvailableLabels();
 		if (mAdapter.getCount() == 0)
