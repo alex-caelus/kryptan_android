@@ -95,7 +95,7 @@ Index: GNUmakefile
  
  libcryptopp.so: $(LIBOBJS)
 -	$(CXX) -shared -o $@ $(LIBOBJS)
-+	$(CXX) $(CXXFLAGS) -shared -o $@ $(LDFLAGS) $(LIBOBJS)
++	$(CXX) $(CXXFLAGS) -shared -o $@ $(LIBOBJS) $(LDFLAGS) $(LDLIBS)
  
  cryptest.exe: libcryptopp.a $(TESTOBJS)
  	$(CXX) -o $@ $(CXXFLAGS) $(TESTOBJS) ./libcryptopp.a $(LDFLAGS) $(LDLIBS)
