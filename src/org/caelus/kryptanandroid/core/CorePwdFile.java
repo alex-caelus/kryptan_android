@@ -2,8 +2,6 @@ package org.caelus.kryptanandroid.core;
 
 import org.caelus.kryptanandroid.R;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -73,6 +71,8 @@ public class CorePwdFile implements Parcelable{
 	private native long GetPasswordListHandle();
 	public native String GetFilename();
 
+	public native String SaveToString();
+
 	public native boolean IsOpen();
 	public native boolean Exists();
 	
@@ -114,6 +114,8 @@ public class CorePwdFile implements Parcelable{
 	    @Override
 	    protected void onPreExecute() {
 	        this.dialog.setMessage(mContext.getResources().getString(R.string.progress_saving));
+	        this.dialog.setIndeterminate(true);
+	        this.dialog.setCancelable(false);
 	        this.dialog.show();
 	    }
 

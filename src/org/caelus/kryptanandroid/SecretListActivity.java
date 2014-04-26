@@ -85,20 +85,21 @@ public class SecretListActivity extends FragmentActivity implements
 					mLabelsFilter = (CoreSecureStringHandlerCollection) extras
 							.getParcelable(Global.EXTRA_CORE_FILTER_COLLECTION);
 				}
+
 				if (mCorePwdFile == null || mLabelsFilter == null)
 				{
 					throw new IllegalArgumentException(
 							"instances of password file and filter collection must be provided in the intent.");
-				} else
-				{
-					mAdapter = new SecretAdapter(this, mCorePwdFile,
-							mLabelsFilter);
-					mListFragment.setListAdapter(mAdapter);
-					mListFragment.setCurrentFilterString(mLabelsFilter
-							.getCombinedCommaSeparatedString(
-									getString(R.string.current_filter_prefix),
-									getString(R.string.current_filter_none)));
-				}
+				} 
+
+				mAdapter = new SecretAdapter(this, mCorePwdFile,
+						mLabelsFilter);
+				mListFragment.setListAdapter(mAdapter);
+				mListFragment.setCurrentFilterString(mLabelsFilter
+						.getCombinedCommaSeparatedString(
+								getString(R.string.current_filter_prefix),
+								getString(R.string.current_filter_none)));
+				
 				if (extras.containsKey(Global.EXTRA_CORE_SHOW_SEARCH))
 				{
 					mListFragment.showSearch(mLabelsFilter.size());
@@ -112,6 +113,12 @@ public class SecretListActivity extends FragmentActivity implements
 				}
 			}
 		}
+
+		if (mCorePwdFile == null || mLabelsFilter == null)
+		{
+			throw new IllegalArgumentException(
+					"instances of password file and filter collection must be provided in the intent.");
+		} 
 	}
 
 	@Override

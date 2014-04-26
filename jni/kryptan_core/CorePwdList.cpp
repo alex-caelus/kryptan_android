@@ -225,4 +225,14 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdList_RemovePwdFromLabel(
 	return 0;
 }
 
+void Java_org_caelus_kryptanandroid_core_CorePwdList_ImportPwd(
+		JNIEnv* env, jobject o, jlong pwd) {
+	try {
+		PwdList* list = getHandle<PwdList>(env, o, HANDLE_LIST);
+		list->ImportPwd((Pwd*) pwd);
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+}
+
 }

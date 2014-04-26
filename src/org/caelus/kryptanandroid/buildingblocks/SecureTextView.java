@@ -161,6 +161,11 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 
 	}
 	
+	public void invalidatePaint()
+	{
+		mPaint = null;
+	}
+	
 	public void setTextVisibility(boolean visible)
 	{
 		mTextVisible = visible;

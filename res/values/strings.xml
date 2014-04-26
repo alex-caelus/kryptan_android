@@ -87,4 +87,8 @@
     <string name="empty_label_list">Nothing to show here yet, you need to add some passwords and maybe add labels to them to keep things organised.</string>
     <string name="minimum_masterkey_length_msg">Minimum length: 8 characters</string>
     <string name="progress_saving">Saving changes&#8230;</string>
+    <string name="sync_instructions_header">Instructions:</string>
+    <string name="sync_instructions_body">Step 1: Open Kryptan on your PC and press F3 to start synchronization procedure.\nStep 2: Follow instructions on PC screen.\nStep 3: Press Scan QR code below.</string>
+    <string name="sync_start_button">Scan QR code</string>
+    <string name="sync_error_malformed_qr_content">Malformed QR code data</string>
 </resources>

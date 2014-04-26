@@ -59,10 +59,21 @@ public class SelectLabelActivity extends Activity implements
 		case Global.ACTIVITY_REQUEST_CODE_SECRET_LIST:
 			onSecretListDone(resultCode, data);
 			break;
+		case Global.ACTIVITY_REQUEST_CODE_SYNC:
+			onSyncronizationDone();
+			break;
 		default:
 			// we do nothing
 		}
 
+	}
+
+	private void onSyncronizationDone()
+	{
+		// we must update the list of labels
+		mAdapter.refreshData();
+		mSelectedLabels.getContainer().clear();
+		setMatchingPasswordsText();
 	}
 
 	private void onSecretListDone(int resultCode, Intent data)
@@ -187,6 +198,7 @@ public class SelectLabelActivity extends Activity implements
 		case R.id.action_sync:
 		{
 			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
+			intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
 			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SYNC);
 			break;
 		}

@@ -73,6 +73,54 @@ jobject Java_org_caelus_kryptanandroid_core_CorePwd_GetPasswordCopy(JNIEnv* env,
 	return 0;
 }
 
+jlong Java_org_caelus_kryptanandroid_core_CorePwd_GetTimeCreated(JNIEnv* env, jobject o)
+{
+	try {
+		Pwd* pwd = getHandle<Pwd>(env, o, HANDLE_LIST);
+
+		return pwd->GetTimeCreated();
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
+jlong Java_org_caelus_kryptanandroid_core_CorePwd_GetTimeModified(JNIEnv* env, jobject o)
+{
+	try {
+		Pwd* pwd = getHandle<Pwd>(env, o, HANDLE_LIST);
+
+		return pwd->GetTimeLastModified();
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
+jstring Java_org_caelus_kryptanandroid_core_CorePwd_GetTimeCreatedString(JNIEnv* env, jobject o)
+{
+	try {
+		Pwd* pwd = getHandle<Pwd>(env, o, HANDLE_LIST);
+
+		return env->NewStringUTF(pwd->GetTimeCreatedString().c_str());
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
+jstring Java_org_caelus_kryptanandroid_core_CorePwd_GetTimeModifiedString(JNIEnv* env, jobject o)
+{
+	try {
+		Pwd* pwd = getHandle<Pwd>(env, o, HANDLE_LIST);
+
+		return env->NewStringUTF(pwd->GetTimeLastModifiedString().c_str());
+	} catch (...) {
+		swallow_cpp_exception_and_throw_java(env);
+	}
+	return 0;
+}
+
 jobject Java_org_caelus_kryptanandroid_core_CorePwd_GetLabels(JNIEnv* env, jobject o)
 {
 	try {

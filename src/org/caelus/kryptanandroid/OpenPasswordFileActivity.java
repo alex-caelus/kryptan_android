@@ -254,15 +254,6 @@ public class OpenPasswordFileActivity extends Activity implements
 				return true;
 			}
 
-			try
-			{
-				// Stop brute force attacks.
-				Thread.sleep(2000);
-			} catch (InterruptedException e)
-			{
-				return false;
-			}
-
 			return false;
 		}
 

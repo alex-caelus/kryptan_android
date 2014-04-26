@@ -43,6 +43,10 @@ public class CorePwd implements Parcelable{
 	public native CoreSecureStringHandler GetDescriptionCopy();
 	public native CoreSecureStringHandler GetUsernameCopy();
 	public native CoreSecureStringHandler GetPasswordCopy();
+	public native long GetTimeModified();
+	public native long GetTimeCreated();
+	public native String GetTimeModifiedString();
+	public native String GetTimeCreatedString();
 	public native CoreSecureStringHandler[] GetLabels();
 	private native void SetNewDescription(long nativeHandle);
 	private native void SetNewUsername(long nativeHandle);

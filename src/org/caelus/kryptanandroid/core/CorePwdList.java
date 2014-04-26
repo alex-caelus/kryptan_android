@@ -139,6 +139,11 @@ public class CorePwdList
 	{
 		return RemovePwdFromLabel(pwd.getNativeHandle(), label.getNativeHandle());
 	}
+	
+	public void ImportPwd(CorePwd pwd)
+	{
+		ImportPwd(pwd.getNativeHandle());
+	}
 
 	public native CoreSecureStringHandler[] AllLabels();
 
@@ -163,5 +168,7 @@ public class CorePwdList
 	private native boolean AddPwdToLabel(long pwd, long label);
 
 	private native boolean RemovePwdFromLabel(long pwd, long label);
+	
+	private native void ImportPwd(long pwd);
 
 }
