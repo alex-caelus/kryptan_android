@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.SyncFailedException;
+import java.text.ChoiceFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,6 +15,7 @@ import org.caelus.kryptanandroid.buildingblocks.TcpClient;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CorePwdList;
+import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -229,33 +231,16 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	{
 		try
 		{
-			File outputFile = File.createTempFile("prefix", "extension", getCacheDir());
-			CorePwdFile mergedFile = new CorePwdFile(outputFile.getCanonicalPath());
-			CorePwdList mergedList = mergedFile.getPasswordList();
-			
 			int nPwds = mSyncAdapter.getCount();
 			
 			for(int i=0; i < nPwds; i++)
 			{
-				ConflictChoice choice = mSyncAdapter.getItem(i);
-				if(choice.shouldLocalPropagate())
-				{
-					clonePwdTo(mergedList, choice.getLocalPwd());
-				}
-				else if(choice.shouldRemotePropagate())
-				{
-					clonePwdTo(mergedList, choice.getRemotePwd());
-				}
-				else
-				{
-					SyncWarning("Found unresolved items, please check your syncronization choices again!");
-					return;
-				}
+				applyChoice(mSyncAdapter.getItem(i));
 			}
 
 			this.dialog.setMessage("Sending our response...");
 			this.dialog.show();
-			mTcpClientResponsive.sendMergedPwdFile(mergedFile);
+			mTcpClientResponsive.sendMergedPwdFile(mLocalPwdFile);
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
@@ -263,13 +248,25 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 		}
 	}
 
-	private void clonePwdTo(CorePwdList destination, CorePwd source)
+	private void applyChoice(ConflictChoice choice)
 	{
-		if(source == null)
+		CorePwdList list = mLocalPwdFile.getPasswordList();
+		if(choice.shouldLocalPropagate())
 		{
-			return ;
+			//do nothing, we already have whats needed
 		}
-		destination.ImportPwd(source);
+		else if(choice.shouldRemotePropagate())
+		{
+			CorePwd local = choice.getLocalPwd();
+			CorePwd remote = choice.getRemotePwd();
+			if(local != null)
+			{
+				//we first remove the local copy
+				list.deletePwd(local);
+			}			
+			//simply import from remote
+			list.ImportPwd(remote);
+		}
 	}
 
 	//this is run on TcpClient thread (in the background)
@@ -337,6 +334,9 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	@Override
 	public void tcpClientFinished(TcpClient client)
 	{
+		//save changes
+		mLocalPwdFile.SaveWithDialog(this);
+		
 		this.dialog.dismiss();
 		QustomDialogBuilder builder = new QustomDialogBuilder(this);
 		builder.setMessage("Passwords sucessfully syncronized!");
