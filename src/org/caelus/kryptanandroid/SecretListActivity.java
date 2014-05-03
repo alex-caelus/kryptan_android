@@ -163,7 +163,8 @@ public class SecretListActivity extends FragmentActivity implements
 		case R.id.action_sync:
 		{
 			Intent intent = new Intent(this, SyncronizeDesktopActivity.class);
-			startActivity(intent);
+			intent.putExtra(Global.EXTRA_CORE_PWD_FILE_INSTANCE, mCorePwdFile);
+			startActivityForResult(intent, Global.ACTIVITY_REQUEST_CODE_SYNC);
 			break;
 		}
 		case R.id.action_new_password:
@@ -222,6 +223,9 @@ public class SecretListActivity extends FragmentActivity implements
 				showNewlyCreatedPwd((CorePwd) data.getParcelableExtra(Global.EXTRA_CORE_PWD));
 			}
 			onDetailDone(resultcode, data);
+		case Global.ACTIVITY_REQUEST_CODE_SYNC:
+			this.refreshListContents();
+			break;
 		}
 	}
 

@@ -1,7 +1,6 @@
 package org.caelus.kryptanandroid;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -11,11 +10,9 @@ import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 
 public class SyncAdapter extends BaseAdapter
 {
@@ -53,12 +50,12 @@ public class SyncAdapter extends BaseAdapter
 				}
 			}
 			
-			mSyncItems.add(new ConflictChoice(mLastSync, localMatch, currRemote));
+			mSyncItems.add(new ConflictChoice(mContext.getResources(), mLastSync, localMatch, currRemote));
 		}
 		//and add the locals that are left and have not been paired up yet
 		for (CorePwd currLocal : localArray)
 		{
-			mSyncItems.add(new ConflictChoice(mLastSync, currLocal, null));
+			mSyncItems.add(new ConflictChoice(mContext.getResources(), mLastSync, currLocal, null));
 		}
 		
 		SortItems();

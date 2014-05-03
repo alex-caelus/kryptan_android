@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
@@ -81,7 +82,36 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
     
     private void _sendMessage() {
         if (mBufferOut != null && !mBufferOut.checkError()) {
-        	String messageToSend = mFileToSend.SaveToString();
+        	CoreSecureStringHandler masterkey = mFileToSend.getMasterKeyHandler();
+        	CoreSecureStringHandler original = CoreSecureStringHandler.NewSecureString();
+        	
+        	//save current key
+        	int l = masterkey.GetLength();
+        	for(int i=0; i < l; i++)
+        	{
+        		original.AddChar(masterkey.GetChar(i));
+        	}
+        	
+        	//set transmission key
+        	l = mEncryptionKey.length();
+        	masterkey.Clear();
+        	for(int i=0; i < l; i++)
+        	{
+        		masterkey.AddChar(mEncryptionKey.charAt(i));
+        	}
+        	
+        	//encrypt
+        	String messageToSend = mFileToSend.SaveToString(100);
+        	
+        	//restore original key
+        	l = original.GetLength();
+        	masterkey.Clear();
+        	for(int i=0; i < l; i++)
+        	{
+        		masterkey.AddChar(original.GetChar(i));
+        	}
+        	
+        	//send message!
             mBufferOut.print(messageToSend + '#');
             mBufferOut.flush();
         }
@@ -136,15 +166,15 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
     		switch (mState)
 			{
 			case INIT:
-				mMessageListener.tcpClientProgressChanged(this, "TCP connection initialized...");
+				mMessageListener.tcpClientProgressChanged(this, mContext.getResources().getString(R.string.tcp_client_progress_init));
 				break;
 				
 			case READING:
-				mMessageListener.tcpClientProgressChanged(this, "TCP connection connected and reading data...");
+				mMessageListener.tcpClientProgressChanged(this, mContext.getResources().getString(R.string.tcp_client_progress_connected));
 				break;
 				
 			case DECRYPTING:
-				mMessageListener.tcpClientProgressChanged(this, "TCP connection decrypting received data...");
+				mMessageListener.tcpClientProgressChanged(this, mContext.getResources().getString(R.string.tcp_client_progress_decrypting));
 				break;
 				
 			case WAITING:
@@ -153,11 +183,11 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
 				break;
 				
 			case SENDING:
-				mMessageListener.tcpClientProgressChanged(this, "TCP connection is sending data...");
+				mMessageListener.tcpClientProgressChanged(this, mContext.getResources().getString(R.string.tcp_client_progress_init));
 				break;
 			
 			case FINISHED:
-				mMessageListener.tcpClientProgressChanged(this, "TCP connection is finished!");
+				mMessageListener.tcpClientProgressChanged(this, mContext.getResources().getString(R.string.tcp_client_progress_finished));
 				break;
 
 			default:

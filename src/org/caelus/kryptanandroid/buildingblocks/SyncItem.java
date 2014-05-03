@@ -181,6 +181,11 @@ public class SyncItem extends LinearLayout
 		//color
 		int localColor = mChoice.shouldLocalPropagate() ? Color.GREEN : Color.WHITE;
 		int remoteColor = mChoice.shouldRemotePropagate() ? Color.GREEN : Color.WHITE;
+		
+		if(localColor != Color.WHITE && remoteColor != Color.WHITE)
+		{
+			localColor = remoteColor = Color.GRAY;
+		}
 
 		mLocalDescription.setTextColor(localColor);
 		mLocalDescription.invalidatePaint();

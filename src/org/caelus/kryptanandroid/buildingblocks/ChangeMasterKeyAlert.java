@@ -3,6 +3,7 @@ package org.caelus.kryptanandroid.buildingblocks;
 import org.caelus.kryptanandroid.Global;
 import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CorePwdFile;
+import org.caelus.kryptanandroid.core.CorePwdFile.FinishListener;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.Activity;
@@ -124,10 +125,15 @@ public class ChangeMasterKeyAlert extends BaseAlert
 			}
 
 			// resave password file to set the new masterkey.
-			mPwdFile.SaveWithDialog(mActivity);
-
-			// call callback
-			mSuccessfull.onSuccessfull();
+			mPwdFile.SaveWithDialog(mActivity, new FinishListener()
+			{
+				@Override
+				public void OnFinish()
+				{
+					// call callback
+					mSuccessfull.onSuccessfull();
+				}
+			});
 
 			return true;
 		}

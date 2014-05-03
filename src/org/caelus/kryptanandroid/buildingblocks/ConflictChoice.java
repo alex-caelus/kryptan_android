@@ -1,7 +1,10 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
+import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
+
+import android.content.res.Resources;
 
 public class ConflictChoice
 {
@@ -14,9 +17,11 @@ public class ConflictChoice
 
 	private String mLocalTooltip;
 	private String mRemoteTooltip;
+	private Resources mResources;
 	
-	public ConflictChoice(long lastSyncDate, CorePwd local, CorePwd remote)
+	public ConflictChoice(Resources resources, long lastSyncDate, CorePwd local, CorePwd remote)
 	{
+		mResources = resources;
 		setEmptyText();
 		mLocal = local;
 		mRemote = remote;
@@ -40,8 +45,8 @@ public class ConflictChoice
 				//no prior syncronization performed
 				setLocalPropagation(false);
 				setRemotePropagation(true);
-				mLocalTooltip = "Probable cause: no prior sync";
-				mRemoteTooltip = "Created "  + mRemote.GetTimeCreatedString();
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_no_sync);
+				mRemoteTooltip =  mResources.getString(R.string.conflict_choice_created) + mRemote.GetTimeCreatedString();
 			}
 			else if(mRemote.GetTimeCreated() < mLastSyncDate)
 			{
@@ -49,8 +54,8 @@ public class ConflictChoice
 				//but was deleted. The change should be propagated local -> remote
 				setLocalPropagation(true);
 				setRemotePropagation(false);
-				mLocalTooltip = "Probable cause: deleted";
-				mRemoteTooltip = "Created before last sync";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_deleted);
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_before_sync);
 			}
 			else
 			{
@@ -58,8 +63,8 @@ public class ConflictChoice
 				//The item is probably new and should be propagated local <- remote
 				setLocalPropagation(false);
 				setRemotePropagation(true);
-				mLocalTooltip = "Probable cause: new item";
-				mRemoteTooltip = "Created after last sync";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_new);
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_after_sync);
 			}
 		}
 		else if(mRemote == null)
@@ -71,8 +76,8 @@ public class ConflictChoice
 				//no prior syncronization performed
 				setLocalPropagation(true);
 				setRemotePropagation(false);
-				mLocalTooltip = "Created "  + mLocal.GetTimeCreatedString();
-				mRemoteTooltip = "Probable cause: no prior sync";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_created) + mLocal.GetTimeCreatedString();
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_no_sync);
 			}
 			else if(mLocal.GetTimeCreated() < mLastSyncDate)
 			{
@@ -80,8 +85,8 @@ public class ConflictChoice
 				//but was deleted. The change should be propagated local <- remote
 				setLocalPropagation(false);
 				setRemotePropagation(true);
-				mLocalTooltip = "Created before last sync";
-				mRemoteTooltip = "Probable cause: deleted";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_before_sync);
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_deleted);
 			}
 			else
 			{
@@ -89,8 +94,8 @@ public class ConflictChoice
 				//The item is probably new and should be propagated local -> remote
 				setLocalPropagation(true);
 				setRemotePropagation(false);
-				mLocalTooltip = "Item created after last sync.";
-				mRemoteTooltip = "Probable cause: new item";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_after_sync);
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_new);
 			}
 		}
 		else
@@ -104,24 +109,24 @@ public class ConflictChoice
 				//they are identical, or should be at least
 				setLocalPropagation(true);
 				setRemotePropagation(true);
-				mLocalTooltip = "Identical";
-				mRemoteTooltip = "Identical";
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_identical);
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_identical);
 			}
 			else if(mLocal.GetTimeModified() < mRemote.GetTimeModified())
 			{
 				//remote is newest
 				setLocalPropagation(false);
 				setRemotePropagation(true);
-				mLocalTooltip = "Last modified: " + mLocal.GetTimeModifiedString();
-				mRemoteTooltip = "Last modified: " + mRemote.GetTimeModifiedString();
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_modified) + mLocal.GetTimeModifiedString();
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_modified) + mRemote.GetTimeModifiedString();
 			}
 			else
 			{
 				//local is newest
 				setLocalPropagation(true);
 				setRemotePropagation(false);
-				mLocalTooltip = "Last modified: " + mLocal.GetTimeModifiedString();
-				mRemoteTooltip = "Last modified: " + mRemote.GetTimeModifiedString();
+				mLocalTooltip = mResources.getString(R.string.conflict_choice_modified) + mLocal.GetTimeModifiedString();
+				mRemoteTooltip = mResources.getString(R.string.conflict_choice_modified) + mRemote.GetTimeModifiedString();
 			}
 		}
 	}
@@ -191,7 +196,7 @@ public class ConflictChoice
 	{
 		if(mEmptyDescriptionString.GetLength() == 0)
 		{
-			String text = "-MISSING-";
+			String text = mResources.getString(R.string.conflict_choice_missing);
 			for (char c : text.toCharArray())
 			{
 				mEmptyDescriptionString.AddChar(c);

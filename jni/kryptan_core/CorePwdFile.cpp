@@ -146,12 +146,12 @@ jboolean Java_org_caelus_kryptanandroid_core_CorePwdFile_Exists(JNIEnv* env,
 }
 
 jstring Java_org_caelus_kryptanandroid_core_CorePwdFile_SaveToString(JNIEnv* env,
-		jobject o) {
+		jobject o, jint mashIterations) {
 	try {
 		PwdFile* file = getHandle<PwdFile>(env, o, HANDLE_FILE);
 
 		SPointer* masterkey = getHandle<SPointer>(env, o, HANDLE_MASTERKEY);
-		std::string encrypted = file->SaveToString(*masterkey->sString);
+		std::string encrypted = file->SaveToString(*masterkey->sString, mashIterations);
 
 		return env->NewStringUTF(encrypted.c_str());
 	} catch (...) {

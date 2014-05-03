@@ -147,7 +147,7 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 			activity.refreshListContents();
 		} else
 		{
-			// apperently not in two pane mode, lets just ignore this
+			// Apparently not in two pane mode, lets just ignore this
 		}
 	}
 

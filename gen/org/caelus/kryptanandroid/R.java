@@ -326,7 +326,7 @@ public final class R {
         public static final int action_edit_labels=0x7f040009;
         public static final int action_new_password=0x7f040008;
         public static final int action_search=0x7f040005;
-        public static final int action_sign_in_register=0x7f04005c;
+        public static final int action_sign_in_register=0x7f040071;
         public static final int action_sync=0x7f040006;
         public static final int add_label_to_pwd=0x7f040039;
         public static final int alert_image_content_description=0x7f040043;
@@ -337,6 +337,15 @@ public final class R {
         public static final int clear=0x7f040004;
         public static final int confirm_masterkey_hint=0x7f04000b;
         public static final int confirm_old_masterkey_hint=0x7f04000c;
+        public static final int conflict_choice_after_sync=0x7f040066;
+        public static final int conflict_choice_before_sync=0x7f040065;
+        public static final int conflict_choice_created=0x7f040060;
+        public static final int conflict_choice_deleted=0x7f040064;
+        public static final int conflict_choice_identical=0x7f040067;
+        public static final int conflict_choice_missing=0x7f04005f;
+        public static final int conflict_choice_modified=0x7f040061;
+        public static final int conflict_choice_new=0x7f040063;
+        public static final int conflict_choice_no_sync=0x7f040062;
         public static final int copy=0x7f040048;
         public static final int create_new_label=0x7f04000f;
         public static final int create_new_label_help=0x7f040010;
@@ -366,10 +375,10 @@ public final class R {
         public static final int details_username_text=0x7f040020;
         public static final int empty_label_list=0x7f040053;
         public static final int enter_password_below=0x7f040046;
-        public static final int error_field_required=0x7f040061;
-        public static final int error_incorrect_confirm=0x7f040060;
-        public static final int error_incorrect_password=0x7f04005f;
-        public static final int error_invalid_password=0x7f04005e;
+        public static final int error_field_required=0x7f040076;
+        public static final int error_incorrect_confirm=0x7f040075;
+        public static final int error_incorrect_password=0x7f040074;
+        public static final int error_invalid_password=0x7f040073;
         public static final int error_label_already_exists=0x7f04003b;
         public static final int error_pwd_already_exists=0x7f04003c;
         public static final int generate_new_password_use_special_characters=0x7f040045;
@@ -380,7 +389,7 @@ public final class R {
         public static final int keyboard_done=0x7f040040;
         public static final int keyboard_space=0x7f040041;
         public static final int label_nr_of_passwords_format=0x7f040019;
-        public static final int login_progress_signing_in=0x7f04005d;
+        public static final int login_progress_signing_in=0x7f040072;
         public static final int masterkey_change_toast=0x7f04000d;
         public static final int minimum_masterkey_length_msg=0x7f040054;
         public static final int new_masterkey_hint=0x7f04000a;
@@ -397,7 +406,7 @@ public final class R {
         public static final int progress_saving=0x7f040055;
         /**  Strings related to login 
          */
-        public static final int prompt_password=0x7f04005b;
+        public static final int prompt_password=0x7f040070;
         public static final int remove_label=0x7f040038;
         public static final int save=0x7f040001;
         public static final int save_password_with_description=0x7f04004b;
@@ -409,13 +418,25 @@ public final class R {
         public static final int select_label_text=0x7f040011;
         public static final int select_label_title=0x7f040012;
         public static final int show=0x7f040002;
+        public static final int sync_desktop_cancelled=0x7f04006e;
+        public static final int sync_desktop_error_message=0x7f040069;
+        public static final int sync_desktop_error_title=0x7f040068;
+        public static final int sync_desktop_success_message=0x7f04006d;
+        public static final int sync_desktop_success_title=0x7f04006c;
+        public static final int sync_desktop_warning_title=0x7f04006a;
+        public static final int sync_desktop_warning_unresolved_items=0x7f04006b;
         public static final int sync_error_malformed_qr_content=0x7f040059;
         public static final int sync_instructions_body=0x7f040057;
         public static final int sync_instructions_header=0x7f040056;
         public static final int sync_start_button=0x7f040058;
+        public static final int tcp_client_progress_connected=0x7f04005b;
+        public static final int tcp_client_progress_decrypting=0x7f04005c;
+        public static final int tcp_client_progress_finished=0x7f04005e;
+        public static final int tcp_client_progress_init=0x7f04005a;
+        public static final int tcp_client_progress_sending=0x7f04005d;
         public static final int text_filter_format=0x7f040015;
         public static final int text_filter_none=0x7f040016;
-        public static final int title_activity_decrypt=0x7f04005a;
+        public static final int title_activity_decrypt=0x7f04006f;
         public static final int title_activity_syncronize_desktop=0x7f040034;
         public static final int title_edit_password=0x7f040037;
         public static final int title_generate_password=0x7f040036;

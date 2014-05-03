@@ -91,4 +91,25 @@
     <string name="sync_instructions_body">Step 1: Open Kryptan on your PC and press F3 to start synchronization procedure.\nStep 2: Follow instructions on PC screen.\nStep 3: Press Scan QR code below.</string>
     <string name="sync_start_button">Scan QR code</string>
     <string name="sync_error_malformed_qr_content">Malformed QR code data</string>
+    <string name="tcp_client_progress_init">Trying to connect to remote over the network &#8230;</string>
+    <string name="tcp_client_progress_connected">Connection established, reading data &#8230;</string>
+    <string name="tcp_client_progress_decrypting">Data received, decrypting &#8230;</string>
+    <string name="tcp_client_progress_sending">Sending response to remote &#8230;</string>
+    <string name="tcp_client_progress_finished">All done!</string>
+    <string name="conflict_choice_missing">-MISSING-</string>
+    <string name="conflict_choice_created">Created </string>
+    <string name="conflict_choice_modified">Last modified </string>
+    <string name="conflict_choice_no_sync">Probable cause: no prior sync</string>
+    <string name="conflict_choice_new">Probable cause: new item</string>
+    <string name="conflict_choice_deleted">Probable cause: deleted</string>
+    <string name="conflict_choice_before_sync">Created before last sync</string>
+    <string name="conflict_choice_after_sync">Created after last sync</string>
+    <string name="conflict_choice_identical">Identical</string>
+    <string name="sync_desktop_error_title">Error</string>
+    <string name="sync_desktop_error_message">An error occurred, please try again and if it happens again please contact the author of this application.\n\n</string>
+    <string name="sync_desktop_warning_title">Error</string>
+    <string name="sync_desktop_warning_unresolved_items">There are unresolved sync items, please make a decision on these before pressing accept.</string>
+    <string name="sync_desktop_success_title">Success</string>
+    <string name="sync_desktop_success_message">Passwords successfully syncronized!</string>
+    <string name="sync_desktop_cancelled">Cancelled by the user!</string>
 </resources>

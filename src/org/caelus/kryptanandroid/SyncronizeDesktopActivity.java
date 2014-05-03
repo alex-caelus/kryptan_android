@@ -1,10 +1,6 @@
 package org.caelus.kryptanandroid;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.SyncFailedException;
-import java.text.ChoiceFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,7 +11,6 @@ import org.caelus.kryptanandroid.buildingblocks.TcpClient;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CorePwdFile;
 import org.caelus.kryptanandroid.core.CorePwdList;
-import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,17 +18,14 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.MergeCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -48,7 +40,6 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	private List<TcpClient> mTcpClients = new Vector<TcpClient>();
 	private TcpClient mTcpClientResponsive;
 	private ProgressDialog dialog;
-	private String mDebugReceieved;
 	private String mEncryptionKey;
 	private CorePwdFile mRemoteFile;
 	private CorePwdFile mLocalPwdFile;
@@ -57,9 +48,9 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	private void SyncFailed(String message)
 	{
 		QustomDialogBuilder builder = new QustomDialogBuilder(this);
-		builder.setMessage(message);
-		builder.setTitle("Error");
-		builder.setNeutralButton("Close", this);
+		builder.setMessage(getString(R.string.sync_desktop_error_message)  + message);
+		builder.setTitle(getString(R.string.sync_desktop_error_title));
+		builder.setNeutralButton(getString(R.string.cancel), this);
 		builder.setCancelable(false);
 		builder.setTitleColor(Global.THEME_ACCENT_COLOR_STRING);
 		builder.setDividerColor(Global.THEME_ACCENT_COLOR_STRING);
@@ -83,8 +74,8 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	{
 		QustomDialogBuilder builder = new QustomDialogBuilder(this);
 		builder.setMessage(message);
-		builder.setTitle("Warning");
-		builder.setNeutralButton("Close", new OnClickListener()
+		builder.setTitle(getString(R.string.sync_desktop_warning_title));
+		builder.setNeutralButton(getString(R.string.cancel), new OnClickListener()
 		{	
 			@Override
 			public void onClick(DialogInterface dialog, int which)
@@ -176,7 +167,7 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	    if (resultCode == RESULT_OK) 
 	    {
 	    	this.dialog = new ProgressDialog(this);
-	        this.dialog.setMessage("Trying to connect...");
+	        this.dialog.setMessage(getString(R.string.tcp_client_progress_init));
 	        this.dialog.setIndeterminate(true);
 	        this.dialog.setOnCancelListener(this);
 	        this.dialog.show();
@@ -201,8 +192,8 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	private void tryConnectToServers(String urls)
 	{
 		try{
-			String[] parts = urls.split(":");
-			if(parts.length != 3)
+			String[] parts = urls.split(",");
+			if(parts.length < 3)
 			{
 				SyncFailed(getResources().getString(R.string.sync_error_malformed_qr_content));
 				return;
@@ -210,9 +201,15 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 			//this key is only valid for a very brief period of time, 
 			//so we do not bother to protect it by using SecureStringHandler
 			//it's already to late for that anyways
-			mEncryptionKey = parts[2];
-			int port = Integer.parseInt(parts[1]);
-			String[] ips = parts[0].split(",");
+			
+			//encryption key is last in message
+			mEncryptionKey = parts[parts.length-1];
+			
+			//port number is second to last in message
+			int port = Integer.parseInt(parts[parts.length-2]);
+			
+			//ips are the other parts of the message
+			String[] ips = Arrays.copyOfRange(parts, 0, parts.length-2);
 			
 			for (String ip : ips)
 			{
@@ -238,7 +235,7 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 				applyChoice(mSyncAdapter.getItem(i));
 			}
 
-			this.dialog.setMessage("Sending our response...");
+			this.dialog.setMessage(getString(R.string.tcp_client_progress_sending));
 			this.dialog.show();
 			mTcpClientResponsive.sendMergedPwdFile(mLocalPwdFile);
 		} catch (Exception e)
@@ -253,7 +250,7 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 		CorePwdList list = mLocalPwdFile.getPasswordList();
 		if(choice.shouldLocalPropagate())
 		{
-			//do nothing, we already have whats needed
+			//do nothing, we already have what's needed
 		}
 		else if(choice.shouldRemotePropagate())
 		{
@@ -263,9 +260,17 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 			{
 				//we first remove the local copy
 				list.deletePwd(local);
-			}			
-			//simply import from remote
-			list.ImportPwd(remote);
+			}
+			if(remote != null)
+			{
+				//simply import from remote
+				list.ImportPwd(remote);
+			}
+		}
+		else
+		{
+			//should never happen
+			SyncWarning(getString(R.string.sync_desktop_warning_unresolved_items));
 		}
 	}
 
@@ -333,15 +338,12 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 
 	@Override
 	public void tcpClientFinished(TcpClient client)
-	{
-		//save changes
-		mLocalPwdFile.SaveWithDialog(this);
-		
+	{	
 		this.dialog.dismiss();
 		QustomDialogBuilder builder = new QustomDialogBuilder(this);
-		builder.setMessage("Passwords sucessfully syncronized!");
-		builder.setTitle("Success");
-		builder.setNeutralButton("Close", new OnClickListener()
+		builder.setMessage(getString(R.string.sync_desktop_success_message));
+		builder.setTitle(getString(R.string.sync_desktop_success_title));
+		builder.setNeutralButton(getString(R.string.cancel), new OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
@@ -355,6 +357,9 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 		builder.setDividerColor(Global.THEME_ACCENT_COLOR_STRING);
 		AlertDialog dialog = builder.create();
 		dialog.show();
+
+		//save changes
+		mLocalPwdFile.SaveWithDialog(this);
 	}
 
 	@Override
@@ -362,7 +367,7 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 	{
 		this.dialog.dismiss();
 		
-		SyncFailed("Cancelled by the user!");
+		SyncFailed(getString(R.string.sync_desktop_cancelled));
 	}
 	
 	private void listDifferences(CorePwdFile local, CorePwdFile remote)
@@ -373,5 +378,20 @@ public class SyncronizeDesktopActivity extends Activity implements TcpClient.OnT
 		ListView list = (ListView) findViewById(R.id.listSyncItems);
 		mSyncAdapter = new SyncAdapter(this, lastSyncTime, local, remote);
 		list.setAdapter(mSyncAdapter);
+	}
+	
+	//fix window leaks
+	@Override
+	protected void onPause()
+	{
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		// TODO Auto-generated method stub
+		super.onResume();
 	}
 }

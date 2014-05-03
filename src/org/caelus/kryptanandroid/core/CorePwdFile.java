@@ -10,6 +10,11 @@ import android.os.Parcelable;
 
 public class CorePwdFile implements Parcelable{
 	
+	public interface FinishListener
+	{
+		void OnFinish();
+	}
+	
 	static{
         //System.loadLibrary("stlport_shared"); // this is an alternative to gnustl_shared, but require recompiling of cryptopp
         System.loadLibrary("gnustl_shared");
@@ -60,6 +65,14 @@ public class CorePwdFile implements Parcelable{
 		saver.execute();
 	}
 	
+	public void SaveWithDialog(Context context, FinishListener onFinish)
+	{
+		//start dialog
+		SaveAsync saver = new SaveAsync(context);
+		saver.setOnFinishListener(onFinish);
+		saver.execute();
+	}
+	
 	private native long CreateInstance(String filename);
 	public native void Dispose();
 	
@@ -71,7 +84,7 @@ public class CorePwdFile implements Parcelable{
 	private native long GetPasswordListHandle();
 	public native String GetFilename();
 
-	public native String SaveToString();
+	public native String SaveToString(int mashIterations);
 
 	public native boolean IsOpen();
 	public native boolean Exists();
@@ -102,6 +115,8 @@ public class CorePwdFile implements Parcelable{
 	    private ProgressDialog dialog;
 	    
 	    private Context mContext;
+
+		private FinishListener mOnFinish;
 	    
 	    public SaveAsync(Context context)
 	    {
@@ -109,7 +124,12 @@ public class CorePwdFile implements Parcelable{
 	    	dialog = new ProgressDialog(context);
 	    }
 
-	    /** progress dialog to show user that the backup is processing. */
+	    public void setOnFinishListener(FinishListener onFinish)
+		{
+			mOnFinish = onFinish;
+		}
+
+		/** progress dialog to show user that the backup is processing. */
 	    /** application context. */
 	    @Override
 	    protected void onPreExecute() {
@@ -131,6 +151,11 @@ public class CorePwdFile implements Parcelable{
 
 	        if (dialog.isShowing()) {
 	            dialog.dismiss();
+	        }
+	        
+	        if(mOnFinish != null)
+	        {
+	        	mOnFinish.OnFinish();
 	        }
 
 	    }
