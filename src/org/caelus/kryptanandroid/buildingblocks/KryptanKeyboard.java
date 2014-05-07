@@ -246,14 +246,9 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 		{
 			currentText = CoreSecureStringHandler.NewSecureString();
 		}
-
-		for (int i = 0; i < charSequence.length(); i++)
-		{
-			char c = charSequence.charAt(i);
-			// Process char
-			currentText.AddChar(c);
-		}
-
+		
+		currentText.Append(charSequence.toString());
+		
 		mTextView.setSecureText(currentText);
 
 		onTextChanged(currentText);
@@ -371,7 +366,7 @@ public class KryptanKeyboard implements OnClickListener, OnDismissListener
 
 		for (int i = 0; i < length - 1; i++)
 		{
-			newText.AddChar(currentText.GetChar(i));
+			newText.AddByte(currentText.GetByte(i));
 		}
 
 		currentText = newText;

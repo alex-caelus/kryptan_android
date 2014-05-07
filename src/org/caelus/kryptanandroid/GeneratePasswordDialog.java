@@ -201,8 +201,7 @@ public class GeneratePasswordDialog extends BaseAlert
 		for(int i=0; i<numberofcharacters; i++)
 		{
 			int randomnumber = (int) (Math.random() * characterPool.length());
-			char c = characterPool.charAt(randomnumber);
-			password.AddChar(c);
+			password.Append("" + characterPool.charAt(randomnumber));
 		}
 		
 		mPasswordEditText.setSecureText(password);

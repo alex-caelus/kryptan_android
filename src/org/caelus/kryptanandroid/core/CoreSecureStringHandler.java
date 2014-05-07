@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid.core;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 
 public class CoreSecureStringHandler
@@ -105,7 +106,7 @@ public class CoreSecureStringHandler
 		int length = aString.GetLength();
 		for (int i = 0; i < length; i++)
 		{
-			this.AddChar(aString.GetChar(i));
+			this.AddByte(aString.GetByte(i));
 		}
 	}
 
@@ -144,14 +145,38 @@ public class CoreSecureStringHandler
 			return false;
 		}
 	}
+	
+	public void Append(String toAppend)
+	{
+		try
+		{
+			byte[] encoded = toAppend.getBytes("UTF-8");
+			for (byte b : encoded)
+			{
+				AddByte(b);
+			}
+		} catch (UnsupportedEncodingException e)
+		{
+			//suppress this error, should never happen with UTF-8
+		}
+	}
+	
+	public void Append(CoreSecureStringHandler toAppend)
+	{
+		int l=toAppend.GetLength();
+		for(int i=0; i < l; i++)
+		{
+			AddByte(toAppend.GetByte(i));
+		}
+	}
 
 	public static native CoreSecureStringHandler NewSecureString();
 
-	public native void AddChar(char c);
+	public native void AddByte(byte c);
 
 	public native void Clear();
 
-	public native char GetChar(int j);
+	public native byte GetByte(int j);
 
 	public native int GetLength();
 
@@ -178,7 +203,7 @@ public class CoreSecureStringHandler
 		int lastNonWhitespace = 0;
 		for(int i=0; i<length; i++)
 		{
-			char c = GetChar(i);
+			byte c = GetByte(i);
 			if(!Character.isWhitespace(c))
 			{
 				if(!hasNonWhitespace)
@@ -204,7 +229,7 @@ public class CoreSecureStringHandler
 		
 		for(int i=firstNonWhitespace; i <= lastNonWhitespace; i++)
 		{
-			trimmed.AddChar(GetChar(i));
+			trimmed.AddByte(GetByte(i));
 		}
 		
 		return trimmed;

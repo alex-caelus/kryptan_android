@@ -89,16 +89,13 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
         	int l = masterkey.GetLength();
         	for(int i=0; i < l; i++)
         	{
-        		original.AddChar(masterkey.GetChar(i));
+        		original.AddByte(masterkey.GetByte(i));
         	}
         	
         	//set transmission key
         	l = mEncryptionKey.length();
         	masterkey.Clear();
-        	for(int i=0; i < l; i++)
-        	{
-        		masterkey.AddChar(mEncryptionKey.charAt(i));
-        	}
+    		masterkey.Append(mEncryptionKey);
         	
         	//encrypt
         	String messageToSend = mFileToSend.SaveToString(100);
@@ -106,10 +103,7 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
         	//restore original key
         	l = original.GetLength();
         	masterkey.Clear();
-        	for(int i=0; i < l; i++)
-        	{
-        		masterkey.AddChar(original.GetChar(i));
-        	}
+        	masterkey.Append(original);
         	
         	//send message!
             mBufferOut.print(messageToSend + '#');
@@ -316,11 +310,7 @@ public class TcpClient extends AsyncTask<Void, Void, Void>{
 			CoreSecureStringHandler masterkey = mNewFile
 					.getMasterKeyHandler();
 			masterkey.Clear();
-			int len = mEncryptionKey.length();
-			for (int i = 0; i < len; i++)
-			{
-				masterkey.AddChar(mEncryptionKey.charAt(i));
-			}
+			masterkey.Append(mEncryptionKey);
 
 			mNewFile.TryOpenAndParse();
 

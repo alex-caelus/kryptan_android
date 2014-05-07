@@ -241,7 +241,7 @@ public class OpenPasswordFileActivity extends Activity implements
 			int len = mPassword.GetLength();
 			for (int i = 0; i < len; i++)
 			{
-				masterkey.AddChar(mPassword.GetChar(i));
+				masterkey.AddByte(mPassword.GetByte(i));
 			}
 
 			mCorePwdFile.TryOpenAndParse();

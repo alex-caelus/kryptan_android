@@ -73,11 +73,8 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 		if (!mStrings.isEmpty())
 		{
 			if (prefix != null)
-			{
-				for (int i = 0; i < prefix.length(); i++)
-				{
-					combined.AddChar(prefix.charAt(i));
-				}
+			{ 
+				combined.Append(prefix);
 			}
 			for (CoreSecureStringHandler string : mStrings)
 			{
@@ -86,13 +83,12 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 					first = false;
 				} else
 				{
-					combined.AddChar(',');
-					combined.AddChar(' ');
+					combined.Append(", ");
 				}
 				int length = string.GetLength();
 				for (int i = 0; i < length; i++)
 				{
-					combined.AddChar(string.GetChar(i));
+					combined.AddByte(string.GetByte(i));
 				}
 			}
 		}
@@ -102,7 +98,7 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 			{
 				for (int i = 0; i < ifEmpty.length(); i++)
 				{
-					combined.AddChar(ifEmpty.charAt(i));
+					combined.Append(ifEmpty);
 				}
 			}
 		}

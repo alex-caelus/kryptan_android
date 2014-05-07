@@ -1,5 +1,7 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
+import java.io.UnsupportedEncodingException;
+
 import org.caelus.kryptanandroid.R;
 import org.caelus.kryptanandroid.core.CorePwd;
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -196,10 +198,18 @@ public class ConflictChoice
 	{
 		if(mEmptyDescriptionString.GetLength() == 0)
 		{
-			String text = mResources.getString(R.string.conflict_choice_missing);
-			for (char c : text.toCharArray())
+			try
 			{
-				mEmptyDescriptionString.AddChar(c);
+				String text = mResources.getString(R.string.conflict_choice_missing);
+				byte[] encoded = text.getBytes("UTF-8");
+				for (byte c : encoded)
+				{
+					mEmptyDescriptionString.AddByte(c);
+				}
+			} catch (UnsupportedEncodingException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

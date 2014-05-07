@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -26,6 +27,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 	private Layout mLayout;
 	private Paint mHintPaint;
 	private boolean mTextVisible = true;
+	private String unsecureWholeString;
 
 	public SecureTextView(Context context)
 	{
@@ -65,15 +67,6 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		{
 			// store the new text
 			mText = text;
-		}
-
-		// length of text
-		int size = mText.GetLength();
-
-		// make sure we have enough space in our temporary buffer
-		if (size != mTmpArr.length) //BUGFIX: <= does not work
-		{
-			mTmpArr = new char[size];
 		}
 
 		updateShadowCopy();
@@ -133,31 +126,49 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 	// I will refer to this as shadow text from here on.
 	private void updateShadowCopy()
 	{
-		char overwriteMe;
 		int size = mText.GetLength();
-
-		assert size <= mTmpArr.length;
-
-		for (int i = 0; i < size; i++)
+		byte[] encoded = new byte[size];
+		for(int i=0; i < size; i++)
 		{
-			overwriteMe = mText.GetChar(i);
+			encoded[i] = mText.GetByte(i);
+		}
+		try
+		{
+			unsecureWholeString = new String(encoded, "UTF-8");
+		} catch (UnsupportedEncodingException e)
+		{
+			unsecureWholeString = "";
+		}
 
+
+		// make sure we have enough space in our temporary buffer
+		if (unsecureWholeString.length() != mTmpArr.length)
+		{
+			mTmpArr = new char[unsecureWholeString.length()];
+		}
+
+		int i=0;
+		char[] chars = unsecureWholeString.toCharArray();
+		for (char c : chars)
+		{
 			// If the string contains a space
 			// input a dash to shadow buffer to indicate word boundary.
 			// This is needed for the wrapping to work as expected.
-			if (overwriteMe == ' ')
+			if (c == ' ')
 			{
 				// the test above could include more characters but for my
 				// purposes
 				// a space will be enough to check for.
 				// TODO: Check to see if space is the only character that is to
 				// be used as a word boundary.
-				mTmpArr[i] = '-';
+				mTmpArr[i++] = '-';
 			} else
 			{
-				mTmpArr[i] = 'x';
+				mTmpArr[i++] = 'm'; //changed to m which is a wider letter than x in most fonts 
 			}
 		}
+		
+		CoreSecureStringHandler.overwriteStringInternalArr(unsecureWholeString);
 
 	}
 	
@@ -193,6 +204,21 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 					mPaint.setTextAlign(Align.CENTER);
 				mPaint.setColor(getCurrentTextColor());
 			}
+			
+			int l  = mText.GetLength();
+			byte[] encoded = new byte[l];
+			for(int i=0; i < l; i++)
+			{
+				encoded[i] = mText.GetByte(i);
+			}
+			
+			try
+			{
+				unsecureWholeString = new String(encoded, "UTF-8");
+			} catch (UnsupportedEncodingException e)
+			{
+				unsecureWholeString = "";
+			}
 
 			// do this for each line of text
 			int lineCount = getLineCount();
@@ -205,13 +231,14 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 
 				assert end < mTmpArr.length;
 
+
 				// we fill our temporary array
 				for (int i = start; i < end; i++)
 				{
 					if ((this.getInputType() & InputType.TYPE_MASK_VARIATION) == InputType.TYPE_TEXT_VARIATION_PASSWORD)
-						mTmpArr[i] = '•';
+						mTmpArr[i] = 'â€¢';
 					else
-						mTmpArr[i] = mText.GetChar(i);
+						mTmpArr[i] = unsecureWholeString.charAt(i);
 				}
 
 				// then we put the information in our temporary string instance
@@ -237,6 +264,9 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 				CoreSecureStringHandler.overwriteStringInternalArr(mTmp
 						.elementAt(currentLine));
 			}
+			
+			//Remove this unsecure bastard
+			CoreSecureStringHandler.overwriteStringInternalArr(unsecureWholeString);
 
 			// Lets remove the leftover values from our temporary array
 			for (int i = 0; i < mTmpArr.length; i++)

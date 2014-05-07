@@ -70,7 +70,7 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 	@Override
 	public Object getItem(int arg0)
 	{
-		return mFilteredSecrets.get(arg0).GetDescriptionCopy().GetChar(0);
+		return mFilteredSecrets.get(arg0).GetDescriptionCopy().GetByte(0);
 	}
 
 	/*
@@ -161,7 +161,7 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 					CoreSecureStringHandler descHandler = secret.GetDescriptionCopy(); 
 					for(int i=0; i < descHandler.GetLength(); i++)
 					{
-						desc += descHandler.GetChar(i);
+						desc += descHandler.GetByte(i);
 					}
 					
 					if (desc.toUpperCase(Locale.getDefault()).contains(

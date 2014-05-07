@@ -82,13 +82,13 @@ jint Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetLength(
 	return ptr->sString->length();
 }
 
-void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddChar(
-		JNIEnv* env, jobject o, jchar c) {
+void Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_AddByte(
+		JNIEnv* env, jobject o, jbyte c) {
 	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
 	ptr->sString->append((char *) (&c), 1, false);
 }
 
-jchar Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetChar(
+jbyte Java_org_caelus_kryptanandroid_core_CoreSecureStringHandler_GetByte(
 		JNIEnv* env, jobject o, jint i) {
 	SPointer* ptr = getHandle<SPointer>(env, o, HANDLE_SECURESTRING);
 	return i >= ptr->sString->length() || i < 0 ? 0 : ptr->sString->at(i);

@@ -80,7 +80,7 @@ public class ChangeMasterKeyAlert extends BaseAlert
 		}
 		for (int i = 0; i < pass.GetLength(); i++)
 		{
-			if (pass.GetChar(i) != key.GetChar(i))
+			if (pass.GetByte(i) != key.GetByte(i))
 				return false;
 		}
 		return true;
@@ -121,7 +121,7 @@ public class ChangeMasterKeyAlert extends BaseAlert
 			key.Clear();
 			for (int i = 0; i < pass.GetLength(); i++)
 			{
-				key.AddChar(pass.GetChar(i));
+				key.AddByte(pass.GetByte(i));
 			}
 
 			// resave password file to set the new masterkey.

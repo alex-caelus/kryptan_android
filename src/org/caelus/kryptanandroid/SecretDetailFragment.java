@@ -1,5 +1,6 @@
 package org.caelus.kryptanandroid;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.caelus.kryptanandroid.buildingblocks.BaseAlert;
@@ -123,15 +124,10 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 					.NewSecureString();
 			for (int j = 0; j < labelHandlers.length; j++)
 			{
-				int length = labelHandlers[j].GetLength();
-				for (int i = 0; i < length; i++)
-				{
-					labelText.AddChar(labelHandlers[j].GetChar(i));
-				}
+				labelText.Append(labelHandlers[j]);
 				if (j < labelHandlers.length - 1)
 				{
-					labelText.AddChar(',');
-					labelText.AddChar(' ');
+					labelText.Append(", ");
 				}
 			}
 
@@ -191,33 +187,38 @@ public class SecretDetailFragment extends Fragment implements OnClickListener,
 	public static void copyToClipboard(Activity activity, String name,
 			String message, CoreSecureStringHandler src)
 	{
-		// Copy to clipboard
-		ClipboardManager clipboard = (ClipboardManager) activity
-				.getSystemService(Context.CLIPBOARD_SERVICE);
-
-		int size = src.GetLength();
-		char[] arr = new char[size];
-		for (int i = 0; i < size; i++)
+		try
 		{
-			arr[i] = src.GetChar(i);
-		}
-
-		String string = new String(arr);
-
-		ClipData clip = ClipData.newPlainText(name, string);
-		clipboard.setPrimaryClip(clip);
-
-		// lets destroy this evil unsecure string with voodo reflection
-		CoreSecureStringHandler.overwriteStringInternalArr(string);
-
-		// Lets also destroy our temporary array
-		for (int i = 0; i < size; i++)
+			// Copy to clipboard
+			ClipboardManager clipboard = (ClipboardManager) activity
+					.getSystemService(Context.CLIPBOARD_SERVICE);
+	
+			int size = src.GetLength();
+			byte[] arr = new byte[size];
+			for (int i = 0; i < size; i++)
+			{
+				arr[i] = src.GetByte(i);
+			}
+	
+			String string = new String(arr, "UTF-8");
+	
+			ClipData clip = ClipData.newPlainText(name, string);
+			clipboard.setPrimaryClip(clip);
+	
+			// lets destroy this evil unsecure string with voodo reflection
+			CoreSecureStringHandler.overwriteStringInternalArr(string);
+	
+			// Lets also destroy our temporary array
+			for (int i = 0; i < size; i++)
+			{
+				arr[i] = 0;
+			}
+	
+			Toast toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
+			toast.show();
+		} catch (UnsupportedEncodingException e)
 		{
-			arr[i] = 0;
 		}
-
-		Toast toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
-		toast.show();
 	}
 
 	public void copyDescription()
