@@ -7,7 +7,7 @@
 
 #include <jni.h>
 #include <string>
-#include "kryptan_core/SecureString.h"
+#include "kryptan_core/SecureString/SecureString.h"
 #include "helpers.h"
 
 using namespace Kryptan::Core;

@@ -12,7 +12,7 @@
 #include <vector>
 #include <ios>
 #include "kryptan_core/Exceptions.h"
-#include "kryptan_core/SecureString.h"
+#include "kryptan_core/SecureString/SecureString.h"
 #include <android/log.h>
 
 //Remove debug print before release, it is a SERIOUS(!) security hole

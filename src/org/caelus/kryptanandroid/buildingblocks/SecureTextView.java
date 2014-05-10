@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.text.InputType;
 import android.text.Layout;
 import android.util.AttributeSet;
@@ -52,6 +53,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 		mTmp = new Vector<String>();
 		mTmpArr = new char[0];
 		this.addOnLayoutChangeListener(this);
+		setTypeface(Typeface.MONOSPACE);
 	}
 
 	public void setSecureText(CoreSecureStringHandler text)
@@ -203,6 +205,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 				else
 					mPaint.setTextAlign(Align.CENTER);
 				mPaint.setColor(getCurrentTextColor());
+				mPaint.setTypeface(getTypeface());
 			}
 			
 			int l  = mText.GetLength();

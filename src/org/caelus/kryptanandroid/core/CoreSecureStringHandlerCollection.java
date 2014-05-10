@@ -96,10 +96,7 @@ public class CoreSecureStringHandlerCollection implements Parcelable
 		{
 			if (ifEmpty != null)
 			{
-				for (int i = 0; i < ifEmpty.length(); i++)
-				{
-					combined.Append(ifEmpty);
-				}
+				combined.Append(ifEmpty);
 			}
 		}
 		return combined;

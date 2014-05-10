@@ -15,11 +15,30 @@ public class CorePwdFile implements Parcelable{
 		void OnFinish();
 	}
 	
+	private static boolean librariesLoaded = false;
+	
+	public static boolean isLibrariesLoaded()
+	{
+		return librariesLoaded;
+	}
+	
+	public static boolean tryLoadLibraries()
+	{
+		try{
+	        //System.loadLibrary("stlport_shared"); // this is an alternative to gnustl_shared, but require recompiling of cryptopp
+	        System.loadLibrary("gnustl_shared");
+	        System.loadLibrary("cryptopp");
+	        System.loadLibrary("kryptan_core");
+	        return true;
+		}
+		catch(UnsatisfiedLinkError e)
+		{
+			return false;
+		}
+	}
+	
 	static{
-        //System.loadLibrary("stlport_shared"); // this is an alternative to gnustl_shared, but require recompiling of cryptopp
-        System.loadLibrary("gnustl_shared");
-        System.loadLibrary("cryptopp");
-        System.loadLibrary("kryptan_core");
+		tryLoadLibraries();
 	}
 	
 	private long nativeHandle;
