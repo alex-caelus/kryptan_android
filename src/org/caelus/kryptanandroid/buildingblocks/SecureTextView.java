@@ -1,6 +1,7 @@
 package org.caelus.kryptanandroid.buildingblocks;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Vector;
 
 import org.caelus.kryptanandroid.core.CoreSecureStringHandler;
@@ -170,6 +171,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 			}
 		}
 		
+		Arrays.fill(encoded, (byte) 0);
 		CoreSecureStringHandler.overwriteStringInternalArr(unsecureWholeString);
 
 	}
@@ -269,6 +271,7 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 			}
 			
 			//Remove this unsecure bastard
+			Arrays.fill(encoded, (byte) 0);
 			CoreSecureStringHandler.overwriteStringInternalArr(unsecureWholeString);
 
 			// Lets remove the leftover values from our temporary array

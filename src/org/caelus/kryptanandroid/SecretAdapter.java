@@ -3,6 +3,7 @@
  */
 package org.caelus.kryptanandroid;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -158,18 +159,34 @@ public class SecretAdapter extends BaseAdapter implements Filterable
 				{
 					//TODO: make secure text comparison
 					String desc = "";
+					String descUpper = "";
 					CoreSecureStringHandler descHandler = secret.GetDescriptionCopy(); 
-					for(int i=0; i < descHandler.GetLength(); i++)
+					int l = descHandler.GetLength();
+					byte[] encoded = new byte[l];
+					for(int i=0; i < l; i++)
 					{
-						desc += descHandler.GetByte(i);
+						encoded[i] = descHandler.GetByte(i);
 					}
 					
-					if (desc.toUpperCase(Locale.getDefault()).contains(
+					try
+					{
+						desc = new String(encoded, "UTF-8");
+					} catch (UnsupportedEncodingException e)
+					{
+						desc = "";
+					}
+					
+					descUpper = desc.toUpperCase(Locale.getDefault());
+					
+					if (descUpper.contains(
 					        constraint.toString().toUpperCase(
 					                Locale.getDefault())))
 					{
 						filtered.add(secret);
 					}
+
+					CoreSecureStringHandler.overwriteStringInternalArr(desc);
+					CoreSecureStringHandler.overwriteStringInternalArr(descUpper);
 				}
 
 				results.values = filtered;
