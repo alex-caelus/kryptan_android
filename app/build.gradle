@@ -9,8 +9,8 @@ model {
             applicationId = "org.caelus.kryptanandroid"
             minSdkVersion.apiLevel = 15
             targetSdkVersion.apiLevel = 19
-            versionCode = 1
-            versionName = "1.0"
+            versionCode = 1.1
+            versionName = "1.1"
         }
 
         compileOptions.with {
