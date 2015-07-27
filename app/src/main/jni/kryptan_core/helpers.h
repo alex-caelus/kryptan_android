@@ -37,7 +37,7 @@
 
 //--------------SPointer (SecureString counted reference struct)-----------
 struct SPointer {
-	Kryptan::Core::SecureString* sString;
+	Caelus::Utilities::SecureString* sString;
 	int nReferences;
 };
 

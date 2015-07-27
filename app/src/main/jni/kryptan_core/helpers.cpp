@@ -8,6 +8,7 @@
 #include "helpers.h"
 
 using namespace Kryptan::Core;
+using namespace Caelus::Utilities;
 
 //-------------Get obejct pointers-------------------------
 
