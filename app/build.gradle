@@ -1,0 +1,74 @@
+apply plugin: 'com.android.model.application'
+
+model {
+    android {
+        compileSdkVersion = 19
+        buildToolsVersion = "23.0.0 rc3"
+
+        defaultConfig.with {
+            applicationId = "org.caelus.kryptanandroid"
+            minSdkVersion.apiLevel = 15
+            targetSdkVersion.apiLevel = 19
+            versionCode = 1
+            versionName = "1.0"
+        }
+
+        compileOptions.with {
+            sourceCompatibility = JavaVersion.VERSION_1_7
+            targetCompatibility = JavaVersion.VERSION_1_7
+        }
+    }
+
+    android.buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles += file('proguard-android.pro')
+        }
+        debug {
+            isDebuggable = true
+        }
+    }
+
+    android.productFlavors {
+        create("all") {
+        }
+    }
+
+    android.sources {
+        main {
+            java {
+                source {
+                    srcDir 'src'
+                }
+            }
+            jni {
+                source  {
+                    srcDir 'src'
+                }
+            }
+        }
+    }
+
+    android.ndk {
+        moduleName = "kryptan_core"
+        CFlags += "-DKRYPTAN_CORE_DO_NOT_USE_SERVER"
+        CFlags += "-DCRYPTOPP_DISABLE_ASM=1"
+        CFlags += "-std=gnu++11"
+        CFlags += "-fexceptions"
+        CFlags += "-frtti"
+        CFlags += "-I" + file("src/main/jni/kryptan_core")
+        cppFlags += "-DKRYPTAN_CORE_DO_NOT_USE_SERVER"
+        cppFlags += "-DCRYPTOPP_DISABLE_ASM=1"
+        cppFlags += "-std=gnu++11"
+        cppFlags += "-fexceptions"
+        cppFlags += "-frtti"
+        cppFlags += "-I" + file("src/main/jni/kryptan_core")
+        ldLibs += "log"
+        stl = "gnustl_shared"
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:19+'
+}

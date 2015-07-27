@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Kryptanactionbarstyle" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarItemBackground" tools:targetApi="14">@drawable/selectable_background_kryptanactionbarstyle</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Kryptanactionbarstyle</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Kryptanactionbarstyle</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Kryptanactionbarstyle</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Kryptanactionbarstyle</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Transparent.Kryptanactionbarstyle</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_kryptanactionbarstyle</item>
+        <item name="android:actionModeSplitBackground" tools:targetApi="14">@drawable/cab_background_bottom_kryptanactionbarstyle</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Kryptanactionbarstyle</item>
+        
+        
+    </style>
+
+    <style name="ActionBar.Solid.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.Solid" tools:targetApi="14">
+        <item name="android:background">@drawable/ab_background_textured_kryptanactionbarstyle</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_kryptanactionbarstyle</item>
+        <item name="android:backgroundSplit">@drawable/ab_background_textured_kryptanactionbarstyle</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Kryptanactionbarstyle</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_kryptanactionbarstyle</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Kryptanactionbarstyle</item>
+    </style>
+
+    <style name="PopupMenu.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_kryptanactionbarstyle</item>	
+    </style>
+
+    <style name="DropDownListView.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_kryptanactionbarstyle</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionBar.TabView" tools:targetApi="13">
+        <item name="android:background">@drawable/tab_indicator_ab_kryptanactionbarstyle</item>
+    </style>
+
+    <style name="DropDownNav.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_kryptanactionbarstyle</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_kryptanactionbarstyle</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_kryptanactionbarstyle</item>
+    </style>
+    
+    <style name="ProgressBar.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_kryptanactionbarstyle</item>
+    </style>
+    
+    <style name="ActionButton.CloseMode.Kryptanactionbarstyle" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_kryptanactionbarstyle</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Kryptanactionbarstyle.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Kryptanactionbarstyle</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Kryptanactionbarstyle</item>
+    </style>
+
+</resources>
