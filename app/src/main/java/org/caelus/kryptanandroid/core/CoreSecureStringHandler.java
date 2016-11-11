@@ -1,7 +1,11 @@
 package org.caelus.kryptanandroid.core;
 
+import android.util.Log;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class CoreSecureStringHandler
 {
@@ -29,8 +33,30 @@ public class CoreSecureStringHandler
 			// left in memory now.
 		} catch (NoSuchFieldException e)
 		{
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
+			try {
+                boolean found = false;
+                for (Method m: String.class.getDeclaredMethods()){
+                    Log.d("CoreSecureStringHandler", m.getName());
+                    if (m.getName().equals("setCharAt")){
+                        Log.d("CoreSecureStringHandler", "FOUND!");
+                        found = true;
+                        m.setAccessible(true);
+                        for (int i = 0; i < toOverwrite.length(); i++)
+                        {
+                            m.invoke(toOverwrite, i, '\0');
+                        }
+                        break;
+                    }
+                }
+                if (!found){
+                    throw new RuntimeException("Not found");
+                }
+			} catch (InvocationTargetException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            }
+        } catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
 		} catch (IllegalArgumentException e)
@@ -62,7 +88,31 @@ public class CoreSecureStringHandler
 			// left in memory now.
 		} catch (NoSuchFieldException e)
 		{
-			e.printStackTrace();
+            try {
+                boolean found = false;
+                for (Method m: String.class.getDeclaredMethods()){
+                    Log.d("CoreSecureStringHandler", m.getName());
+                    if (m.getName().equals("setCharAt")){
+                        Log.d("CoreSecureStringHandler", "FOUND!");
+                        found = true;
+                        m.setAccessible(true);
+                        int length = Math
+                                .min(Math.min(toOverwrite.length(), arr.length), charCount);
+                        for (int i = 0; i < length; i++)
+                        {
+                            m.invoke(toOverwrite, i, arr[start + i]);
+                        }
+                        break;
+                    }
+                }
+                if (!found){
+                    throw new RuntimeException("Not found");
+                }
+            } catch (InvocationTargetException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            }
 		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
