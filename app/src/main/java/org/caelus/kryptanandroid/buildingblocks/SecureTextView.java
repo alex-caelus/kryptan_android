@@ -262,8 +262,11 @@ public class SecureTextView extends TextView implements OnLayoutChangeListener
 				}
 
 				// then we put the information in our temporary string instance
-				CoreSecureStringHandler.overwriteStringInternalArr(
-						mTmp.elementAt(currentLine), mTmpArr, start, size);
+				if(!CoreSecureStringHandler.overwriteStringInternalArr(
+						mTmp.elementAt(currentLine), mTmpArr, start, size)){
+					// If the owerwriting fails on this platform, then we make a simple substitution
+					mTmp.set(currentLine, String.valueOf(mTmpArr).substring(start, start + size));
+				}
 
 				// we draw the actual text
 				int gr = getGravity();

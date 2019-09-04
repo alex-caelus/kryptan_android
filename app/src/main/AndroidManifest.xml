@@ -40,7 +40,7 @@
             android:parentActivityName=".SecretListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="sensorPortrait" > >
+            android:screenOrientation="sensorPortrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".SecretListActivity" />
@@ -50,14 +50,14 @@
             android:label="@string/title_activity_decrypt"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="sensorPortrait" > >
+            android:screenOrientation="sensorPortrait" >
         </activity>
         <activity
             android:name="org.caelus.kryptanandroid.SyncronizeDesktopActivity"
             android:label="@string/title_activity_syncronize_desktop"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="sensorPortrait" > >
+            android:screenOrientation="sensorPortrait" >
         </activity>
     </application>
 

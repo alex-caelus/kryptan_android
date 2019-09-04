@@ -26,7 +26,7 @@ public class CorePwdFile implements Parcelable{
 	{
 //		try{
 	        //System.loadLibrary("stlport_shared"); // this is an alternative to gnustl_shared, but require recompiling of cryptopp
-	        System.loadLibrary("gnustl_shared");
+	        //System.loadLibrary("gnustl_shared");
 	        //System.loadLibrary("cryptopp");
 	        System.loadLibrary("kryptan_core");
 	        return true;

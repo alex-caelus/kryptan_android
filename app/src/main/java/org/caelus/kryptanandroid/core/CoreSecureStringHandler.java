@@ -18,7 +18,7 @@ public class CoreSecureStringHandler
 	 * 
 	 * @param toOverwrite
 	 */
-	public static void overwriteStringInternalArr(String toOverwrite)
+	public static boolean overwriteStringInternalArr(String toOverwrite)
 	{
 		try
 		{
@@ -31,6 +31,7 @@ public class CoreSecureStringHandler
 			}
 			// All done, there should now, hopefully be no traces of this string
 			// left in memory now.
+			return true;
 		} catch (NoSuchFieldException e)
 		{
 			try {
@@ -49,19 +50,25 @@ public class CoreSecureStringHandler
                     }
                 }
                 if (!found){
-                    throw new RuntimeException("Not found");
+                    Log.w("CoreSecureStringHandler", "Could not find \"setCharAt\" for String. Skipping overwirite of sensitive string");
+					return false;
                 }
+				return true;
 			} catch (InvocationTargetException e1) {
                 e1.printStackTrace();
+				return false;
             } catch (IllegalAccessException e1) {
                 e1.printStackTrace();
+				return false;
             }
-        } catch (IllegalAccessException e)
+		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
+			return false;
 		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -70,7 +77,7 @@ public class CoreSecureStringHandler
 	 * 
 	 * @param toOverwrite
 	 */
-	public static void overwriteStringInternalArr(String toOverwrite,
+	public static boolean overwriteStringInternalArr(String toOverwrite,
 			char[] arr, int start, int charCount)
 	{
 		try
@@ -86,6 +93,7 @@ public class CoreSecureStringHandler
 			}
 			// All done, there should now, hopefully be no traces of this string
 			// left in memory now.
+			return true;
 		} catch (NoSuchFieldException e)
 		{
             try {
@@ -106,19 +114,25 @@ public class CoreSecureStringHandler
                     }
                 }
                 if (!found){
-                    throw new RuntimeException("Not found");
+					Log.w("CoreSecureStringHandler", "Could not find \"setCharAt\" for String. Skipping overwirite of sensitive string");
+					return false;
                 }
+				return true;
             } catch (InvocationTargetException e1) {
                 e1.printStackTrace();
+				return false;
             } catch (IllegalAccessException e1) {
                 e1.printStackTrace();
+				return false;
             }
 		} catch (IllegalAccessException e)
 		{
 			e.printStackTrace();
+			return false;
 		} catch (IllegalArgumentException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -127,9 +141,9 @@ public class CoreSecureStringHandler
 	 * 
 	 * @param toOverwrite
 	 */
-	public static void overwriteStringInternalArr(String toOverwrite, char[] arr)
+	public static boolean overwriteStringInternalArr(String toOverwrite, char[] arr)
 	{
-		overwriteStringInternalArr(toOverwrite, arr, 0, arr.length);
+		return overwriteStringInternalArr(toOverwrite, arr, 0, arr.length);
 	}
 
 	/**

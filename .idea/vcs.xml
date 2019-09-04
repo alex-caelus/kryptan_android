@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/jni/kryptan_core/kryptan_core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/src/main/jni/kryptan_core/kryptan_core/SecureString" vcs="Git" />
   </component>
 </project>
