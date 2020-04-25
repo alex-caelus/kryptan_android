@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kryptan_android.iml" filepath="$PROJECT_DIR$/kryptan_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="kryptan_android/app" />
+      <module fileurl="file://$PROJECT_DIR$/kryptan_android.iml" filepath="$PROJECT_DIR$/kryptan_android.iml" group="kryptan_android" />
     </modules>
   </component>
 </project>
